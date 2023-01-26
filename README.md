@@ -2,7 +2,7 @@
 
 ## Summary and Vision
 
-Bank of Bison (BoB) is a banking emulator app designed to provide an intuitive experience of basic banking features. The app can hold multiple accounts and they can transfer money between each account. Users should be able to keep track of their expenses easily in different categories such as food, clothes, housing, entertainment and so on. Our vision is that people should have an easy access to their account and an easy way to keep track of their spending. With BBC, !
+Bison Bank of Canada (BBC) is a banking emulator app designed to provide an intuitive experience of basic banking features. The app can hold multiple accounts and they can transfer money between each account. Users should be able to keep track of their expenses easily in different categories such as food, clothes, housing, entertainment and so on. Our vision is that people should have an easy access to their account and an easy way to keep track of their spending. With BBC, !
 
 ## Core features
 #### 1. Tracking user's expense
