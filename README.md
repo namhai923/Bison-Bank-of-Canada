@@ -8,7 +8,7 @@ Transfer money in seconds! Track your expenses with ease! Scotiabank sucks! Join
 
 ## Summary
 
-Bison Bank of Canada (BBC) is a banking web application that runs on any browser. It has a user interface that will allow users to track their past expenses, add or withdraw money, and transfer money between different accounts. A retailer, using a special interface, can charge a user of BBC for a specific purchase which will reflect on the user’s bank account under the expenses. 
+Bison Bank of Canada (BBC) is a banking web application that runs on any browser. It has a user interface that will allow users to track their past expenses, add and transfer money between different accounts. A retailer, using a special interface, can charge a user of BBC for a specific purchase which will reflect on the user’s bank account under the expenses. 
 
 A vital feature that our app provides is transferring money between accounts. Two different accounts should be able to transfer money between accounts as long as they have each other’s account numbers. It is as simple as entering the bank account number, and the amount in the user interface provided for transferring the money and clicking the submit button. For security reasons, our app lets the sender of the money know the receiver's name after they enter their bank account number.
 
