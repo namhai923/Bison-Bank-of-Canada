@@ -8,16 +8,13 @@ Transfer money in seconds! Track your expenses with ease! Scotiabank sucks! Join
 
 ## Summary
 
-Bison Bank of Canada (BBC) is a banking emulator app designed to provide an intuitive experience of basic banking features. The app can hold multiple accounts and they can transfer money between each account. Users should be able to keep track of their expenses easily in different categories such as food, clothes, housing, entertainment and so on. Our vision is that people should have an easy access to their account and an easy way to keep track of their spending. 
-
-
-## Summary
-
 Bison Bank of Canada (BBC) is a banking web application that runs on any browser. It has a user interface that will allow users to track their past expenses, add or withdraw money, and transfer money between different accounts. A retailer, using a special interface, can charge a user of BBC for a specific purchase which will reflect on the user’s bank account under the expenses. 
 
 A vital feature that our app provides is transferring money between accounts. Two different accounts should be able to transfer money between accounts as long as they have each other’s account numbers. It is as simple as entering the bank account number, and the amount in the user interface provided for transferring the money and clicking the submit button. For security reasons, our app lets the sender of the money know the receiver's name after they enter their bank account number.
 
 Before taking advantage of any of the aforementioned features, users must add money to their bank account. Adding money to a bank account cannot be simpler. A user simply adds the desired amount of money to their bank account through the user interface, which will automatically update their record. 
+
+With more teenagers entering adulthood and living independently, BBC is the best place to start their journey into learning the basics of banking. Our team aspires to improve this app in the future. We shall add security features like users requiring authentication before sending or receiving money. Furthermore, our team would like to improve the retailer’s user interface - it will help improve the user’s past expense interface in the main UI.
 
 ## Core features
 #### 1. Tracking user's expense
