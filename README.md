@@ -2,7 +2,14 @@
 
 ## Summary and Vision
 
-Bison Bank of Canada (BBC) is a banking emulator app designed to provide an intuitive experience of basic banking features. The app can hold multiple accounts and they can transfer money between each account. Users should be able to keep track of their expenses easily in different categories such as food, clothes, housing, entertainment and so on. Our vision is that people should have an easy access to their account and an easy way to keep track of their spending. With BBC, !
+Let's face it, life was so much simpler when we were kids. But when your an adult and you have responsibilites, such as kids, work and software engineering projects, life gets much more hectic. So why would anyone want their banking to be hard also. We all used to be software developers for BBC news with a busy work schedule, and when we got home and had to try banking with the RBC app (eww), you can understand why we went crazy and had to leave immediately. That is why we made Bison Bank of Canada (BBC) - a banking app so simple and intuitive that no more unneeded stress needs to be added to your life! 
+
+Transfer money in seconds! Track your expenses with ease! Scotiabank sucks! Join us now!
+
+## Summary
+
+Bison Bank of Canada (BBC) is a banking emulator app designed to provide an intuitive experience of basic banking features. The app can hold multiple accounts and they can transfer money between each account. Users should be able to keep track of their expenses easily in different categories such as food, clothes, housing, entertainment and so on. Our vision is that people should have an easy access to their account and an easy way to keep track of their spending. 
+
 
 ## Core features
 #### 1. Tracking user's expense
