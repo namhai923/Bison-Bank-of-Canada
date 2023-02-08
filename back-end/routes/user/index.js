@@ -1,7 +1,6 @@
 import express from "express";
 let router = express.Router();
 import User from "../../models/User.js";
-
 import cache from "../../cache.js";
 
 router.post("/", async (req, res, next) => {
@@ -24,7 +23,6 @@ router.post("/", async (req, res, next) => {
   } catch (err) {
     res.status(500).json({ ErrorMessage: err.message });
   }
-  // else create a new user
 });
 
 router.get("/:name", async (req, res, next) => {
