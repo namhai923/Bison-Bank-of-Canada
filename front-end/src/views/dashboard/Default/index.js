@@ -11,6 +11,7 @@ import TotalIncomeDarkCard from './TotalIncomeDarkCard';
 import TotalIncomeLightCard from './TotalIncomeLightCard';
 import TotalGrowthBarChart from './TotalGrowthBarChart';
 import { gridSpacing } from 'store/constant';
+import ExtraCard from './ExtraCard';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -29,6 +30,9 @@ const Dashboard = () => {
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <TotalOrderLineChartCard isLoading={isLoading} />
+                    </Grid>
+                    <Grid item lg={4} md={6} sm={6} xs={12}>
+                        <ExtraCard isLoading={isLoading} />
                     </Grid>
                 </Grid>
             </Grid>
