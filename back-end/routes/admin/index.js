@@ -15,7 +15,7 @@ router.post("/sendRecords", async (req, res, next) => {
       if (user !== null) {
         if (record.amount < user.accountBalance) {
 
-          user.accountBalance -= record.amount;
+          user.accountBalance = Math.round(parseFloat(user.accountBalance)*100 - record.amount*100) / 100;
           user.expenseHistory.push({
             location: location,
             date: record.date,

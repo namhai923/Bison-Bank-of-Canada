@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const Decimal128 = mongoose.Decimal128;
 
 let expenseSchema = new mongoose.Schema({
   location: {
@@ -14,7 +15,7 @@ let expenseSchema = new mongoose.Schema({
     required: true,
   },
   amount: {
-    type: Number,
+    type: Decimal128,
     required: true,
   },
 });
@@ -33,7 +34,7 @@ let transferSchema = new mongoose.Schema({
     default: Date.now(),
   },
   amount: {
-    type: Number,
+    type: Decimal128,
     required: true,
   },
 });
@@ -54,7 +55,7 @@ let userSchema = new mongoose.Schema(
       required: true,
     },
     accountBalance: {
-      type: Number,
+      type: Decimal128,
       default: 0,
     },
     expenseHistory: {
@@ -68,5 +69,42 @@ let userSchema = new mongoose.Schema(
   },
   { collection: "Users" }
 );
+
+userSchema.set('toJSON', {
+  getters: true,
+  transform: (doc, ret) =>{
+    if(ret.accountBalance){
+      ret.accountBalance = parseFloat(ret.accountBalance);
+    }
+    delete ret.__v;
+    delete ret._id;
+    delete ret.id;
+    return ret;
+  }
+});
+
+expenseSchema.set('toJSON', {
+  getters: true,
+  transform: (doc, ret) =>{
+    if(ret.amount){
+      ret.amount = parseFloat(ret.amount);
+    }
+    delete ret._id;
+    delete ret.id;
+    return ret;
+  }
+});
+
+transferSchema.set('toJSON', {
+  getters: true,
+  transform: (doc, ret) =>{
+    if(ret.amount){
+      ret.amount = parseFloat(ret.amount);
+    }
+    delete ret._id;
+    delete ret.id;
+    return ret;
+  }
+});
 
 export default mongoose.model("User", userSchema);
