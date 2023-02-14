@@ -71,76 +71,82 @@ const PopularCard = ({ isLoading }) => {
         return { transNumber, merchant, date, category, price, color, background };
     }
     const rows = [
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06)
+        // createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        // createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        // createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06)
     ];
-    return (
-        <>
-            {isLoading ? (
-                <SkeletonPopularCard />
-            ) : (
-                <MainCard content={false}>
-                    <CardContent>
-                        <TableContainer component={Paper}>
-                            <Typography variant="h2" align="center">
-                                Tracking Expense
-                            </Typography>
-                            <Table xs={12} aria-label="simple table">
-                                {
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Transaction #</TableCell>
-                                            <TableCell align="left">Merchant</TableCell>
-                                            <TableCell align="left">Date</TableCell>
-                                            <TableCell align="left">Category</TableCell>
-                                            <TableCell align="left">Price</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                }
-                                <TableBody>
-                                    {rows.map((row) => (
-                                        <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                            <TableCell component="th" scope="row">
-                                                {row.transNumber}
-                                            </TableCell>
-                                            <TableCell align="left">{row.merchant}</TableCell>
-                                            <TableCell align="left">{row.date}</TableCell>
-                                            <TableCell align="left">{row.category}</TableCell>
-                                            <TableCell align="left">{row.price}</TableCell>
-                                            <Avatar
-                                                variant="rounded"
-                                                sx={{
-                                                    width: 16,
-                                                    height: 16,
-                                                    borderRadius: '5px',
-                                                    backgroundColor: row.background,
-                                                    color: row.color,
-                                                    ml: 2
-                                                }}
-                                            >
-                                                <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                                            </Avatar>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </CardContent>
-                    <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
-                        <Button size="small" disableElevation>
-                            View All
-                            <ChevronRightOutlinedIcon />
-                        </Button>
-                    </CardActions>
-                </MainCard>
-            )}
-        </>
-    );
+    if (rows.length == 0) {
+        return (
+            <Typography variant="h2" align="center">
+                Your Expenses Will Appear Here! Make Your First Transaction In Order To Show Display It Here
+            </Typography>
+        );
+    } else {
+        return (
+            <>
+                {isLoading ? (
+                    <SkeletonPopularCard />
+                ) : (
+                    <MainCard content={false}>
+                        <CardContent>
+                            <TableContainer component={Paper}>
+                                <Typography variant="h2" align="center">
+                                    Tracking Expense
+                                </Typography>
+                                <Table xs={12} aria-label="simple table">
+                                    {
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Transaction #</TableCell>
+                                                <TableCell align="left">Merchant</TableCell>
+                                                <TableCell align="left">Date</TableCell>
+                                                <TableCell align="left">Category</TableCell>
+                                                <TableCell align="left">Price</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                    }
+                                    <TableBody>
+                                        {rows.map((row) => (
+                                            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                <TableCell component="th" scope="row">
+                                                    {row.transNumber}
+                                                </TableCell>
+                                                <TableCell align="left">{row.merchant}</TableCell>
+                                                <TableCell align="left">{row.date}</TableCell>
+                                                <TableCell align="left">{row.category}</TableCell>
+                                                <TableCell align="left">{row.price}</TableCell>
+                                                <Avatar
+                                                    variant="rounded"
+                                                    sx={{
+                                                        width: 16,
+                                                        height: 16,
+                                                        borderRadius: '5px',
+                                                        backgroundColor: row.background,
+                                                        color: row.color,
+                                                        ml: 2
+                                                    }}
+                                                >
+                                                    <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
+                                                </Avatar>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </CardContent>
+                        <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
+                            <Button size="small" disableElevation>
+                                View All
+                                <ChevronRightOutlinedIcon />
+                            </Button>
+                        </CardActions>
+                    </MainCard>
+                )}
+            </>
+        );
+    }
+    PopularCard.propTypes = {
+        isLoading: PropTypes.bool
+    };
 };
-
-PopularCard.propTypes = {
-    isLoading: PropTypes.bool
-};
-
 export default PopularCard;
