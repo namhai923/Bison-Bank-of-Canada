@@ -53,7 +53,7 @@ router.post("/:name/transfer", async (req, res, next) => {
     let receiver = await User.findOne({ userName : receiverName });
 
     if(receiver != null){
-      if(sender.accountBalance > amount){
+      if(sender.accountBalance >= amount){
         sender.accountBalance = Math.round(parseFloat(sender.accountBalance*100) -  amount*100) / 100;
         receiver.accountBalance = Math.round(parseFloat(receiver.accountBalance*100) + amount*100) / 100;
 
