@@ -5,8 +5,6 @@ import { useTheme } from '@mui/material/styles';
 import { Avatar, Box, ButtonBase } from '@mui/material';
 
 // project imports
-import LogoSection from '../LogoSection';
-import SearchSection from './WelcomeSection';
 import ProfileSection from './ProfileSection';
 
 // assets
@@ -30,9 +28,6 @@ const Header = ({ handleLeftDrawerToggle }) => {
                     }
                 }}
             >
-                <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
-                    <LogoSection />
-                </Box>
                 <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
                         variant="rounded"

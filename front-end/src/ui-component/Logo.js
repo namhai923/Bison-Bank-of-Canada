@@ -1,15 +1,9 @@
-// material-ui
-import { useTheme } from '@mui/material/styles';
-
-import logoDark from 'assets/images/logo-dark.svg';
-import logo from 'assets/images/high-resolution.png';
+import logo from 'assets/images/icon.png';
 
 // ==============================|| LOGO SVG ||============================== //
 
 const Logo = () => {
-    const theme = useTheme();
-
-    return <img src={logo} alt="Berry" width={75} />;
+    return <img src={logo} alt="BBC" width={200} />;
 };
 
 export default Logo;

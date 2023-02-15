@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+
 const Decimal128 = mongoose.Decimal128;
 
 let expenseSchema = new mongoose.Schema({
@@ -70,41 +71,41 @@ let userSchema = new mongoose.Schema(
   { collection: "Users" }
 );
 
-userSchema.set('toJSON', {
+userSchema.set("toJSON", {
   getters: true,
-  transform: (doc, ret) =>{
-    if(ret.accountBalance){
+  transform: (doc, ret) => {
+    if (ret.accountBalance) {
       ret.accountBalance = parseFloat(ret.accountBalance);
     }
     delete ret.__v;
     delete ret._id;
     delete ret.id;
     return ret;
-  }
+  },
 });
 
-expenseSchema.set('toJSON', {
+expenseSchema.set("toJSON", {
   getters: true,
-  transform: (doc, ret) =>{
-    if(ret.amount){
+  transform: (doc, ret) => {
+    if (ret.amount) {
       ret.amount = parseFloat(ret.amount);
     }
     delete ret._id;
     delete ret.id;
     return ret;
-  }
+  },
 });
 
-transferSchema.set('toJSON', {
+transferSchema.set("toJSON", {
   getters: true,
-  transform: (doc, ret) =>{
-    if(ret.amount){
+  transform: (doc, ret) => {
+    if (ret.amount) {
       ret.amount = parseFloat(ret.amount);
     }
     delete ret._id;
     delete ret.id;
     return ret;
-  }
+  },
 });
 
-export default mongoose.model("User", userSchema);
+module.exports = mongoose.model("User", userSchema);
