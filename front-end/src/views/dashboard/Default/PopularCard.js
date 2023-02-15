@@ -1,41 +1,27 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography, Table } from '@mui/material';
+import { Avatar, Button, CardActions, CardContent, Typography, Table, TablePagination } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import * as React from 'react';
 // project imports
-import BajajAreaChartCard from './BajajAreaChartCard';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
-import { gridSpacing } from 'store/constant';
 
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import { createTheme } from '@mui/material/styles';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
 const PopularCard = ({ isLoading }) => {
     const theme = useTheme();
-
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
     const themeColor = createTheme({
         palette: {
             yellow: {
@@ -71,10 +57,43 @@ const PopularCard = ({ isLoading }) => {
         return { transNumber, merchant, date, category, price, color, background };
     }
     const rows = [
-        // createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        // createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        // createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06)
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 32.06),
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06)
     ];
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
     if (rows.length == 0) {
         return (
             <Typography variant="h2" align="center">
@@ -106,7 +125,7 @@ const PopularCard = ({ isLoading }) => {
                                         </TableHead>
                                     }
                                     <TableBody>
-                                        {rows.map((row) => (
+                                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                                             <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                                 <TableCell component="th" scope="row">
                                                     {row.transNumber}
@@ -133,6 +152,16 @@ const PopularCard = ({ isLoading }) => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
+                            {/* <TablePagination rowsPerPageOptions={[5, 10, 100]} component="div" count={rows.length} rowsPerPage={rowsPerPage} /> */}
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 100]}
+                                component="div"
+                                count={rows.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
                         </CardContent>
                         <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
                             <Button size="small" disableElevation>
