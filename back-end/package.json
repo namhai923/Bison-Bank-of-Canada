@@ -4,11 +4,11 @@
   "description": "Let's face it, life was so much simpler when we were kids. But when your an adult and you have responsibilites, such as kids, work and software engineering projects, life gets much more hectic. So why would anyone want their banking to be hard also. We all used to be software developers for BBC news with a busy work schedule, and when we got home and had to try banking with the RBC app (eww), you can understand why we went crazy and had to leave immediately. That is why we made Bison Bank of Canada (BBC) - a banking app so simple and intuitive that no more unneeded stress needs to be added to your life!",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest",
     "start": "nodemon index.js"
   },
   "jest": {
-    "testEnvironments": "node"
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",

@@ -1,14 +1,20 @@
 const request = require("supertest");
-
+const server = require("../../index");
+const mongoose = require("mongoose");
 const app = require("../app");
 
-test("hope that it works", async () => {
-  await request(app)
-    .post("/user")
-    .send({
-      userName: "newuser",
+afterAll(async () => {
+  await mongoose.connection.close();
+  server.close();
+});
+
+describe("POST /user", () => {
+  it("Should create a user", async () => {
+    const res = await request(app).post("/user").send({
+      userName: "newuser@gmail.com",
       firstName: "new",
       lastName: "user",
-    })
-    .expect(200);
+    });
+    expect(res.statusCode).toBe(200);
+  });
 });

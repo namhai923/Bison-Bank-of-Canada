@@ -7,7 +7,7 @@ let router = express.Router();
 router.post("/", async (req, res, next) => {
   // check if the username exist, if not then add user
   try {
-    let { userName, firstName, lastName } = req.body;
+    let { userName, firstName, lastName, accountBalance } = req.body;
     let user = await User.findOne({ userName: userName });
     if (user !== null) {
       console.log(user.toJSON());
@@ -17,6 +17,7 @@ router.post("/", async (req, res, next) => {
         userName: userName,
         firstName: firstName,
         lastName: lastName,
+        accountBalance: accountBalance ?? 0,
       });
       user = await newUser.save();
       res.status(200).send(user);
