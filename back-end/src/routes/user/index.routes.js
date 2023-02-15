@@ -1,7 +1,8 @@
-import express from "express";
+const express = require("express");
+const User = require("../../models/user.model");
+const cache = require("../../cache");
+
 let router = express.Router();
-import User from "../../models/User.js";
-import cache from "../../cache.js";
 
 router.post("/", async (req, res, next) => {
   // check if the username exist, if not then add user
@@ -29,7 +30,7 @@ router.get("/:name", async (req, res, next) => {
   // check if the username exist, then return user data
   console.log(cache);
   try {
-    let userName = req.params['name'];
+    let userName = req.params["name"];
     let user = await User.findOne({ userName: userName });
     cache.set(userName, user);
     if (user !== null) {
@@ -44,40 +45,42 @@ router.get("/:name", async (req, res, next) => {
 });
 
 router.post("/:name/transfer", async (req, res, next) => {
-  try{
+  try {
     var errorMessage = "";
 
-    let senderName = req.params['name'];
-    let {receiverName, amount} = req.body;
+    let senderName = req.params["name"];
+    let { receiverName, amount } = req.body;
     let sender = await User.findOne({ userName: senderName });
-    let receiver = await User.findOne({ userName : receiverName });
+    let receiver = await User.findOne({ userName: receiverName });
 
-    if(receiver != null){
-      if(sender.accountBalance >= amount){
-        sender.accountBalance = Math.round(parseFloat(sender.accountBalance*100) -  amount*100) / 100;
-        receiver.accountBalance = Math.round(parseFloat(receiver.accountBalance*100) + amount*100) / 100;
+    if (receiver != null) {
+      if (sender.accountBalance >= amount) {
+        sender.accountBalance =
+          Math.round(parseFloat(sender.accountBalance * 100) - amount * 100) /
+          100;
+        receiver.accountBalance =
+          Math.round(parseFloat(receiver.accountBalance * 100) + amount * 100) /
+          100;
 
         let transferHistory = {
           sender: senderName,
           receiver: receiverName,
           date: Date.now(),
-          amount: amount
-        }
+          amount: amount,
+        };
 
         sender.transferHistory.push(transferHistory);
-        receiver.transferHistory.push(transferHistory)
-        
-        await Promise.all([sender.save(), receiver.save()]);
+        receiver.transferHistory.push(transferHistory);
 
-      }else{
-        errorMessage += "Transfer failed: " + senderName + " account balance not enough\n";
+        await Promise.all([sender.save(), receiver.save()]);
+      } else {
+        errorMessage +=
+          "Transfer failed: " + senderName + " account balance not enough\n";
       }
-    }else{
+    } else {
       errorMessage += "Transfer failed: " + receiverName + " does not exists\n";
     }
-
-
-  } catch (err){
+  } catch (err) {
     res.status(500).json({ ErrorMessage: err.message });
   }
 
@@ -88,4 +91,4 @@ router.post("/:name/transfer", async (req, res, next) => {
   }
 });
 
-export default router;
+module.exports = router;

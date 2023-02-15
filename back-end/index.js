@@ -1,16 +1,14 @@
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-import app from "./app.js";
+// const mongoose = require("mongoose");
+const { PORT } = require("./src/config/index.config");
 
-dotenv.config();
-let { PORT, DB_URL } = process.env;
+const app = require("./src/app");
 
-mongoose.connect(DB_URL, (err) => {
-  if (err) {
-    return console.error(err);
-  }
-  console.log("Connected to MongoDB");
-});
+// mongoose.connect(DB_URL, (err) => {
+//   if (err) {
+//     return console.error(err);
+//   }
+//   console.log("Connected to MongoDB");
+// });
 
 app.listen(PORT, (err) => {
   if (err) {

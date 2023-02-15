@@ -1,3 +1,3 @@
 let cache = new Map();
 
-export default cache;
+module.exports = cache;
