@@ -16,12 +16,13 @@ jobs:
 
     steps:
     - name: Make envfile
+      working-directory: ./back-end
       uses: SpicyPizza/create-envfile@v1.3
       with:
         envkey_PORT: ${{ secrets.PORT }}
         envkey_DB_URL: ${{ secrets.DB_URL }}
         envkey_TESTDB_URL: ${{ secrets.TESTDB_URL }}
-        directory: ${{ GITHUB_WORKSPACE }}/back-end
+        directory: ./back-end
         file_name: .env
         fail_on_empty: false
 
@@ -35,6 +36,17 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: Make envfile
+      working-directory: ./back-end
+      uses: SpicyPizza/create-envfile@v1.3
+      with:
+        envkey_PORT: ${{ secrets.PORT }}
+        envkey_DB_URL: ${{ secrets.DB_URL }}
+        envkey_TESTDB_URL: ${{ secrets.TESTDB_URL }}
+        directory: ./back-end
+        file_name: .env
+        fail_on_empty: false
+
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
