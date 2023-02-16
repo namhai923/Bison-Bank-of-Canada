@@ -22,6 +22,7 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import { createTheme } from '@mui/material/styles';
+import BasicModal from './FilterModal';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
 const PopularCard = ({ isLoading }) => {
@@ -86,6 +87,7 @@ const PopularCard = ({ isLoading }) => {
                             <Typography variant="h2" align="center">
                                 Tracking Expense
                             </Typography>
+                            <BasicModal />
                             <Table xs={12} aria-label="simple table">
                                 {
                                     <TableHead>
