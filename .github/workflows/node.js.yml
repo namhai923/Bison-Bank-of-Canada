@@ -22,12 +22,12 @@ jobs:
       uses: actions/setup-node@v2
 
     - name: Make envfile
-      working-directory: ./back-end
       uses: SpicyPizza/create-envfile@v1.3
       with:
         envkey_PORT: ${{ secrets.PORT }}
         envkey_DB_URL: ${{ secrets.DB_URL }}
         envkey_TESTDB_URL: ${{ secrets.TESTDB_URL }}
+        directory: './back-end'
         file_name: .env
         fail_on_empty: false
 
