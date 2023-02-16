@@ -12,9 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./back-end
+
     strategy:
       matrix:
         node-version: [18.x]
@@ -27,6 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
 
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v1.3
@@ -38,5 +37,5 @@ jobs:
         file_name: .env
         fail_on_empty: false
 
-    - run: npm --prefix ./back-end ci
-    - run: npm --prefix ./back-end test
+    - run: npm ci
+    - run: npm test
