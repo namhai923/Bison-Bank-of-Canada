@@ -1,13 +1,13 @@
 // assets
-import { IconTransferIn } from '@tabler/icons';
+import { IconWallet, IconHistory } from '@tabler/icons';
 
 // constant
-const icons = { IconTransferIn };
+const icons = { IconWallet, IconHistory };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
 const transfer = {
-    id: '',
+    id: 'transfer',
     title: 'Transfer Money',
     type: 'group',
     children: [
@@ -16,7 +16,7 @@ const transfer = {
             title: 'Transfer',
             type: 'item',
             url: '/dashboard/transfer-money',
-            icon: icons.IconTransferIn,
+            icon: icons.IconWallet,
             breadcrumbs: false
         },
         {
@@ -24,7 +24,7 @@ const transfer = {
             title: 'Transfer History',
             type: 'item',
             url: '/dashboard/transfer-history',
-            icon: icons.IconTransferIn,
+            icon: icons.IconHistory,
             breadcrumbs: false
         }
     ]
