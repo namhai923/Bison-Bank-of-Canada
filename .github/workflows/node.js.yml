@@ -25,7 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: back-end/package-lock.json
+        cache-dependency-path: './back-end/package-lock.json'
 
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v1.3
@@ -33,7 +33,7 @@ jobs:
         envkey_PORT: ${{ secrets.PORT }}
         envkey_DB_URL: ${{ secrets.DB_URL }}
         envkey_TESTDB_URL: ${{ secrets.TESTDB_URL }}
-        directory: ./back-end
+        directory: './back-end'
         file_name: .env
         fail_on_empty: false
 
