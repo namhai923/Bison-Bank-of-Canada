@@ -10,23 +10,6 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  create-envfile:
- 
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./back-end
-
-    steps:
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_PORT: ${{ secrets.PORT }}
-        envkey_DB_URL: ${{ secrets.DB_URL }}
-        envkey_TESTDB_URL: ${{ secrets.TESTDB_URL }}
-        file_name: .env
-        fail_on_empty: false
 
   build:
 
@@ -38,6 +21,13 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v1.3
       with:
@@ -48,11 +38,5 @@ jobs:
         file_name: .env
         fail_on_empty: false
 
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
     - run: npm --prefix ./back-end ci
     - run: npm --prefix ./back-end test
