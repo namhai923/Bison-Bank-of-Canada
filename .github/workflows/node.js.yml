@@ -12,7 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./back-end/
     strategy:
       matrix:
         node-version: [18.x]
@@ -33,7 +35,6 @@ jobs:
         envkey_PORT: ${{ secrets.PORT }}
         envkey_DB_URL: ${{ secrets.DB_URL }}
         envkey_TESTDB_URL: ${{ secrets.TESTDB_URL }}
-        directory: './back-end'
         file_name: .env
         fail_on_empty: false
 
