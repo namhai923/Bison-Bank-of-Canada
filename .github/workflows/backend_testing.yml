@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./back-end
-      DB_URL: ${{ secrets.DB_URL }}
-      TESTDB_URL: ${{ secrets.TESTDB_URL }}
-      PORT: ${{ secrets.PORT }}
+      #DB_URL: ${{ secrets.DB_URL }}
+      #TESTDB_URL: ${{ secrets.TESTDB_URL }}
+      #PORT: ${{ secrets.PORT }}
 
 
     steps:
