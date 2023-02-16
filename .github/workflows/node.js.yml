@@ -29,7 +29,6 @@ jobs:
         cache: 'npm'
 
     - name: Make envfile
-      working-directory: ./back-end
       uses: SpicyPizza/create-envfile@v1.3
       with:
         envkey_PORT: ${{ secrets.PORT }}
