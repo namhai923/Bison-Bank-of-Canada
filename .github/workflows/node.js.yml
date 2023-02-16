@@ -14,22 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./back-end
+      DB_URL: ${{ secrets.DB_URL }}
+      TESTDB_URL: ${{ secrets.TESTDB_URL }}
+      PORT: ${{ secrets.PORT }}
 
 
     steps:
     - uses: actions/checkout@v2
     - name: Setup Node.js 
       uses: actions/setup-node@v2
-
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_PORT: ${{ secrets.PORT }}
-        envkey_DB_URL: ${{ secrets.DB_URL }}
-        envkey_TESTDB_URL: ${{ secrets.TESTDB_URL }}
-        directory: './back-end'
-        file_name: .env
-        fail_on_empty: false
 
     - name: Install backend dependencies
       working-directory: ./back-end
