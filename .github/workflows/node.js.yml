@@ -17,9 +17,9 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: Setup Node.js 
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v2
 
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v1.3
@@ -30,7 +30,10 @@ jobs:
         file_name: .env
         fail_on_empty: false
 
-    - run: npm ci
-      working-directory: ${{env.working-directory}}
-    - run: npm test
-      working-directory: ${{env.working-directory}}
+    - name: Install backend dependencies
+      working-directory: ./back-end
+      run: npm ci
+      
+    - name: Run backend tests
+      working-directory: ./back-end
+      run: npm test
