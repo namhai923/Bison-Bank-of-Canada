@@ -12,6 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: Developing
     env:
       working-directory: ./back-end
       # Commenting it out for now, will use secret in later sprint
