@@ -9,7 +9,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 export default function MaterialUIPickers(props) {
     let { newLabel } = props;
     const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
-    const [label, setLabel] = React.useState('from');
 
     const handleChange = (newValue) => {
         setValue(newValue);

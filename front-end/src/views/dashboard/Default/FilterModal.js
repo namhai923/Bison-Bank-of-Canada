@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
-import MaterialUIPickers from './MaterialUIPickers';
+import { useState } from 'react';
 
 const style = {
     position: 'absolute',
@@ -22,6 +22,13 @@ export default function BasicModal() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [location, setLocation] = useState('');
+    const [category, setCategory] = useState('');
+
+    const calculateFilter = () => {
+        console.log(location);
+        console.log(category);
+    };
 
     return (
         <div>
@@ -35,20 +42,34 @@ export default function BasicModal() {
                         Location:
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <TextField hiddenLabel id="filled-hidden-label-small" defaultValue="Superstore" variant="filled" size="small" />
+                        <TextField
+                            hiddenLabel
+                            id="filled-hidden-label-small"
+                            defaultValue=""
+                            variant="filled"
+                            size="small"
+                            onChange={(e) => {
+                                setLocation(e.target.value);
+                            }}
+                        />
                     </div>
                     <Typography variant="h3" id="modal-modal-description" sx={{ mt: 2 }} align="center" style={{ padding: '15px' }}>
                         Category:
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <TextField hiddenLabel id="filled-hidden-label-small" defaultValue="" variant="filled" size="small" />
+                        <TextField
+                            hiddenLabel
+                            id="filled-hidden-label-small"
+                            defaultValue=""
+                            variant="filled"
+                            size="small"
+                            onChange={(e) => {
+                                setCategory(e.target.value);
+                            }}
+                        />
                     </div>
-                    <Typography variant="h3" id="modal-modal-description" sx={{ mt: 2 }} align="center">
-                        Date: <MaterialUIPickers newLabel="From" />
-                        <MaterialUIPickers newLabel="To" />
-                    </Typography>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained" style={{ margin: '20px' }}>
+                        <Button variant="contained" onClick={calculateFilter} style={{ margin: '20px' }}>
                             Filter
                         </Button>
                     </div>
