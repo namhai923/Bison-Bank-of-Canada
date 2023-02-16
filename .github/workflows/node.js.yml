@@ -21,7 +21,7 @@ jobs:
         envkey_PORT: ${{ secrets.PORT }}
         envkey_DB_URL: ${{ secrets.DB_URL }}
         envkey_TESTDB_URL: ${{ secrets.TESTDB_URL }}
-        directory: ./back-end
+        directory: ../../back-end
         file_name: .env
         fail_on_empty: false
 
