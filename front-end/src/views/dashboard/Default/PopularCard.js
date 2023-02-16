@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import { useState, useEffect } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Button, CardActions, CardContent, Typography, Table, TablePagination } from '@mui/material';
@@ -13,7 +13,7 @@ import * as React from 'react';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
-
+import bbcApi from 'api/bbcApi';
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
@@ -37,54 +37,60 @@ const PopularCard = ({ isLoading }) => {
             tonalOffset: 0.2
         }
     });
-
-    function createData(transNumber, merchant, date, category, price) {
+    var counter = 1;
+    function createData(/*transNumber,*/ merchant, date, category, price) {
         var color;
         var background;
         if (price <= 10) {
-            //(color = theme.palette.success.dark), (background = theme.palette.success.light);
             (color = theme.palette.primary.light), (background = theme.palette.success.dark);
         } else if (price >= 50) {
             (color = theme.palette.primary.light), (background = theme.palette.error.dark);
         } else {
-            //(color = theme.palette.success.dark), (background = theme.palette.success.light);
-            (color = theme.palette.primary.light), (background = themeColor.palette.yellow.dark);
+            (color = theme.palette.primary.light), (background = theme.palette.warning.dark);
         }
         if (price % 1 == 0) {
             price = price + '.00';
         }
+        console.log(typeof date);
+        const dateArray = date.split('-');
+        console.assert(dateArray.length == 3);
+        dateArray[2] = dateArray[2].split('T')[0];
+        console.log(dateArray);
+        const months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ];
+        date = months[Number(dateArray[1])] + ' ' + dateArray[2] + ', ' + dateArray[0];
+        const transNumber = counter;
+        counter = counter + 1;
         price = '$' + price;
         return { transNumber, merchant, date, category, price, color, background };
     }
-    const rows = [
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 32.06),
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06),
-        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
-        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06)
-    ];
+    const rows = [];
+    const AddData = () => {
+        let [expenseHistory, setEH] = useState([]);
+        useEffect(() => {
+            async function getExpenseHistory(email) {
+                let expense = await bbcApi.getUser(email);
+                setEH(expense.expenseHistory);
+            }
+            getExpenseHistory('elonmusk@twitter.com');
+        }, []);
+        for (let i = 0; i < expenseHistory.length; i++) {
+            rows.push(createData(expenseHistory[i].location, expenseHistory[i].date, expenseHistory[i].category, expenseHistory[i].amount));
+        }
+    };
+    AddData();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const handleChangePage = (event, newPage) => {
@@ -116,7 +122,7 @@ const PopularCard = ({ isLoading }) => {
                                     {
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell>Transaction #</TableCell>
+                                                <TableCell>Transaction Id</TableCell>
                                                 <TableCell align="left">Merchant</TableCell>
                                                 <TableCell align="left">Date</TableCell>
                                                 <TableCell align="left">Category</TableCell>
@@ -152,7 +158,6 @@ const PopularCard = ({ isLoading }) => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            {/* <TablePagination rowsPerPageOptions={[5, 10, 100]} component="div" count={rows.length} rowsPerPage={rowsPerPage} /> */}
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 100]}
                                 component="div"
