@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const { DB_URL } = require("./config/index.config");
+const { exportDB } = require("./config/index.config");
 
-mongoose.connect(DB_URL, (err) => {
+mongoose.connect(exportDB, (err) => {
   if (err) {
     return console.error(err);
   }

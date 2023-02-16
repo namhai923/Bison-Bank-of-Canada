@@ -20,7 +20,7 @@ router.post("/", async (req, res, next) => {
         accountBalance: accountBalance ?? 0,
       });
       user = await newUser.save();
-      res.status(200).send(user);
+      res.status(201).send(user);
     }
   } catch (err) {
     res.status(500).json({ ErrorMessage: err.message });
@@ -55,28 +55,32 @@ router.post("/:name/transfer", async (req, res, next) => {
     let receiver = await User.findOne({ userName: receiverName });
 
     if (receiver != null) {
-      if (sender.accountBalance >= amount) {
-        sender.accountBalance =
-          Math.round(parseFloat(sender.accountBalance * 100) - amount * 100) /
-          100;
-        receiver.accountBalance =
-          Math.round(parseFloat(receiver.accountBalance * 100) + amount * 100) /
-          100;
-
-        let transferHistory = {
-          sender: senderName,
-          receiver: receiverName,
-          date: Date.now(),
-          amount: amount,
-        };
-
-        sender.transferHistory.push(transferHistory);
-        receiver.transferHistory.push(transferHistory);
-
-        await Promise.all([sender.save(), receiver.save()]);
-      } else {
-        errorMessage +=
-          "Transfer failed: " + senderName + " account balance not enough\n";
+      if(amount <= 0) {
+        errorMessage += "Transfer failed: transfer amount must be greater than 0.\n";
+      }else{
+        if (sender.accountBalance >= amount) {
+          sender.accountBalance =
+            Math.round(parseFloat(sender.accountBalance * 100) - amount * 100) /
+            100;
+          receiver.accountBalance =
+            Math.round(parseFloat(receiver.accountBalance * 100) + amount * 100) /
+            100;
+  
+          let transferHistory = {
+            sender: senderName,
+            receiver: receiverName,
+            date: Date.now(),
+            amount: amount,
+          };
+  
+          sender.transferHistory.push(transferHistory);
+          receiver.transferHistory.push(transferHistory);
+  
+          await Promise.all([sender.save(), receiver.save()]);
+        } else {
+          errorMessage +=
+            "Transfer failed: " + senderName + " account balance not enough\n";
+        }
       }
     } else {
       errorMessage += "Transfer failed: " + receiverName + " does not exists\n";
