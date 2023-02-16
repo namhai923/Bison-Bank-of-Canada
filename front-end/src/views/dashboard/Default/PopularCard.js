@@ -18,6 +18,7 @@ import bbcApi from 'api/bbcApi';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import { createTheme } from '@mui/material/styles';
+import BasicModal from './FilterModal';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
 const PopularCard = ({ isLoading }) => {
@@ -76,7 +77,6 @@ const PopularCard = ({ isLoading }) => {
         price = '$' + price;
         return { transNumber, merchant, date, category, price, color, background };
     }
-    const rows = [];
     const AddData = () => {
         let [expenseHistory, setEH] = useState([]);
         useEffect(() => {
@@ -182,5 +182,74 @@ const PopularCard = ({ isLoading }) => {
     PopularCard.propTypes = {
         isLoading: PropTypes.bool
     };
+
+    const rows = [
+        createData(15432765, 'Walmart', 'February 14, 2019', 'Groceries', 5),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 400000000.06),
+        createData(15432434524323, 'Superstore', 'May 14, 29', 'Eye Test', 40.06)
+    ];
+    return (
+        <>
+            {isLoading ? (
+                <SkeletonPopularCard />
+            ) : (
+                <MainCard content={false}>
+                    <CardContent>
+                        <TableContainer component={Paper}>
+                            <Typography variant="h2" align="center">
+                                Tracking Expense
+                            </Typography>
+                            <BasicModal />
+                            <Table xs={12} aria-label="simple table">
+                                {
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Transaction #</TableCell>
+                                            <TableCell align="left">Merchant</TableCell>
+                                            <TableCell align="left">Date</TableCell>
+                                            <TableCell align="left">Category</TableCell>
+                                            <TableCell align="left">Price</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                }
+                                <TableBody>
+                                    {rows.map((row) => (
+                                        <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                            <TableCell component="th" scope="row">
+                                                {row.transNumber}
+                                            </TableCell>
+                                            <TableCell align="left">{row.merchant}</TableCell>
+                                            <TableCell align="left">{row.date}</TableCell>
+                                            <TableCell align="left">{row.category}</TableCell>
+                                            <TableCell align="left">{row.price}</TableCell>
+                                            <Avatar
+                                                variant="rounded"
+                                                sx={{
+                                                    width: 16,
+                                                    height: 16,
+                                                    borderRadius: '5px',
+                                                    backgroundColor: row.background,
+                                                    color: row.color,
+                                                    ml: 2
+                                                }}
+                                            >
+                                                <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
+                                            </Avatar>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </CardContent>
+                    <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
+                        <Button size="small" disableElevation>
+                            View All
+                            <ChevronRightOutlinedIcon />
+                        </Button>
+                    </CardActions>
+                </MainCard>
+            )}
+        </>
+    );
 };
 export default PopularCard;
