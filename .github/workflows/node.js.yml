@@ -23,13 +23,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
+      working-directory: ./back-end
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
+    - uses: SpicyPizza/create-envfile@v1.3
     - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
+      working-directory: ./back-end
       with:
         envkey_PORT: ${{ secrets.PORT }}
         envkey_DB_URL: ${{ secrets.DB_URL }}
