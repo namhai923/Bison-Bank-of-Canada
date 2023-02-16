@@ -29,6 +29,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    run:
+        working-directory: ./back-end
+        
     strategy:
       matrix:
         node-version: [18.x]
