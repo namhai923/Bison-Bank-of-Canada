@@ -15,9 +15,9 @@ jobs:
     env:
       working-directory: ./back-end
       # Commenting it out for now, will use secret in later sprint
-      #DB_URL: ${{ secrets.DB_URL }}
-      #TESTDB_URL: ${{ secrets.TESTDB_URL }}
-      #PORT: ${{ secrets.PORT }}
+      DB_URL: ${{ secrets.DB_URL }}
+      TESTDB_URL: ${{ secrets.TESTDB_URL }}
+      PORT: ${{ secrets.PORT }}
 
 
     steps:
