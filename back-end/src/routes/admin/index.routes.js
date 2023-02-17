@@ -13,21 +13,29 @@ router.post("/sendRecords", async (req, res, next) => {
     for (var record of records) {
       let user = await User.findOne({ userName: record.userName });
       if (user !== null) {
-        if (record.amount < user.accountBalance) {
-          user.accountBalance =
-            Math.round(
-              parseFloat(user.accountBalance) * 100 - record.amount * 100
-            ) / 100;
-          user.expenseHistory.push({
-            location: location,
-            date: record.date,
-            category: record.category,
-            amount: record.amount,
-          });
-
-          await user.save();
+        if( !isNaN(record.amount) ){
+          if ( record.amount > 0) {
+            if (record.amount < user.accountBalance) {
+              user.accountBalance =
+                Math.round(
+                  parseFloat(user.accountBalance) * 100 - record.amount * 100
+                ) / 100;
+              user.expenseHistory.push({
+                location: location,
+                date: record.date,
+                category: record.category,
+                amount: record.amount,
+              });
+    
+              await user.save();
+            } else {
+              errorMessage += record.userName + " account balance not enough.\n";
+            }
+          }else{
+            errorMessage += " expense amount must be greater than 0.\n";
+          }
         } else {
-          errorMessage += record.userName + " account balance not enough\n";
+          errorMessage += " expense amount must be number.\n";
         }
       } else {
         errorMessage += record.userName + " not exists\n";
