@@ -1,7 +1,7 @@
 const request = require("supertest");
-const server = require("../../index");
+const server = require("../../../../index");
 const mongoose = require("mongoose");
-const app = require("../app");
+const app = require("../../../app");
 
 afterAll(async () => {
   const collections = await mongoose.connection.db.collections();
