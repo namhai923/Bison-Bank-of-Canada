@@ -14,21 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     environment: Development
     env:
-      working-directory: ./back-end
-      DB_URL: ${{ secrets.DB_URL }}
-      TESTDB_URL: ${{ secrets.TESTDB_URL }}
-      PORT: ${{ secrets.PORT }}
-
+      working-directory: ./front-end
 
     steps:
     - uses: actions/checkout@v2
     - name: Setup Node.js 
       uses: actions/setup-node@v2
 
-    - name: Install backend dependencies
-      working-directory: ./back-end
+    - name: Install frontend dependencies
+      working-directory: ./front-end
       run: npm ci
       
     - name: Run backend tests
-      working-directory: ./back-end
+      working-directory: ./front-end
       run: npm test
