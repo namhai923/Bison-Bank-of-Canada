@@ -1,9 +1,9 @@
 const request = require("supertest");
-const server = require("../../index");
+const server = require("../../../../index");
 const mongoose = require("mongoose");
-const app = require("../app");
+const app = require("../../../app");
 
-
+const locationName = "superstore";
 const userNameList = ["user1@gmail.com", "user2@gmail.com","user3@gmail.com","user4@gmail.com","user5@gmail.com"];
 const expenseAmountList = [40.35, 50.67, 199.24, 53.10, 44.30];
 const amountLarge = 2000;
@@ -34,9 +34,41 @@ afterAll(async () => {
 
 describe("Testing send transaction records", () => {
 
+  it("/Post /sendRecords sendRecord amount not a number", async () => {
+    const res = await request(app).post("/admin/sendRecords").send({
+      location: locationName,
+      records:[
+        {
+          userName: userNameList[0],
+          date: Date.now(),
+          amount: "weirdAmount",
+          category: "food"
+        }
+      ]
+    });
+    expect(res.statusCode).toBe(400);
+    expect(res.text).toEqual(expect.stringContaining("expense amount must be number"));
+  });
+
+  it("/Post /sendRecords sendRecord amount is negative", async () => {
+    const res = await request(app).post("/admin/sendRecords").send({
+      location: locationName,
+      records:[
+        {
+          userName: userNameList[0],
+          date: Date.now(),
+          amount: -3,
+          category: "food"
+        }
+      ]
+    });
+    expect(res.statusCode).toBe(400);
+    expect(res.text).toEqual(expect.stringContaining("expense amount must be greater than 0"));
+  });
+
   it("/Post /sendRecords sendRecord account balance not enough", async () => {
     const res = await request(app).post("/admin/sendRecords").send({
-      location: "superstore",
+      location: locationName,
       records:[
         {
           userName: userNameList[0],
@@ -52,7 +84,7 @@ describe("Testing send transaction records", () => {
 
   it("/Post /sendRecords sendRecord account not exist", async () => {
     const res = await request(app).post("/admin/sendRecords").send({
-      location: "superstore",
+      location: locationName,
       records:[
         {
           userName: "randomUser@gmail.com",
@@ -71,11 +103,18 @@ describe("Testing send transaction records", () => {
     expect(res.statusCode).toBe(200);
   });
 
-  it("Check user accountBalance deducted and expenseHistory exist after processing records", async() => {
+  it("Check user accountBalance deducted", async() => {
     for(let i=0; i<userNameList.length; i++){
       const res = await request(app).get("/user/" + userNameList[i]).send();
       expect(res.body.accountBalance).toBe(originalBalance - expenseAmountList[i]);
+    }
+  });
+
+  it("Check user expenseHistory exists and information(amount, location, etc) match", async() => {
+    for(let i=0; i<userNameList.length; i++){
+      const res = await request(app).get("/user/" + userNameList[i]).send();
       expect(res.body.expenseHistory[0].amount).toBe(expenseAmountList[i]);
+      expect(res.body.expenseHistory[0].location).toBe(locationName);
     }
   });
 
@@ -106,7 +145,7 @@ describe("Testing send transaction records", () => {
 
 function setUpExpenseRecord(){
   var expenseRecord = {
-    location: "Superstore",
+    location: locationName,
     records: []
   }
   for(let i=0; i<userNameList.length; i++){

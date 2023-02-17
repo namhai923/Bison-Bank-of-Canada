@@ -1,7 +1,7 @@
 const request = require("supertest");
-const server = require("../../index");
+const server = require("../../../../index");
 const mongoose = require("mongoose");
-const app = require("../app");
+const app = require("../../../app");
 
 afterAll(async () => {
   const collections = await mongoose.connection.db.collections();
@@ -78,6 +78,15 @@ describe("Testing User index", () => {
     });
     expect(res.statusCode).toBe(201);
     expect(res.body.userName).toBe(receiverUserName);
+  });
+
+  it("/Post /user/{userName}/transfer fail with amount not a number", async () =>{
+    const res = await request(app).post("/user/" + userName + "/transfer").send({
+      receiverName: receiverUserName,
+      amount: "notAnNumber",
+    });
+    expect(res.statusCode).toBe(400);
+    expect(res.text).toEqual(expect.stringContaining("Transfer failed: transfer amount must be a number."));
   });
 
   it("/Post /user/{userName}/transfer fail with amount less than 0", async () =>{
