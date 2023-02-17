@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { render as rtlRender, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from '../../../../store/index';
-import WelcomeSection from '../../../../Layout/MainLayout/Header/WelcomeSection';
+import WelcomeSection from '../../../../Layout/MainLayout/Header/WelcomeSection/index';
 
 const render = (component) => rtlRender(<Provider store={store}>{component}</Provider>);
 
