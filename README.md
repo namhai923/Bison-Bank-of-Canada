@@ -63,6 +63,11 @@ Track Expense:
 Send Transaction records:
 1. As a retailer user, I should be able to send a list of transaction to server. 
 
+# New Feature added
+Account creation.
+- As an user, I should be able to create a new account
+(This feature is newly added in our sprint 2 and it is partially finished) 
+
 ## Architectural Diagram
 
 ![This is the Architectural Diagram](/ArchitecturalDiagram.png)
