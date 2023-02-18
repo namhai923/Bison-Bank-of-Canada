@@ -18,8 +18,11 @@ axiosClient.interceptors.response.use(
         return response;
     },
     (error) => {
-        throw error;
+        if (error.response.status === 404) {
+            return null;
+        } else {
+            throw error;
+        }
     }
 );
-
 export default axiosClient;

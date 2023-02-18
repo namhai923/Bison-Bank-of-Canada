@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router';
 
 import bbcApi from '../../../../api/bbcApi.js';
 
 const WelcomeMessage = () => {
+    const location = useLocation();
     let [name, setName] = useState('Bison');
-
     useEffect(() => {
-        async function getUser() {
-            let user = await bbcApi.getUser('elonmusk@twitter.com');
+        async function getUser(email) {
+            let user = await bbcApi.getUser(email);
             setName(user.firstName);
-            console.log(user);
+        }
+        if (location.state == null) {
+            getUser('elonmusk@twitter.com');
+        } else {
+            getUser(location.state.name);
         }
         getUser();
     }, []);
-    console.log('asd' + bbcApi.getUser('elonmusk@twitter.com'));
     return <h1 style={{ paddingLeft: '25px' }}> Welcome, {name}!</h1>;
 };
 

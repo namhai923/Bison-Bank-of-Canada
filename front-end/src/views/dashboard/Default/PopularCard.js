@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 // material-ui
+import { useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Button, CardActions, CardContent, Typography, Table, TablePagination } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
@@ -17,28 +18,12 @@ import bbcApi from 'api/bbcApi';
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import { createTheme } from '@mui/material/styles';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
 const PopularCard = ({ isLoading }) => {
     const theme = useTheme();
-    const themeColor = createTheme({
-        palette: {
-            yellow: {
-                light: '#ffa726',
-                main: '#f57c00',
-                dark: '#FFFF66',
-                contrastText: 'rgba(255, 255, 102, 255)'
-            },
-            contrastThreshold: 3,
-            // Used by the functions below to shift a color's luminance by approximately
-            // two indexes within its tonal palette.
-            // E.g., shift from Red 500 to Red 300 or Red 700.
-            tonalOffset: 0.2
-        }
-    });
     var counter = 1;
-    function createData(/*transNumber,*/ merchant, date, category, price) {
+    function createData(merchant, date, category, price) {
         var color;
         var background;
         if (price <= 10) {
@@ -51,11 +36,9 @@ const PopularCard = ({ isLoading }) => {
         if (price % 1 == 0) {
             price = price + '.00';
         }
-        console.log(typeof date);
         const dateArray = date.split('-');
         console.assert(dateArray.length == 3);
         dateArray[2] = dateArray[2].split('T')[0];
-        console.log(dateArray);
         const months = [
             'January',
             'February',
@@ -70,12 +53,13 @@ const PopularCard = ({ isLoading }) => {
             'November',
             'December'
         ];
-        date = months[Number(dateArray[1])] + ' ' + dateArray[2] + ', ' + dateArray[0];
+        date = months[Number(dateArray[1] - 1)] + ' ' + dateArray[2] + ', ' + dateArray[0];
         const transNumber = counter;
         counter = counter + 1;
         price = '$' + price;
         return { transNumber, merchant, date, category, price, color, background };
     }
+    const location = useLocation();
     const rows = [];
     const AddData = () => {
         let [expenseHistory, setEH] = useState([]);
@@ -84,7 +68,11 @@ const PopularCard = ({ isLoading }) => {
                 let expense = await bbcApi.getUser(email);
                 setEH(expense.expenseHistory);
             }
-            getExpenseHistory('elonmusk@twitter.com');
+            if (location.state == null) {
+                getExpenseHistory('elonmusk@twitter.com');
+            } else {
+                getExpenseHistory(location.state.name);
+            }
         }, []);
         for (let i = 0; i < expenseHistory.length; i++) {
             rows.push(createData(expenseHistory[i].location, expenseHistory[i].date, expenseHistory[i].category, expenseHistory[i].amount));
