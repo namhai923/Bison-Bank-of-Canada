@@ -63,6 +63,61 @@ Track Expense:
 Send Transaction records:
 1. As a retailer user, I should be able to send a list of transaction to server. 
 
+# New Feature added
+Account creation.
+- As an user, I should be able to create a new account
+- As an user, I should be able to log in with my account
+(This feature is newly added in our sprint 2 and it is partially finished, but we can log in and UI/logic exists) 
+
 ## Architectural Diagram
 
 ![This is the Architectural Diagram](/ArchitecturalDiagram.png)
+
+## Sequence Diagram
+
+Track Expense Sequence
+![This is the sequence Diagram](/TrackExpenseSeq.png)
+
+Send Records Sequence
+![This is the sequence Diagram](/SendRecordsSeq.png)
+
+## Running the app
+Run backend:
+cd into the back-end folder first, you will need a .env file with the following content: (for ease of grading/testing purpose, we are stroing this secret in README in plain text)
+
+PORT=5000
+DB_URL=mongodb+srv://BBCNews:QEXVgUC6qDmNwzxG@cluster0.iw74dsb.mongodb.net/Bison-Bank-of-Canada?retryWrites=true&w=majority
+TESTDB_URL=mongodb+srv://BBCNews:QEXVgUC6qDmNwzxG@cluster0.iw74dsb.mongodb.net/Test-DB?retryWrites=true&w=majority
+
+This file needs to be under the back-end folder.
+
+Inside the back-end foler, type "npm install" then "npm start" to run it
+
+Run frontend:
+cd into the front-end folder. If you don't have node_modules in that folder, run "npm install" on the terminal to install the dependencies. Run "npm start" to start the front-end server. The server will run on localhost:3000. 
+
+## Instructions (Please Read)
+This section will explain additional instructions about how to use certain features
+
+Login into an account:
+When you first log in into the website, you will be on the home page. You will be defaultly logged into Elon Musk's account (elonmusk@twitter.com). If you want to login with a different account, go to the sidebar on the left and click on Authentication => Login. Here you will be redirected to the login page where all you need to do is type in a user's email to log in to their account.
+
+Pre-existing account:
+This is a list of preexisting accounts that all have unique characterstics about them:
+    - elonmusk@twitter.com - relatively normal account
+    - daddybezos@amazon.com - account with a few expenses
+    - Jessewu1999@gmail.com - account with a lot of expenses
+    - anotherdude@gmail.com - account with no expenses
+
+User Expense Table Colors:
+You may wonder what the colored squares on the user's expense table on the home page means. The colored squares correspond to the price of the expense it is next to. 
+    - Green means the transactions is $10 or less
+    - Yellow means it is between $10 to $50
+    - Red means it is higher than $50
+
+Send Transactions record using postman:
+download postman
+Start the backend
+And send a record with the following format
+![This is a tutorial to send postman request](/SendRecordsPostman.png)
+You can send as many record item as you want, the list does not limit to only two records, but all the fields are needed
