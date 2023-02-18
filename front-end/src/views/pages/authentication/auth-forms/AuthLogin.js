@@ -9,16 +9,8 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-
-async function checkedEmail(username) {
-    let expense = await bbcApi.getUser(username);
-    console.log(expense);
-    if (expense === null) {
-        return false;
-    } else {
-        return true;
-    }
-}
+import { setUser } from '../userSlice';
+import { useDispatch } from 'react-redux';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -26,6 +18,19 @@ const AuthLogin = ({ ...others }) => {
     const theme = useTheme();
     let username = '';
     const navigate = useNavigate();
+    let dispatch = useDispatch();
+
+    async function checkedEmail(username) {
+        let user = await bbcApi.getUser(username);
+        if (user === null) {
+            return false;
+        } else {
+            console.log(user);
+            let action = setUser({ user: user });
+            dispatch(action);
+            return true;
+        }
+    }
 
     const toHomePage = async (username) => {
         if (await checkedEmail(username)) {

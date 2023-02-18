@@ -12,8 +12,6 @@ import {
     FormControlLabel,
     FormHelperText,
     Grid,
-    IconButton,
-    InputAdornment,
     InputLabel,
     OutlinedInput,
     TextField,
@@ -27,11 +25,6 @@ import { Formik } from 'formik';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import { strengthColor, strengthIndicator } from 'utils/password-strength';
-
-// assets
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -39,28 +32,14 @@ const AuthRegister = ({ ...others }) => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const customization = useSelector((state) => state.customization);
-    const [showPassword, setShowPassword] = useState(false);
     const [checked, setChecked] = useState(true);
     var email, firstName, lastName;
-    // const [strength, setStrength] = useState(0);
-    // const [level, setLevel] = useState();
 
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
     async function createAccount(userName, firstName, lastName) {
         //console.log('queen ' + username + first + last);
         let user = await bbcApi.createUser(userName, firstName, lastName);
         //let user = await bbcApi.createUser({"userName": username, "firstName": first, "lastName": last});
     }
-    // const changePassword = (value) => {
-    //     const temp = strengthIndicator(value);
-    //     setStrength(temp);
-    //     setLevel(strengthColor(temp));
-    // };
 
     // useEffect(() => {
     //     changePassword('123456');
@@ -71,12 +50,10 @@ const AuthRegister = ({ ...others }) => {
             <Formik
                 initialValues={{
                     email: '',
-                    //password: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
-                    //password: Yup.string().max(255).required('Password is required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     email = document.getElementById('outlined-adornment-email-register').value;
@@ -144,65 +121,6 @@ const AuthRegister = ({ ...others }) => {
                                 </FormHelperText>
                             )}
                         </FormControl>
-
-                        {/* <FormControl
-                            fullWidth
-                            error={Boolean(touched.password && errors.password)}
-                            sx={{ ...theme.typography.customInput }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-password-register"
-                                type={showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                name="password"
-                                label="Password"
-                                onBlur={handleBlur}
-                                onChange={(e) => {
-                                    handleChange(e);
-                                    changePassword(e.target.value);
-                                }}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                            size="large"
-                                        >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                inputProps={{}}
-                            />
-                            {touched.password && errors.password && (
-                                <FormHelperText error id="standard-weight-helper-text-password-register">
-                                    {errors.password}
-                                </FormHelperText>
-                            )}
-                        </FormControl> */}
-
-                        {/* {strength !== 0 && (
-                            <FormControl fullWidth>
-                                <Box sx={{ mb: 2 }}>
-                                    <Grid container spacing={2} alignItems="center">
-                                        <Grid item>
-                                            <Box
-                                                style={{ backgroundColor: level?.color }}
-                                                sx={{ width: 85, height: 8, borderRadius: '7px' }}
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="subtitle1" fontSize="0.75rem">
-                                                {level?.label}
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </FormControl>
-                        )} */}
 
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>
