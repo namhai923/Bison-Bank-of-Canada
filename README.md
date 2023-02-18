@@ -74,3 +74,22 @@ Track Expense Sequence
 
 Send Records Sequence
 ![This is the Architectural Diagram](/SendRecordsSeq.png)
+
+## Instructions (Please Read)
+This section will explain additional instructions about how to use certain features
+
+Login into an account:
+When you first log in into the website, you will be on the home page. You will be defaultly logged into Elon Musk's account (elonmusk@twitter.com). If you want to login with a different account, go to the sidebar on the left and click on Authentication => Login. Here you will be redirected to the login page where all you need to do is type in a user's email to log in to their account.
+
+Preexisting account:
+This is a list of preexisting accounts that all have unique characterstics about them:
+    - __________ - relatively normal account
+    - __________ - account with a few expenses
+    - __________ - account with a lot of expenses
+    - __________ - account with no expenses
+
+User Expense Table Colors:
+You may wonder what the colored squares on the user's expense table on the home page means. The colored squares correspond to the price of the expense it is next to. 
+    - Green means the transactions is $10 or less
+    - Yellow means it is between $10 to $50
+    - Red means it is higher than $50
