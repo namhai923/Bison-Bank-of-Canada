@@ -79,16 +79,16 @@ Send Records Sequence
 Run backend:
 cd into the back-end folder first, you will need a .env file with the following content: (for ease of grading/testing purpose, we are stroing this secret in README in plain text)
 
-PORT=4000
+PORT=5000
 DB_URL=mongodb+srv://BBCNews:QEXVgUC6qDmNwzxG@cluster0.iw74dsb.mongodb.net/Bison-Bank-of-Canada?retryWrites=true&w=majority
 TESTDB_URL=mongodb+srv://BBCNews:QEXVgUC6qDmNwzxG@cluster0.iw74dsb.mongodb.net/Test-DB?retryWrites=true&w=majority
 
 This file needs to be under the back-end folder.
 
-Inside the back-end foler, type npm install then npm run to run it
+Inside the back-end foler, type "npm install" then "npm start" to run it
 
 Run frontend:
-cd into the front-end folder and npm run
+cd into the front-end folder and "npm start"
 
 ## Instructions (Please Read)
 This section will explain additional instructions about how to use certain features
