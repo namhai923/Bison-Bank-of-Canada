@@ -1,11 +1,11 @@
 import dashboard from './dashboard';
-import pages from './pages';
+import auth from './auth';
 import transfer from './transfer';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-    items: [dashboard, transfer, pages]
+    items: [dashboard, transfer, auth]
 };
 
 export default menuItems;
