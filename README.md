@@ -66,7 +66,8 @@ Send Transaction records:
 # New Feature added
 Account creation.
 - As an user, I should be able to create a new account
-(This feature is newly added in our sprint 2 and it is partially finished) 
+- As an user, I should be able to log in with my account
+(This feature is newly added in our sprint 2 and it is partially finished, but we can log in and UI/logic exists) 
 
 ## Architectural Diagram
 
