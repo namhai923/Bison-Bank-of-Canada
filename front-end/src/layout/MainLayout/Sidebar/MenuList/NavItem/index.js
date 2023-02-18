@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
-import { MENU_OPEN, SET_MENU } from 'store/actions';
+import { openMenu, setMenu } from '../../../customizeSlice';
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -17,7 +17,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 const NavItem = ({ item, level }) => {
     const theme = useTheme();
-    const dispatch = useDispatch();
+    let dispatch = useDispatch();
     const customization = useSelector((state) => state.customization);
     const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -47,8 +47,12 @@ const NavItem = ({ item, level }) => {
     }
 
     const itemHandler = (id) => {
-        dispatch({ type: MENU_OPEN, id });
-        if (matchesSM) dispatch({ type: SET_MENU, opened: false });
+        let action = openMenu({ id: id });
+        dispatch(action);
+        if (matchesSM) {
+            action = setMenu({ opened: false });
+            dispatch(action);
+        }
     };
 
     // active menu item on page load

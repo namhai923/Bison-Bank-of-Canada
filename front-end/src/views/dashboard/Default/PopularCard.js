@@ -20,9 +20,13 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import { createTheme } from '@mui/material/styles';
 import BasicModal from './FilterModal';
+import { useSelector } from 'react-redux';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
 const PopularCard = ({ isLoading }) => {
+    let user = useSelector((state) => state.user);
+    setEH(user.expenseHistory);
+
     const theme = useTheme();
     var counter = 1;
     function createData(merchant, date, category, price) {
@@ -67,7 +71,7 @@ const PopularCard = ({ isLoading }) => {
         let [expenseHistory, setEH] = useState([]);
         useEffect(() => {
             async function getExpenseHistory(email) {
-                let expense = await bbcApi.getUser(email);
+                // let expense = await bbcApi.getUser(email);
                 setEH(expense.expenseHistory);
             }
             if (location.state == null) {
@@ -80,7 +84,11 @@ const PopularCard = ({ isLoading }) => {
             rows.push(createData(expenseHistory[i].location, expenseHistory[i].date, expenseHistory[i].category, expenseHistory[i].amount));
         }
     };
-    AddData();
+
+    for (let i = 0; i < expenseHistory.length; i++) {
+        rows.push(createData(expenseHistory[i].location, expenseHistory[i].date, expenseHistory[i].category, expenseHistory[i].amount));
+    }
+    // AddData();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const handleChangePage = (event, newPage) => {
