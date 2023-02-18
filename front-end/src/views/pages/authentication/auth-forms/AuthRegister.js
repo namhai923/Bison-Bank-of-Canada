@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import bbcApi from 'api/bbcApi';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -41,54 +41,62 @@ const AuthRegister = ({ ...others }) => {
     const customization = useSelector((state) => state.customization);
     const [showPassword, setShowPassword] = useState(false);
     const [checked, setChecked] = useState(true);
-
-    const [strength, setStrength] = useState(0);
-    const [level, setLevel] = useState();
+    var email, firstName, lastName;
+    // const [strength, setStrength] = useState(0);
+    // const [level, setLevel] = useState();
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
-
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    async function createAccount(userName, firstName, lastName) {
+        //console.log('queen ' + username + first + last);
+        let user = await bbcApi.createUser(userName, firstName, lastName);
+        //let user = await bbcApi.createUser({"userName": username, "firstName": first, "lastName": last});
+    }
+    // const changePassword = (value) => {
+    //     const temp = strengthIndicator(value);
+    //     setStrength(temp);
+    //     setLevel(strengthColor(temp));
+    // };
 
-    const changePassword = (value) => {
-        const temp = strengthIndicator(value);
-        setStrength(temp);
-        setLevel(strengthColor(temp));
-    };
-
-    useEffect(() => {
-        changePassword('123456');
-    }, []);
+    // useEffect(() => {
+    //     changePassword('123456');
+    // }, []);
 
     return (
         <>
             <Formik
                 initialValues={{
                     email: '',
-                    password: '',
+                    //password: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    password: Yup.string().max(255).required('Password is required')
+                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
+                    //password: Yup.string().max(255).required('Password is required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                    try {
-                        if (scriptedRef.current) {
-                            setStatus({ success: true });
-                            setSubmitting(false);
-                        }
-                    } catch (err) {
-                        console.error(err);
-                        if (scriptedRef.current) {
-                            setStatus({ success: false });
-                            setErrors({ submit: err.message });
-                            setSubmitting(false);
-                        }
-                    }
+                    email = document.getElementById('outlined-adornment-email-register').value;
+                    firstName = document.getElementById('firstName').value;
+                    lastName = document.getElementById('lastName').value;
+                    console.log(email + firstName + lastName);
+                    createAccount(email, firstName, lastName);
+                    // try {
+                    //     if (scriptedRef.current) {
+                    //         setStatus({ success: true });
+                    //         setSubmitting(false);
+                    //     }
+                    // } catch (err) {
+                    //     console.error(err);
+                    //     if (scriptedRef.current) {
+                    //         setStatus({ success: false });
+                    //         setErrors({ submit: err.message });
+                    //         setSubmitting(false);
+                    //     }
+                    // }
                 }}
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
@@ -96,6 +104,7 @@ const AuthRegister = ({ ...others }) => {
                         <Grid container spacing={matchDownSM ? 0 : 2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    id="firstName"
                                     fullWidth
                                     label="First Name"
                                     margin="normal"
@@ -108,6 +117,7 @@ const AuthRegister = ({ ...others }) => {
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     fullWidth
+                                    id="lastName"
                                     label="Last Name"
                                     margin="normal"
                                     name="lname"
@@ -135,7 +145,7 @@ const AuthRegister = ({ ...others }) => {
                             )}
                         </FormControl>
 
-                        <FormControl
+                        {/* <FormControl
                             fullWidth
                             error={Boolean(touched.password && errors.password)}
                             sx={{ ...theme.typography.customInput }}
@@ -172,9 +182,9 @@ const AuthRegister = ({ ...others }) => {
                                     {errors.password}
                                 </FormHelperText>
                             )}
-                        </FormControl>
+                        </FormControl> */}
 
-                        {strength !== 0 && (
+                        {/* {strength !== 0 && (
                             <FormControl fullWidth>
                                 <Box sx={{ mb: 2 }}>
                                     <Grid container spacing={2} alignItems="center">
@@ -192,7 +202,7 @@ const AuthRegister = ({ ...others }) => {
                                     </Grid>
                                 </Box>
                             </FormControl>
-                        )}
+                        )} */}
 
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>
