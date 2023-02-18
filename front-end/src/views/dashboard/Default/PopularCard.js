@@ -18,6 +18,8 @@ import bbcApi from 'api/bbcApi';
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import { createTheme } from '@mui/material/styles';
+import BasicModal from './FilterModal';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
 const PopularCard = ({ isLoading }) => {
@@ -102,6 +104,7 @@ const PopularCard = ({ isLoading }) => {
                 ) : (
                     <MainCard content={false}>
                         <CardContent>
+                            <BasicModal />
                             <TableContainer component={Paper}>
                                 <Typography variant="h2" align="center">
                                     Tracking Expense

@@ -21,7 +21,8 @@ async function checkedEmail(username) {
 }
 
 // ============================|| FIREBASE - LOGIN ||============================ //
-const FirebaseLogin = ({ ...others }) => {
+
+const AuthLogin = ({ ...others }) => {
     const theme = useTheme();
     let username = '';
     const navigate = useNavigate();
@@ -95,4 +96,4 @@ const FirebaseLogin = ({ ...others }) => {
     );
 };
 
-export default FirebaseLogin;
+export default AuthLogin;

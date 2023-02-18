@@ -35,7 +35,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
-const FirebaseRegister = ({ ...others }) => {
+const AuthRegister = ({ ...others }) => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const customization = useSelector((state) => state.customization);
@@ -254,4 +254,4 @@ const FirebaseRegister = ({ ...others }) => {
     );
 };
 
-export default FirebaseRegister;
+export default AuthRegister;

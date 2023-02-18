@@ -66,3 +66,11 @@ Send Transaction records:
 ## Architectural Diagram
 
 ![This is the Architectural Diagram](/ArchitecturalDiagram.png)
+
+## Sequence Diagram
+
+Track Expense Sequence
+![This is the Architectural Diagram](/TrackExpenseSeq.png)
+
+Send Records Sequence
+![This is the Architectural Diagram](/SendRecordsSeq.png)

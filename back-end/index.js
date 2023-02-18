@@ -1,4 +1,3 @@
-// const mongoose = require("mongoose");
 const { PORT } = require("./src/config/index.config");
 
 const app = require("./src/app");
