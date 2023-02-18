@@ -94,7 +94,7 @@ This file needs to be under the back-end folder.
 Inside the back-end foler, type "npm install" then "npm start" to run it
 
 Run frontend:
-cd into the front-end folder and "npm start"
+cd into the front-end folder. If you don't have node_modules in that folder, run "npm install" on the terminal to install the dependencies. Run "npm start" to start the front-end server. The server will run on localhost:3000. 
 
 ## Instructions (Please Read)
 This section will explain additional instructions about how to use certain features
