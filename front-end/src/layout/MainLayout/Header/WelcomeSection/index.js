@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 
-// import bbcApi from '../../../../api/bbcApi.js';
+import bbcApi from '../../../../api/bbcApi.js';
 
 const WelcomeMessage = () => {
     const location = useLocation();
