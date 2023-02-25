@@ -10,7 +10,7 @@ router.post("/", async (req, res, next) => {
     let { userName, firstName, lastName, accountBalance } = req.body;
     let user = await User.findOne({ userName: userName });
     if (user !== null) {
-      console.log(user.toJSON());
+      //console.log(user.toJSON());
       res.status(400).send("User Already Exists.");
     } else {
       let newUser = new User({
@@ -29,13 +29,11 @@ router.post("/", async (req, res, next) => {
 
 router.get("/:name", async (req, res, next) => {
   // check if the username exist, then return user data
-  console.log(cache);
   try {
     let userName = req.params["name"];
     let user = await User.findOne({ userName: userName });
     cache.set(userName, user);
     if (user !== null) {
-      console.log(user.toJSON());
       res.status(200).send(user);
     } else {
       res.status(404).send("User Not Found.");
@@ -51,6 +49,10 @@ router.post("/:name/transfer", async (req, res, next) => {
 
     let senderName = req.params["name"];
     let { receiverName, amount } = req.body;
+
+    if(receiverName == null || amount == null){
+      throw new Error('Missing require parameter in request body.');
+    }
     let sender = await User.findOne({ userName: senderName });
     let receiver = await User.findOne({ userName: receiverName });
 
@@ -89,14 +91,15 @@ router.post("/:name/transfer", async (req, res, next) => {
     } else {
       errorMessage += "Transfer failed: " + receiverName + " does not exists\n";
     }
+
+    if (errorMessage === "") {
+      res.status(200).send("Successfully processed transfer");
+    } else {
+      res.status(400).send("Errors:\n" + errorMessage);
+    }
+
   } catch (err) {
     res.status(500).json({ ErrorMessage: err.message });
-  }
-
-  if (errorMessage === "") {
-    res.status(200).send("Successfully processed transfer");
-  } else {
-    res.status(400).send("Errors:\n" + errorMessage);
   }
 });
 

@@ -9,6 +9,10 @@ router.post("/sendRecords", async (req, res, next) => {
     var errorMessage = "";
     let { location, records } = req.body;
 
+    if( location == null || records == null){
+      throw new Error('Missing require parameter in request body.');
+    }
+
     //Iterate through the transaction records list and update database
     for (var record of records) {
       let user = await User.findOne({ userName: record.userName });
