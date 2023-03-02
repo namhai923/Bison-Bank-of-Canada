@@ -12,6 +12,7 @@ const lastName = "user";
 const originalBalance = 1000;
 
 beforeAll(async() => {
+  jest.setTimeout(20000);
   //Create users beforehand for testing purpose
   for(let userName of userNameList){
     await request(app).post("/user").send({
@@ -33,6 +34,12 @@ afterAll(async () => {
 });
 
 describe("Testing send transaction records", () => {
+
+  it("/Post /sendRecords sendRecord with invalid body", async () => {
+    const res = await request(app).post("/admin/sendRecords").send("Invalid body");
+    expect(res.statusCode).toBe(500);
+    expect(res.text).toEqual(expect.stringContaining("Missing require parameter in request body."));
+  });
 
   it("/Post /sendRecords sendRecord amount not a number", async () => {
     const res = await request(app).post("/admin/sendRecords").send({

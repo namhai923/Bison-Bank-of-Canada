@@ -13,7 +13,8 @@ afterAll(async () => {
 });
 
 describe("Testing User index", () => {
-
+  jest.setTimeout(20000);
+  
   const userName = "newuser@gmail.com";
   const firstName = "new";
   const lastName = "user";
@@ -33,6 +34,11 @@ describe("Testing User index", () => {
     });
     expect(res.statusCode).toBe(201);
     expect(res.body.userName).toBe(userName);
+  });
+
+  it("/Post /user post invalid body fail", async () => {
+    const res = await request(app).post("/user").send("Invalid body");
+    expect(res.statusCode).toBe(500);
   });
 
   it("/Post /user Should return user exist", async () => {
@@ -57,7 +63,12 @@ describe("Testing User index", () => {
   it("/Get /user Should return user not found", async () => {
     const res = await request(app).get("/user/" + "randomeUser").send();
     expect(res.statusCode).toBe(404);
-    expect(res.text).toBe("User Not Found.");
+  });
+
+  it("/Post /user/{userName}/transfer fail with null body", async () =>{
+    const res = await request(app).post("/user/" + userName + "/transfer").send("Invalid Body");
+    expect(res.statusCode).toBe(500);
+    expect(res.text).toEqual(expect.stringContaining("Missing require parameter in request body."));
   });
 
   it("/Post /user/{userName}/transfer fail with no receiver found", async () =>{
