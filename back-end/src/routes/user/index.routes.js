@@ -1,8 +1,9 @@
 const express = require("express");
 const User = require("../../models/user.model");
-const cache = require("../../cache");
+const { cache, setCacheExpire } = require("../../cache");
 
 let router = express.Router();
+const CACHE_EXPIRED_IN_SECONDS = 300;
 
 router.post("/", async (req, res, next) => {
   // check if the username exist, if not then add user
@@ -10,7 +11,6 @@ router.post("/", async (req, res, next) => {
     let { userName, firstName, lastName, accountBalance } = req.body;
     let user = await User.findOne({ userName: userName });
     if (user !== null) {
-      //console.log(user.toJSON());
       res.status(400).send("User Already Exists.");
     } else {
       let newUser = new User({
@@ -31,12 +31,20 @@ router.get("/:name", async (req, res, next) => {
   // check if the username exist, then return user data
   try {
     let userName = req.params["name"];
-    let user = await User.findOne({ userName: userName });
-    cache.set(userName, user);
-    if (user !== null) {
-      res.status(200).send(user);
-    } else {
-      res.status(404).send("User Not Found.");
+    if(cache.has(userName)){
+      res.status(200).send(cache.get(userName));
+    }else{
+      // If not found in cache then go to database to search
+      let user = await User.findOne({ userName: userName });
+
+      // Set cache and set it to expired in 300 seconds
+      cache.set(userName, user);
+      setCacheExpire(userName, CACHE_EXPIRED_IN_SECONDS);
+      if (user !== null) {
+        res.status(200).send(user);
+      } else {
+        res.status(404).send("User Not Found.");
+      }
     }
   } catch (err) {
     res.status(500).json({ ErrorMessage: err.message });
@@ -82,6 +90,15 @@ router.post("/:name/transfer", async (req, res, next) => {
             receiver.transferHistory.push(transferHistory);
     
             await Promise.all([sender.save(), receiver.save()]);
+
+            //Update cache
+            if( cache.has(senderName) ){
+              cache.set(senderName, sender);
+            }
+            if( cache.has(receiverName) ){
+              cache.set(receiverName, receiver);
+            }
+
           } else {
             errorMessage +=
               "Transfer failed: " + senderName + " account balance not enough\n";

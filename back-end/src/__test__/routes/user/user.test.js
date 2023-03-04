@@ -2,18 +2,19 @@ const request = require("supertest");
 const server = require("../../../../index");
 const mongoose = require("mongoose");
 const app = require("../../../app");
+const { clearCacheTimeout } = require("../../../cache");
 
 afterAll(async () => {
   const collections = await mongoose.connection.db.collections();
   for (let collection of collections) {
     await collection.deleteMany({});
   }
+  clearCacheTimeout();
   await mongoose.connection.close();
   server.close();
 });
 
 describe("Testing User index", () => {
-  jest.setTimeout(20000);
   
   const userName = "newuser@gmail.com";
   const firstName = "new";
