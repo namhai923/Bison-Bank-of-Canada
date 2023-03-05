@@ -7,7 +7,7 @@ import MinimalLayout from 'layout/MinimalLayout';
 // login option 3 routing
 const AuthLogin = Loadable(lazy(() => import('views/pages/authentication/auth-template/Login')));
 const AuthRegister = Loadable(lazy(() => import('views/pages/authentication/auth-template/Register')));
-
+const AuthTransferMoney = Loadable(lazy(() => import('views/pages/authentication/auth-template/TransferMoney')));
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
 const AuthenticationRoutes = {
@@ -21,6 +21,10 @@ const AuthenticationRoutes = {
         {
             path: '/user/register',
             element: <AuthRegister />
+        },
+        {
+            path: '/dashboard/transfer-money',
+            element: <AuthTransferMoney />
         }
     ]
 };
