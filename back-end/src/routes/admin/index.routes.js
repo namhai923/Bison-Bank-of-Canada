@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../../models/user.model");
-const cache = require("../../cache");
+const {cache} = require("../../cache");
 
 let router = express.Router();
 
@@ -32,6 +32,9 @@ router.post("/sendRecords", async (req, res, next) => {
               });
     
               await user.save();
+              if( cache.has(record.userName) ){
+                cache.set(record.userName, user);
+              }
             } else {
               errorMessage += record.userName + " account balance not enough.\n";
             }
