@@ -18,25 +18,44 @@ import bbcApi from 'api/bbcApi';
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+//import KeyboardArrowUpOutlined from '@mui/icons-material/KeyboardArrowUpOutlined'
 import { createTheme } from '@mui/material/styles';
-import BasicModal from './FilterModal';
+import { Link } from 'react-router-dom';
+import { KeyboardArrowUpOutlined } from '@mui/icons-material';
+import Sidebar from 'layout/MainLayout/Sidebar';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
 const PopularCard = ({ isLoading }) => {
     const theme = useTheme();
     var counter = 1;
-    function createData(merchant, date, category, price) {
+    function createData(email, sender, reciever, date, amount, id) {
         var color;
         var background;
-        if (price <= 10) {
+        var senderOrReciever;
+        var otherPerson;
+        var upOrDown;
+        if (email == sender) {
+            senderOrReciever = 'Sent to:';
+            otherPerson = reciever;
+            upOrDown = KeyboardArrowDownOutlinedIcon;
+        } else if (email == reciever) {
+            senderOrReciever = 'Received from:';
+            otherPerson = sender;
+            upOrDown = KeyboardArrowUpOutlined;
+        } else {
+            senderOrReciever = 'Unknown';
+            otherPerson = 'Unknown';
+        }
+
+        if (amount <= 10) {
             (color = theme.palette.primary.light), (background = theme.palette.success.dark);
-        } else if (price >= 50) {
+        } else if (amount >= 50) {
             (color = theme.palette.primary.light), (background = theme.palette.error.dark);
         } else {
             (color = theme.palette.primary.light), (background = theme.palette.warning.dark);
         }
-        if (price % 1 == 0) {
-            price = price + '.00';
+        if (amount % 1 == 0) {
+            amount = amount + '.00';
         }
         const dateArray = date.split('-');
         console.assert(dateArray.length == 3);
@@ -58,26 +77,37 @@ const PopularCard = ({ isLoading }) => {
         date = months[Number(dateArray[1] - 1)] + ' ' + dateArray[2] + ', ' + dateArray[0];
         const transNumber = counter;
         counter = counter + 1;
-        price = '$' + price;
-        return { transNumber, merchant, date, category, price, color, background };
+        amount = '$' + amount;
+        //return { transNumber, merchant, date, category, price, color, background };
+        return { transNumber, senderOrReciever, otherPerson, date, amount, color, background, KeyboardArrowDownOutlinedIcon, upOrDown };
     }
     const location = useLocation();
     const rows = [];
     const AddData = () => {
-        let [expenseHistory, setEH] = useState([]);
+        let [transferHistory, setEH] = useState([]);
         useEffect(() => {
             async function getExpenseHistory(email) {
                 let expense = await bbcApi.getUser(email);
-                setEH(expense.expenseHistory);
+                setEH(expense.transferHistory);
             }
             if (location.state == null) {
-                getExpenseHistory('elonmusk@twitter.com');
+                //getExpenseHistory('elonmusk@twitter.com');
+                getExpenseHistory('Jessewu1999@gmail.com');
             } else {
                 getExpenseHistory(location.state.name);
             }
         }, []);
-        for (let i = 0; i < expenseHistory.length; i++) {
-            rows.push(createData(expenseHistory[i].location, expenseHistory[i].date, expenseHistory[i].category, expenseHistory[i].amount));
+        for (let i = 0; i < transferHistory.length; i++) {
+            rows.push(
+                createData(
+                    'Jessewu1999@gmail.com',
+                    transferHistory[i].sender,
+                    transferHistory[i].receiver,
+                    transferHistory[i].date,
+                    transferHistory[i].amount,
+                    1
+                )
+            );
         }
     };
     AddData();
@@ -92,9 +122,14 @@ const PopularCard = ({ isLoading }) => {
     };
     if (rows.length == 0) {
         return (
-            <Typography variant="h2" align="center">
-                Your Expenses Will Appear Here! Make Your First Transaction In Order To Show Display It Here
-            </Typography>
+            <CardContent>
+                <Typography component={Link} to="/" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                    Back to Dashboard
+                </Typography>
+                <Typography variant="h2" align="center">
+                    You have not made or recieved any transfer so far. Send money to your friends to get started!
+                </Typography>
+            </CardContent>
         );
     } else {
         return (
@@ -104,20 +139,19 @@ const PopularCard = ({ isLoading }) => {
                 ) : (
                     <MainCard content={false}>
                         <CardContent>
-                            <BasicModal />
                             <TableContainer component={Paper}>
                                 <Typography variant="h2" align="center">
-                                    Tracking Expense
+                                    Transfer History
                                 </Typography>
                                 <Table xs={12} aria-label="simple table">
                                     {
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell>Transaction Id</TableCell>
-                                                <TableCell align="left">Merchant</TableCell>
+                                                <TableCell>Id</TableCell>
+                                                <TableCell align="left"> </TableCell>
+                                                <TableCell align="left">Receiver/Recipeint</TableCell>
                                                 <TableCell align="left">Date</TableCell>
-                                                <TableCell align="left">Category</TableCell>
-                                                <TableCell align="left">Price</TableCell>
+                                                <TableCell align="left">Amount</TableCell>
                                             </TableRow>
                                         </TableHead>
                                     }
@@ -127,10 +161,10 @@ const PopularCard = ({ isLoading }) => {
                                                 <TableCell component="th" scope="row">
                                                     {row.transNumber}
                                                 </TableCell>
-                                                <TableCell align="left">{row.merchant}</TableCell>
+                                                <TableCell align="left">{row.senderOrReciever}</TableCell>
+                                                <TableCell align="left">{row.otherPerson}</TableCell>
                                                 <TableCell align="left">{row.date}</TableCell>
-                                                <TableCell align="left">{row.category}</TableCell>
-                                                <TableCell align="left">{row.price}</TableCell>
+                                                <TableCell align="left">{row.amount}</TableCell>
                                                 <Avatar
                                                     variant="rounded"
                                                     sx={{
@@ -142,7 +176,7 @@ const PopularCard = ({ isLoading }) => {
                                                         ml: 2
                                                     }}
                                                 >
-                                                    <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
+                                                    <row.upOrDown fontSize="small" color="inherit" />
                                                 </Avatar>
                                             </TableRow>
                                         ))}

@@ -3,16 +3,17 @@ import { lazy } from 'react';
 // project imports
 import Loadable from 'ui-component/Loadable';
 import MinimalLayout from 'layout/MinimalLayout';
-
+import MainLayout  from 'layout/MainLayout';
 // login option 3 routing
 const AuthLogin = Loadable(lazy(() => import('views/pages/authentication/auth-template/Login')));
 const AuthRegister = Loadable(lazy(() => import('views/pages/authentication/auth-template/Register')));
-const AuthTransferMoney = Loadable(lazy(() => import('views/pages/authentication/auth-template/TransferMoney')));
+const TransferMoney = Loadable(lazy(() => import('views/pages/authentication/TransferMoney/TransferMoney')));
+const TransferHistory = Loadable(lazy(() => import('views/pages/authentication/TransferMoney/TransferHistory')));
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
 const AuthenticationRoutes = {
     path: '/',
-    element: <MinimalLayout />,
+    element: <MainLayout />,
     children: [
         {
             path: '/user/login',
@@ -24,7 +25,11 @@ const AuthenticationRoutes = {
         },
         {
             path: '/dashboard/transfer-money',
-            element: <AuthTransferMoney />
+            element: <TransferMoney />
+        },
+        {
+            path: '/dashboard/transfer-history',
+            element: <TransferHistory />
         }
     ]
 };
