@@ -6,6 +6,7 @@ import { Avatar, Box, ButtonBase } from '@mui/material';
 
 // project imports
 import ProfileSection from './ProfileSection';
+import Logo from 'ui-component/Logo';
 
 // assets
 import { IconMenu2 } from '@tabler/icons';
@@ -27,6 +28,9 @@ const Header = ({ handleLeftDrawerToggle }) => {
                     }
                 }}
             >
+                <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
+                    <Logo />
+                </Box>
                 <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
                         variant="rounded"

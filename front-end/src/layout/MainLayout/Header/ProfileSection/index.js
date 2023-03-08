@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 // import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -23,7 +23,7 @@ import {
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
-import User1 from 'assets/images/users/user-round.svg';
+import User1 from 'assets/images/user-round.svg';
 
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons';
@@ -31,9 +31,10 @@ import { IconLogout, IconSettings } from '@tabler/icons';
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
+    let userInfo = useSelector((state) => state.user, shallowEqual);
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
-    // const navigate = useNavigate();
+    console.log(customization);
 
     const [open, setOpen] = useState(false);
     /**
@@ -42,9 +43,6 @@ const ProfileSection = () => {
     const anchorRef = useRef(null);
     const handleLogout = async () => {
         console.log('Logout');
-        // if (route && route !== '') {
-        //         navigate(route);
-        //     }
     };
 
     const handleClose = (event) => {
@@ -141,7 +139,7 @@ const ProfileSection = () => {
                                                     Good,
                                                 </Typography>
                                                 <Typography component="span" variant="h4">
-                                                    Morning!
+                                                    {userInfo.firstName} {userInfo.lastName}!
                                                 </Typography>
                                             </Stack>
                                         </Stack>

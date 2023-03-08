@@ -1,24 +1,16 @@
+import { shallowEqual, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
-
-import bbcApi from '../../../../api/bbcApi.js';
 
 const WelcomeMessage = () => {
-    const location = useLocation();
-    let [name, setName] = useState('Bison');
+    let [firstName, setFirstName] = useState('Bison');
+    let user = useSelector((state) => state.user, shallowEqual);
     useEffect(() => {
-        async function getUser(email) {
-            let user = await bbcApi.getUser(email);
-            setName(user.firstName);
+        if (user.firstName !== '') {
+            setFirstName(user.firstName);
         }
-        if (location.state == null) {
-            getUser('elonmusk@twitter.com');
-        } else {
-            getUser(location.state.name);
-        }
-        getUser();
-    }, []);
-    return <h1 style={{ paddingLeft: '25px' }}> Welcome, {name}!</h1>;
+    }, user);
+
+    return <h1 style={{ paddingLeft: '25px' }}> Welcome, {firstName}!</h1>;
 };
 
 export default WelcomeMessage;
