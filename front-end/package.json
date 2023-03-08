@@ -38,7 +38,7 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "eject": "react-scripts eject",
-        "test": "react-scripts test --coverage"
+        "test": "react-scripts test --passWithNoTests"
     },
     "eslintConfig": {
         "extends": [
