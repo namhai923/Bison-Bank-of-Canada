@@ -2,7 +2,6 @@ import { lazy } from 'react';
 
 // project imports
 import Loadable from 'ui-component/Loadable';
-import MinimalLayout from 'layout/MinimalLayout';
 import MainLayout  from 'layout/MainLayout';
 // login option 3 routing
 const AuthLogin = Loadable(lazy(() => import('views/pages/authentication/auth-template/Login')));
@@ -13,7 +12,7 @@ const TransferHistory = Loadable(lazy(() => import('views/pages/authentication/T
 
 const AuthenticationRoutes = {
     path: '/',
-    element: <MainLayout />,
+    element: <MinimalLayout />,
     children: [
         {
             path: '/user/login',

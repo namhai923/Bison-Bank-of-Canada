@@ -1,9 +1,7 @@
-import logo from 'assets/images/icon.png';
-
-// ==============================|| LOGO SVG ||============================== //
+import logo from 'assets/images/logo.svg';
 
 const Logo = () => {
-    return <img src={logo} alt="BBC" width={200} />;
+    return <img src={logo} alt="Bison Bank of Canada" width="100" />;
 };
 
 export default Logo;

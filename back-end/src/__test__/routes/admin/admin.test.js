@@ -2,6 +2,7 @@ const request = require("supertest");
 const server = require("../../../../index");
 const mongoose = require("mongoose");
 const app = require("../../../app");
+const { clearCacheTimeout } = require("../../../cache");
 
 const locationName = "superstore";
 const userNameList = ["user1@gmail.com", "user2@gmail.com","user3@gmail.com","user4@gmail.com","user5@gmail.com"];
@@ -12,7 +13,6 @@ const lastName = "user";
 const originalBalance = 1000;
 
 beforeAll(async() => {
-  jest.setTimeout(20000);
   //Create users beforehand for testing purpose
   for(let userName of userNameList){
     await request(app).post("/user").send({
@@ -29,6 +29,7 @@ afterAll(async () => {
   for (let collection of collections) {
     await collection.deleteMany({});
   }
+  clearCacheTimeout();
   await mongoose.connection.close();
   server.close();
 });
