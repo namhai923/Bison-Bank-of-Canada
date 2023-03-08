@@ -13,7 +13,6 @@ import Paper from '@mui/material/Paper';
 import * as React from 'react';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import bbcApi from 'api/bbcApi';
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
@@ -134,72 +133,65 @@ const PopularCard = ({ isLoading }) => {
     } else {
         return (
             <>
-                {isLoading ? (
-                    <SkeletonPopularCard />
-                ) : (
-                    <MainCard content={false}>
-                        <CardContent>
-                            <TableContainer component={Paper}>
-                                <Typography variant="h2" align="center">
-                                    Transfer History
-                                </Typography>
-                                <Table xs={12} aria-label="simple table">
-                                    {
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Id</TableCell>
-                                                <TableCell align="left"> </TableCell>
-                                                <TableCell align="left">Receiver/Recipeint</TableCell>
-                                                <TableCell align="left">Date</TableCell>
-                                                <TableCell align="left">Amount</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                    }
-                                    <TableBody>
-                                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                <TableCell component="th" scope="row">
-                                                    {row.transNumber}
-                                                </TableCell>
-                                                <TableCell align="left">{row.senderOrReciever}</TableCell>
-                                                <TableCell align="left">{row.otherPerson}</TableCell>
-                                                <TableCell align="left">{row.date}</TableCell>
-                                                <TableCell align="left">{row.amount}</TableCell>
-                                                <Avatar
-                                                    variant="rounded"
-                                                    sx={{
-                                                        width: 16,
-                                                        height: 16,
-                                                        borderRadius: '5px',
-                                                        backgroundColor: row.background,
-                                                        color: row.color,
-                                                        ml: 2
-                                                    }}
-                                                >
-                                                    <row.upOrDown fontSize="small" color="inherit" />
-                                                </Avatar>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 100]}
-                                component="div"
-                                count={rows.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                            />
-                        </CardContent>
-                    </MainCard>
-                )}
+                <MainCard content={false}>
+                    <CardContent>
+                        <TableContainer component={Paper}>
+                            <Typography variant="h2" align="center">
+                                Transfer History
+                            </Typography>
+                            <Table xs={12} aria-label="simple table">
+                                {
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Id</TableCell>
+                                            <TableCell align="left"> </TableCell>
+                                            <TableCell align="left">Receiver/Recipeint</TableCell>
+                                            <TableCell align="left">Date</TableCell>
+                                            <TableCell align="left">Amount</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                }
+                                <TableBody>
+                                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                                        <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                            <TableCell component="th" scope="row">
+                                                {row.transNumber}
+                                            </TableCell>
+                                            <TableCell align="left">{row.senderOrReciever}</TableCell>
+                                            <TableCell align="left">{row.otherPerson}</TableCell>
+                                            <TableCell align="left">{row.date}</TableCell>
+                                            <TableCell align="left">{row.amount}</TableCell>
+                                            <Avatar
+                                                variant="rounded"
+                                                sx={{
+                                                    width: 16,
+                                                    height: 16,
+                                                    borderRadius: '5px',
+                                                    backgroundColor: row.background,
+                                                    color: row.color,
+                                                    ml: 2
+                                                }}
+                                            >
+                                                <row.upOrDown fontSize="small" color="inherit" />
+                                            </Avatar>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 100]}
+                            component="div"
+                            count={rows.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </CardContent>
+                </MainCard>
             </>
         );
     }
-    PopularCard.propTypes = {
-        isLoading: PropTypes.bool
-    };
 };
 export default PopularCard;
