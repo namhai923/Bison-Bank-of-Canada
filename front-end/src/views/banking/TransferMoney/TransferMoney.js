@@ -1,13 +1,11 @@
-import { Link } from 'react-router-dom';
-
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
-import AuthWrapper from '../AuthWrapper';
-import AuthCardWrapper from '../AuthCardWrapper';
-import AuthLogin from '../auth-forms/AuthLogin';
+import AuthWrapper from '../../authentication/AuthWrapper';
+import AuthCardWrapper from '../../authentication/AuthCardWrapper';
+import AuthTransferMoney from './AuthTransferMoney';
 import Logo from 'ui-component/Logo';
 
 // assets
@@ -42,37 +40,29 @@ const Login = () => {
                                                         color={theme.palette.secondary.main}
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
+                                                        textAlign="center"
                                                     >
-                                                        Hi, Welcome Back
+                                                        Transfering Money Has Never Been So Simple
                                                     </Typography>
                                                     <Typography
                                                         variant="caption"
                                                         fontSize="16px"
-                                                        textAlign={matchDownSM ? 'center' : 'inherit'}
+                                                        align="center"
+                                                        //textAlign={matchDownSM ? 'center' : 'inherit'}
+                                                        textAlign="center"
                                                     >
-                                                        Enter your credentials to continue
+                                                        Enter the Credentials of the Person you want to make a Transaction with and the
+                                                        Amount of Money You Want to Transfer
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthLogin />
+                                        <AuthTransferMoney />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid item container direction="column" alignItems="center" xs={12}>
-                                            <Typography
-                                                component={Link}
-                                                to="/user/register"
-                                                variant="subtitle1"
-                                                sx={{ textDecoration: 'none' }}
-                                            >
-                                                Create Account
-                                            </Typography>
-                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </AuthCardWrapper>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // material-ui
 import { Avatar, Button, CardActions, CardContent, Typography, Table, TablePagination } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
@@ -14,22 +14,26 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import BasicModal from './FilterModal';
 import { useSelector } from 'react-redux';
-import createData from 'helper/createData';
+import createData from 'utils/createData';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
 const PopularCard = () => {
     let userInfo = useSelector((state) => state.user);
+    let [rows, setRows] = useState([]);
 
-    const rows = [];
-    const AddData = () => {
-        let expenseHistory = userInfo.expenseHistory;
-        for (let i = 0; i < expenseHistory.length; i++) {
-            rows.push(createData(expenseHistory[i].location, expenseHistory[i].date, expenseHistory[i].category, expenseHistory[i].amount));
-        }
-    };
-    AddData();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    useEffect(() => {
+        let counter = 1;
+        let temp = userInfo.expenseHistory;
+        let displayRows = temp.map((item) => {
+            let row = createData(item.location, item.date, item.category, item.amount);
+            return { ...row, transNumber: counter++ };
+        });
+        setRows(displayRows);
+    }, [userInfo]);
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };

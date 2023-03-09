@@ -7,15 +7,14 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 // project imports
 import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
-import AuthLogin from '../auth-forms/AuthLogin';
-import AuthTransferMoney from './AuthTransferMoney';
 import Logo from 'ui-component/Logo';
+import AuthRegister from '../auth-forms/AuthRegister';
 
 // assets
 
-// ================================|| AUTH3 - LOGIN ||================================ //
+// ===============================|| AUTH3 - REGISTER ||=============================== //
 
-const Login = () => {
+const Register = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -27,8 +26,10 @@ const Login = () => {
                         <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                             <AuthCardWrapper>
                                 <Grid container spacing={2} alignItems="center" justifyContent="center">
-                                    <Grid item sx={{ mb: 0 }}>
-                                        <Logo />
+                                    <Grid item sx={{ mb: 3 }}>
+                                        <Link to="#">
+                                            <Logo />
+                                        </Link>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid
@@ -43,41 +44,41 @@ const Login = () => {
                                                         color={theme.palette.secondary.main}
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
-                                                        textAlign="center"
                                                     >
-                                                        Transfering Money Has Never Been So Simple
+                                                        Sign up
                                                     </Typography>
                                                     <Typography
                                                         variant="caption"
                                                         fontSize="16px"
-                                                        align="center"
-                                                        //textAlign={matchDownSM ? 'center' : 'inherit'}
-                                                        textAlign="center"
+                                                        textAlign={matchDownSM ? 'center' : 'inherit'}
                                                     >
-                                                        Enter the Credentials of the Person you want to make a Transaction with and the
-                                                        Amount of Money You Want to Transfer
+                                                        Enter your credentials to continue
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthTransferMoney />
+                                        <AuthRegister />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid item container direction="column" alignItems="center" xs={12}>
+                                            <Typography component={Link} to="/login" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                                                Already have an account?
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </AuthCardWrapper>
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-                    <AuthFooter />
-                </Grid>
             </Grid>
         </AuthWrapper>
     );
 };
 
-export default Login;
+export default Register;

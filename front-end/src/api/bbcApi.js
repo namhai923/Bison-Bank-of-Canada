@@ -7,7 +7,7 @@ let bbcApi = {
     },
     createUser: (params) => {
         let url = `/user`;
-        return axiosClient.post(url, { params });
+        return axiosClient.post(url, { ...params });
     },
     getUser: (username) => {
         let url = `/user/${username}`;

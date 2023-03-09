@@ -5,6 +5,7 @@ import config from '../../config';
 
 let initialState = {
     isOpen: [], // for active default menu
+    defaultId: 'dashboard',
     fontFamily: config.fontFamily,
     borderRadius: config.borderRadius,
     opened: true
@@ -17,11 +18,11 @@ export let customizationSlice = createSlice({
     initialState,
     reducers: {
         openMenu: (state, action) => {
-            id = action.payload.id;
-            return { ...state, isOpen: [id] };
+            state.isOpen = [action.payload];
+            return state;
         },
         setMenu: (state, action) => {
-            return { ...state, opened: action.payload.opened };
+            return { ...state, opened: action.payload };
         }
     }
 });

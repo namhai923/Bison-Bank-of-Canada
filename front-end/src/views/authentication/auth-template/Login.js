@@ -7,14 +7,14 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 // project imports
 import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
+import AuthLogin from '../auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
-import AuthRegister from '../auth-forms/AuthRegister';
 
 // assets
 
-// ===============================|| AUTH3 - REGISTER ||=============================== //
+// ================================|| AUTH3 - LOGIN ||================================ //
 
-const Register = () => {
+const Login = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -26,10 +26,8 @@ const Register = () => {
                         <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                             <AuthCardWrapper>
                                 <Grid container spacing={2} alignItems="center" justifyContent="center">
-                                    <Grid item sx={{ mb: 3 }}>
-                                        <Link to="#">
-                                            <Logo />
-                                        </Link>
+                                    <Grid item sx={{ mb: 0 }}>
+                                        <Logo />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid
@@ -45,7 +43,7 @@ const Register = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Sign up
+                                                        Hi, Welcome Back
                                                     </Typography>
                                                     <Typography
                                                         variant="caption"
@@ -59,20 +57,15 @@ const Register = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthRegister />
+                                        <AuthLogin />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid item container direction="column" alignItems="center" xs={12}>
-                                            <Typography
-                                                component={Link}
-                                                to="/user/login"
-                                                variant="subtitle1"
-                                                sx={{ textDecoration: 'none' }}
-                                            >
-                                                Already have an account?
+                                            <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                                                Create Account
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -86,4 +79,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Login;

@@ -1,13 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-let blankState = {
-    userName: '',
-    firstName: '',
-    lastName: '',
-    accountBalance: 0,
-    expenseHistory: [],
-    transferHistory: []
-};
+import { blankState } from 'config';
 
 const userInfo = localStorage.getItem('userInfo') !== null ? JSON.parse(localStorage.getItem('userInfo')) : blankState;
 
@@ -25,7 +17,7 @@ export let userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action) => {
-            state = action.payload.userInfo;
+            state = action.payload;
             localStorage.setItem('userInfo', JSON.stringify(state));
             return state;
         }
