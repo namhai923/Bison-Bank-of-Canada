@@ -8,7 +8,7 @@ const CACHE_EXPIRED_IN_SECONDS = 300;
 router.post("/", async (req, res, next) => {
   // check if the username exist, if not then add user
   try {
-    let { userName, firstName, lastName, accountBalance } = req.body.params;
+    let { userName, firstName, lastName, accountBalance } = req.body;
     let user = await User.findOne({ userName: userName });
     if (user !== null) {
       res.status(400).send("User Already Exists.");
