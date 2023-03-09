@@ -8,7 +8,7 @@ const CACHE_EXPIRED_IN_SECONDS = 300;
 router.post("/", async (req, res, next) => {
   // check if the username exist, if not then add user
   try {
-    let { userName, firstName, lastName, accountBalance } = req.body;
+    let { userName, firstName, lastName, accountBalance } = req.body.params;
     let user = await User.findOne({ userName: userName });
     if (user !== null) {
       res.status(400).send("User Already Exists.");
@@ -31,9 +31,9 @@ router.get("/:name", async (req, res, next) => {
   // check if the username exist, then return user data
   try {
     let userName = req.params["name"];
-    if(cache.has(userName)){
+    if (cache.has(userName)) {
       res.status(200).send(cache.get(userName));
-    }else{
+    } else {
       // If not found in cache then go to database to search
       let user = await User.findOne({ userName: userName });
 
@@ -58,8 +58,8 @@ router.post("/:name/transfer", async (req, res, next) => {
     let senderName = req.params["name"];
     let { receiverName, amount } = req.body;
 
-    if(receiverName == null || amount == null){
-      throw new Error('Missing require parameter in request body.');
+    if (receiverName == null || amount == null) {
+      throw new Error("Missing require parameter in request body.");
     }
     let sender = await User.findOne({ userName: senderName });
     let receiver = await User.findOne({ userName: receiverName });
@@ -95,13 +95,12 @@ router.post("/:name/transfer", async (req, res, next) => {
             await Promise.all([sender.save(), receiver.save()]);
 
             //Update cache
-            if( cache.has(senderName) ){
+            if (cache.has(senderName)) {
               cache.set(senderName, sender);
             }
-            if( cache.has(receiverName) ){
+            if (cache.has(receiverName)) {
               cache.set(receiverName, receiver);
             }
-
           } else {
             errorMessage +=
               "Transfer failed: " +
@@ -119,7 +118,6 @@ router.post("/:name/transfer", async (req, res, next) => {
     } else {
       res.status(400).send("Errors:\n" + errorMessage);
     }
-
   } catch (err) {
     res.status(500).json({ ErrorMessage: err.message });
   }

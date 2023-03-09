@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
+import { ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
 import { openMenu, setMenu } from '../../../customizeSlice';
@@ -47,10 +47,10 @@ const NavItem = ({ item, level }) => {
     }
 
     const itemHandler = (id) => {
-        let action = openMenu({ id: id });
+        let action = openMenu(id);
         dispatch(action);
         if (matchesSM) {
-            action = setMenu({ opened: false });
+            action = setMenu(false);
             dispatch(action);
         }
     };
@@ -62,7 +62,8 @@ const NavItem = ({ item, level }) => {
             .split('/')
             .findIndex((id) => id === item.id);
         if (currentIndex > -1) {
-            dispatch({ type: MENU_OPEN, id: item.id });
+            let action = openMenu({ id: item.id });
+            dispatch(action);
         }
         // eslint-disable-next-line
     }, []);
@@ -97,15 +98,6 @@ const NavItem = ({ item, level }) => {
                     )
                 }
             />
-            {item.chip && (
-                <Chip
-                    color={item.chip.color}
-                    variant={item.chip.variant}
-                    size={item.chip.size}
-                    label={item.chip.label}
-                    avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
-                />
-            )}
         </ListItemButton>
     );
 };

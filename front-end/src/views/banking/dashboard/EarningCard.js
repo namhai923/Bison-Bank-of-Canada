@@ -167,7 +167,7 @@ const EarningCard = () => {
                                     color: theme.palette.secondary[200]
                                 }}
                             >
-                                Total Earning
+                                Account Balance
                             </Typography>
                         </Grid>
                     </Grid>

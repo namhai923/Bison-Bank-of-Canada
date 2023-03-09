@@ -148,7 +148,7 @@ const TransactionCard = () => {
                                                     color: theme.palette.primary[200]
                                                 }}
                                             >
-                                                Latest Transaction
+                                                Total Spending
                                             </Typography>
                                         </Grid>
                                     </Grid>
