@@ -20,14 +20,14 @@ jobs:
 
       - name: Docker Server build
         run: |
-          docker build ./back-end --tag project/bison-bank-of-canada:server
+          docker build ./back-end --tag jessewu10/bison-bank-of-canada:server
       - name: Docker push
         run: |
-          docker push project/bison-bank-of-canada:server
+          docker push jessewu10/bison-bank-of-canada:server
         
       - name: Docker Client build
         run: |
-          docker build ./front-end --tag project/bison-bank-of-canada:client
+          docker build ./front-end --tag jessewu10/bison-bank-of-canada:client
       - name: Docker push
         run: |
-          docker push project/bison-bank-of-canada:client
+          docker push jessewu10/bison-bank-of-canada:client
