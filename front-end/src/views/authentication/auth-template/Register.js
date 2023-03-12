@@ -1,22 +1,47 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Divider, Grid, FormHelperText, Stack, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
 import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
 import Logo from 'ui-component/Logo';
 import AuthRegister from '../auth-forms/AuthRegister';
-
-// assets
-
-// ===============================|| AUTH3 - REGISTER ||=============================== //
+import { setUser } from '../userSlice';
+import bbcApi from 'api/bbcApi';
 
 const Register = () => {
     const theme = useTheme();
+    let navigate = useNavigate();
+    let dispatch = useDispatch();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    let [error, setError] = useState('');
+
+    let handleSubmit = async (values) => {
+        try {
+            let userName = values.email;
+            let firstName = values.fname;
+            let lastName = values.lname;
+            let accountBalance = 0;
+            if (values.balance) {
+                accountBalance = values.balance;
+            }
+            await bbcApi.createUser({ userName, firstName, lastName, accountBalance });
+            let userInfo = await bbcApi.getUser(userName);
+            let action = setUser(userInfo);
+            dispatch(action);
+            navigate('/');
+        } catch (error) {
+            if (error.name === 'AxiosError') {
+                setError(error.response.data);
+            }
+            console.log(error);
+        }
+    };
 
     return (
         <AuthWrapper>
@@ -54,12 +79,13 @@ const Register = () => {
                                                     >
                                                         Enter your credentials to continue
                                                     </Typography>
+                                                    <FormHelperText error>{error}</FormHelperText>
                                                 </Stack>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthRegister />
+                                        <AuthRegister handleSubmit={handleSubmit} />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />

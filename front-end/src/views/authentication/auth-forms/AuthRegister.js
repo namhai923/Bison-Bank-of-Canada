@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, Button, FormControl, FormHelperText, Grid, InputLabel, OutlinedInput, useMediaQuery } from '@mui/material';
@@ -10,29 +10,11 @@ import { Formik } from 'formik';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import bbcApi from 'api/bbcApi';
-import { setUser } from '../userSlice';
 
-const AuthRegister = ({ ...others }) => {
+const AuthRegister = (props) => {
+    let { handleSubmit } = props;
     const theme = useTheme();
-    let navigate = useNavigate();
-    let dispatch = useDispatch();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-
-    let handleSubmit = async (values) => {
-        let userName = values.email;
-        let firstName = values.fname;
-        let lastName = values.lname;
-        let accountBalance = 0;
-        if (values.balance) {
-            accountBalance = values.balance;
-        }
-        await bbcApi.createUser({ userName, firstName, lastName, accountBalance });
-        let userInfo = await bbcApi.getUser(userName);
-        let action = setUser(userInfo);
-        dispatch(action);
-        navigate('/');
-    };
 
     return (
         <>
@@ -56,7 +38,7 @@ const AuthRegister = ({ ...others }) => {
                 onSubmit={(values) => handleSubmit(values)}
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-                    <form noValidate onSubmit={handleSubmit} {...others}>
+                    <form noValidate onSubmit={handleSubmit}>
                         <Grid container spacing={matchDownSM ? 0 : 2}>
                             <Grid item xs={12} sm={6}>
                                 <FormControl
@@ -162,6 +144,10 @@ const AuthRegister = ({ ...others }) => {
             </Formik>
         </>
     );
+};
+
+AuthRegister.propTypes = {
+    handleSubmit: PropTypes.func.isRequired
 };
 
 export default AuthRegister;
