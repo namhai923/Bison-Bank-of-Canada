@@ -56,7 +56,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const EarningCard = () => {
+const AccountBalance = () => {
     let accountBalance = useSelector((state) => state.user.accountBalance, shallowEqual);
     const theme = useTheme();
 
@@ -177,4 +177,4 @@ const EarningCard = () => {
     );
 };
 
-export default EarningCard;
+export default AccountBalance;

@@ -62,7 +62,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
-const TransactionCard = () => {
+const TotalSpending = () => {
     const theme = useTheme();
 
     const [timeValue, setTimeValue] = useState(false);
@@ -165,4 +165,4 @@ const TransactionCard = () => {
     );
 };
 
-export default TransactionCard;
+export default TotalSpending;

@@ -24,7 +24,7 @@ import {
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import User1 from 'assets/images/user-round.svg';
-import { blankState } from 'config';
+import blankState from 'assets/data/blankState';
 import { setUser } from 'views/authentication/userSlice';
 
 // assets

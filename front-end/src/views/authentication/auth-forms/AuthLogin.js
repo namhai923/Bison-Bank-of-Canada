@@ -71,7 +71,7 @@ const AuthLogin = (props) => {
 };
 
 AuthLogin.propTypes = {
-    handleSubmit: PropTypes.func.isRequired
+    handleSubmit: PropTypes.func
 };
 
 export default AuthLogin;
