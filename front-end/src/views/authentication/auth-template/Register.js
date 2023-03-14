@@ -24,13 +24,8 @@ const Register = () => {
     let handleSubmit = async (values) => {
         try {
             let userName = values.email;
-            let firstName = values.fname;
-            let lastName = values.lname;
-            let accountBalance = 0;
-            if (values.balance) {
-                accountBalance = values.balance;
-            }
-            await bbcApi.createUser({ userName, firstName, lastName, accountBalance });
+
+            await bbcApi.createUser({ userName, firstName: values.fname, lastName: values.lname, accountBalance: values.balance });
             let userInfo = await bbcApi.getUser(userName);
             let action = setUser(userInfo);
             dispatch(action);

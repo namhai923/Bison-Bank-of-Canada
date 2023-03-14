@@ -23,7 +23,7 @@ const AuthRegister = (props) => {
                     email: '',
                     fname: '',
                     lname: '',
-                    balance: 0
+                    balance: ''
                 }}
                 validationSchema={Yup.object().shape({
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
@@ -33,7 +33,7 @@ const AuthRegister = (props) => {
                         .min(0, "Can't be negative")
                         .max(100000, 'Too much, less than $100,000 please')
                         .integer('Should be an integer')
-                        .nullable(true)
+                        .required('Account balance is required')
                 })}
                 onSubmit={(values) => handleSubmit(values)}
             >
@@ -57,7 +57,7 @@ const AuthRegister = (props) => {
                                         inputProps={{}}
                                     />
                                     {touched.fname && errors.fname && (
-                                        <FormHelperText error id="standard-weight-helper-text--register">
+                                        <FormHelperText error id="standard-weight-helper-text-fname-register">
                                             {errors.fname}
                                         </FormHelperText>
                                     )}
@@ -80,7 +80,7 @@ const AuthRegister = (props) => {
                                         inputProps={{}}
                                     />
                                     {touched.lname && errors.lname && (
-                                        <FormHelperText error id="standard-weight-helper-text--register">
+                                        <FormHelperText error id="standard-weight-helper-text-lname-register">
                                             {errors.lname}
                                         </FormHelperText>
                                     )}
@@ -100,7 +100,7 @@ const AuthRegister = (props) => {
                                 inputProps={{}}
                             />
                             {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text--register">
+                                <FormHelperText error id="standard-weight-helper-text-email-register">
                                     {errors.email}
                                 </FormHelperText>
                             )}
@@ -118,7 +118,7 @@ const AuthRegister = (props) => {
                                 inputProps={{}}
                             />
                             {touched.balance && errors.balance && (
-                                <FormHelperText error id="standard-weight-helper-text--register">
+                                <FormHelperText error id="standard-weight-helper-text-balance-register">
                                     {errors.balance}
                                 </FormHelperText>
                             )}
