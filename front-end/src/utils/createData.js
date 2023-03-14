@@ -4,7 +4,6 @@ import { KeyboardArrowUpOutlined, KeyboardArrowDownOutlined } from '@mui/icons-m
 export default function createData(type, data) {
     let color;
     let background;
-    let dateArray;
     let icon;
 
     let { date, amount } = data;
@@ -20,9 +19,8 @@ export default function createData(type, data) {
         amount = amount + '.00';
     }
 
-    dateArray = date.split('-');
-    dateArray[2] = dateArray[2].split('T')[0];
-    date = months[Number(dateArray[1] - 1)] + ' ' + dateArray[2] + ', ' + dateArray[0];
+    let dateData = new Date(date);
+    date = months[dateData.getMonth()] + ' ' + dateData.getDate() + ', ' + dateData.getFullYear();
     amount = '$' + amount;
 
     if (type === 'expense') {

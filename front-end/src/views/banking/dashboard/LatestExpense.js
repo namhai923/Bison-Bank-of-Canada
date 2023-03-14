@@ -1,10 +1,13 @@
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-// import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
+import sortByTime from 'utils/sortByTime';
 
 // assets
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
@@ -41,6 +44,22 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const LatestExpense = () => {
     const theme = useTheme();
+    let userInfo = useSelector((state) => state.user);
+    let [latest, setLatest] = useState(() => {
+        let latestExpense = 0;
+        if (userInfo.expenseHistory.length > 0) {
+            latestExpense = sortByTime(userInfo.expenseHistory)[userInfo.expenseHistory.length - 1].amount;
+        }
+        return latestExpense;
+    });
+
+    useEffect(() => {
+        let latestExpense = 0;
+        if (userInfo.transferHistory.length > 0) {
+            latestExpense = sortByTime(userInfo.expenseHistory)[userInfo.expenseHistory.length - 1].amount;
+        }
+        setLatest(latestExpense);
+    }, [userInfo]);
 
     return (
         <>
@@ -69,7 +88,7 @@ const LatestExpense = () => {
                                 }}
                                 primary={
                                     <Typography variant="h4" sx={{ color: '#fff' }}>
-                                        $203k
+                                        ${latest}
                                     </Typography>
                                 }
                                 secondary={

@@ -27,8 +27,14 @@ const AuthRegister = (props) => {
                 }}
                 validationSchema={Yup.object().shape({
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    fname: Yup.string().max(255).required('First Name is required'),
-                    lname: Yup.string().max(255).required('Last Name is required'),
+                    fname: Yup.string()
+                        .max(255)
+                        .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
+                        .required('First Name is required'),
+                    lname: Yup.string()
+                        .max(255)
+                        .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
+                        .required('Last Name is required'),
                     balance: Yup.number()
                         .min(0, "Can't be negative")
                         .max(100000, 'Too much, less than $100,000 please')

@@ -6,6 +6,7 @@ import createData from 'utils/createData';
 
 const ExpenseHistory = () => {
     let userInfo = useSelector((state) => state.user);
+
     let [rows] = useState(() => {
         let counter = 1;
         let temp = userInfo.expenseHistory;
