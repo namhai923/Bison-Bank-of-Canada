@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
-// import { useNavigate } from 'react-router-dom';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -24,6 +24,8 @@ import {
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import User1 from 'assets/images/user-round.svg';
+import { blankState } from 'config';
+import { setUser } from 'views/authentication/userSlice';
 
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons';
@@ -32,17 +34,23 @@ import { IconLogout, IconSettings } from '@tabler/icons';
 
 const ProfileSection = () => {
     let userInfo = useSelector((state) => state.user, shallowEqual);
-    const theme = useTheme();
     const customization = useSelector((state) => state.customization);
-    console.log(customization);
+
+    const theme = useTheme();
+    let navigate = useNavigate();
+    let dispatch = useDispatch();
 
     const [open, setOpen] = useState(false);
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = useRef(null);
+
     const handleLogout = async () => {
-        console.log('Logout');
+        let action = setUser(blankState);
+        dispatch(action);
+        navigate('/');
+        localStorage.clear();
     };
 
     const handleClose = (event) => {
@@ -136,7 +144,7 @@ const ProfileSection = () => {
                                         <Stack>
                                             <Stack direction="row" spacing={0.5} alignItems="center">
                                                 <Typography variant="h4" sx={{ fontWeight: 400 }}>
-                                                    Good,
+                                                    Good Morning,
                                                 </Typography>
                                                 <Typography component="span" variant="h4">
                                                     {userInfo.firstName} {userInfo.lastName}!

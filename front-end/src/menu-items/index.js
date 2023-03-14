@@ -1,11 +1,10 @@
-import dashboard from './dashboard';
+import banking from './banking';
 import auth from './auth';
-import transfer from './transfer';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-    items: [dashboard, transfer, auth]
+    items: [banking, auth]
 };
 
 export default menuItems;

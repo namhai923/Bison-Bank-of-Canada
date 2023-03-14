@@ -25,7 +25,7 @@ const AuthLogin = ({ ...others }) => {
         if (user === null) {
             return false;
         } else {
-            let action = setUser({ userInfo: user });
+            let action = setUser(user);
             dispatch(action);
             return true;
         }

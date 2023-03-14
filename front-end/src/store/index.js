@@ -1,5 +1,5 @@
 import customizationReducer from '../layout/MainLayout/customizeSlice';
-import userReducer from '../views/pages/authentication/userSlice';
+import userReducer from '../views/authentication/userSlice';
 
 const { configureStore } = require('@reduxjs/toolkit');
 
