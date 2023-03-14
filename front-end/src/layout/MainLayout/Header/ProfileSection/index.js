@@ -23,24 +23,31 @@ import {
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
-import User1 from 'assets/images/user-round.svg';
-import { blankState } from 'config';
+import alphabetAvatar from 'assets/images/alphabetAvatar';
+import blankState from 'assets/data/blankState';
 import { setUser } from 'views/authentication/userSlice';
 
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons';
 
-// ==============================|| PROFILE MENU ||============================== //
-
 const ProfileSection = () => {
-    let userInfo = useSelector((state) => state.user, shallowEqual);
-    const customization = useSelector((state) => state.customization);
-
     const theme = useTheme();
     let navigate = useNavigate();
     let dispatch = useDispatch();
 
+    let userInfo = useSelector((state) => state.user, shallowEqual);
+    const customization = useSelector((state) => state.customization);
     const [open, setOpen] = useState(false);
+    let [icon, setIcon] = useState(() => {
+        let icon = alphabetAvatar.b;
+        for (let key of Object.keys(alphabetAvatar)) {
+            if (key === Array.from(userInfo.firstName.toLowerCase())[0]) {
+                icon = alphabetAvatar[key];
+            }
+        }
+        return icon;
+    });
+
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
@@ -51,6 +58,7 @@ const ProfileSection = () => {
         dispatch(action);
         navigate('/');
         localStorage.clear();
+        setIcon(alphabetAvatar.b);
     };
 
     const handleClose = (event) => {
@@ -69,9 +77,8 @@ const ProfileSection = () => {
         if (prevOpen.current === true && open === false) {
             anchorRef.current.focus();
         }
-
         prevOpen.current = open;
-    }, [open]);
+    }, [open, userInfo]);
 
     return (
         <>
@@ -97,7 +104,7 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={User1}
+                        src={icon}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',

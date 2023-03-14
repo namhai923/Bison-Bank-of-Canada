@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -9,14 +9,12 @@ import Chart from 'react-apexcharts';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-// import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
-
-import ChartDataMonth from './chart-data/total-order-month-line-chart';
-import ChartDataYear from './chart-data/total-order-year-line-chart';
+import LineChart from 'utils/LineChart';
 
 // assets
-import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { LocalMallOutlined, Payment } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
+import currentData from 'utils/currentData';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,
@@ -60,15 +58,27 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 
-// ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
-
-const TransactionCard = () => {
+const TotalSpending = () => {
     const theme = useTheme();
+    let userInfo = useSelector((state) => state.user);
+    let [lineData, setLineData] = useState(() => {
+        let totalSpending = userInfo.expenseHistory.concat(userInfo.transferHistory);
+        return currentData('month', totalSpending);
+    });
 
     const [timeValue, setTimeValue] = useState(false);
     const handleChangeTime = (event, newValue) => {
         setTimeValue(newValue);
     };
+
+    useEffect(() => {
+        let totalSpending = userInfo.expenseHistory.concat(userInfo.transferHistory);
+        if (timeValue) {
+            setLineData(currentData('month', totalSpending));
+        } else {
+            setLineData(currentData('year', totalSpending));
+        }
+    }, [timeValue, userInfo]);
 
     return (
         <>
@@ -88,7 +98,7 @@ const TransactionCard = () => {
                                             mt: 1
                                         }}
                                     >
-                                        <LocalMallOutlinedIcon fontSize="inherit" />
+                                        <LocalMallOutlined fontSize="inherit" />
                                     </Avatar>
                                 </Grid>
                                 <Grid item>
@@ -118,15 +128,14 @@ const TransactionCard = () => {
                                 <Grid item xs={6}>
                                     <Grid container alignItems="center">
                                         <Grid item>
-                                            {timeValue ? (
-                                                <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                    $108
-                                                </Typography>
-                                            ) : (
-                                                <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                    $961
-                                                </Typography>
-                                            )}
+                                            <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+                                                $
+                                                {lineData
+                                                    .reduce((total, current) => {
+                                                        return total + current;
+                                                    }, 0)
+                                                    .toFixed(2)}
+                                            </Typography>
                                         </Grid>
                                         <Grid item>
                                             <Avatar
@@ -137,7 +146,7 @@ const TransactionCard = () => {
                                                     color: theme.palette.primary.dark
                                                 }}
                                             >
-                                                <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
+                                                <Payment fontSize="inherit" />
                                             </Avatar>
                                         </Grid>
                                         <Grid item xs={12}>
@@ -154,7 +163,7 @@ const TransactionCard = () => {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
+                                    {timeValue ? <Chart {...LineChart('month', lineData)} /> : <Chart {...LineChart('year', lineData)} />}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -165,4 +174,4 @@ const TransactionCard = () => {
     );
 };
 
-export default TransactionCard;
+export default TotalSpending;

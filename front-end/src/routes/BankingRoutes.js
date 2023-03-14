@@ -6,8 +6,9 @@ import Loadable from 'ui-component/Loadable';
 
 // dashboard routing
 const Dashboard = Loadable(lazy(() => import('views/banking/dashboard')));
-const TransferHistory = Loadable(lazy(() => import('views/banking/TransferMoney/TransferHistory')));
-const TransferMoney = Loadable(lazy(() => import('views/banking/TransferMoney/TransferMoney')));
+const TransferHistory = Loadable(lazy(() => import('views/banking/history/TransferHistory')));
+const ExpenseHistory = Loadable(lazy(() => import('views/banking/history/ExpenseHistory')));
+const Transfer = Loadable(lazy(() => import('views/banking/send-money/Transfer')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -21,11 +22,11 @@ const MainRoutes = {
         },
         {
             path: '/send',
-            element: <TransferMoney />
+            element: <Transfer />
         },
         {
             path: '/expense',
-            element: <Dashboard />
+            element: <ExpenseHistory />
         },
         {
             path: '/transfer',

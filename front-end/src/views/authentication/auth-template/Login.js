@@ -1,14 +1,18 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Divider, Grid, FormHelperText, Stack, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
 import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
+import { setUser } from '../userSlice';
+import bbcApi from 'api/bbcApi';
 
 // assets
 
@@ -16,7 +20,25 @@ import Logo from 'ui-component/Logo';
 
 const Login = () => {
     const theme = useTheme();
+    let dispatch = useDispatch();
+    let navigate = useNavigate();
+    let [error, setError] = useState('');
+
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+
+    let handleSubmit = async (username) => {
+        try {
+            let user = await bbcApi.getUser(username);
+            let action = setUser(user);
+            dispatch(action);
+            navigate('/');
+        } catch (error) {
+            if (error.name === 'AxiosError') {
+                setError(error.response.data);
+            }
+            console.log(error);
+        }
+    };
 
     return (
         <AuthWrapper>
@@ -52,12 +74,13 @@ const Login = () => {
                                                     >
                                                         Enter your credentials to continue
                                                     </Typography>
+                                                    <FormHelperText error>{error}</FormHelperText>
                                                 </Stack>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthLogin />
+                                        <AuthLogin handleSubmit={handleSubmit} />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />

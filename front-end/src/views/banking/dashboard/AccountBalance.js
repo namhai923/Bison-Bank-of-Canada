@@ -11,12 +11,7 @@ import MainCard from 'ui-component/cards/MainCard';
 
 // assets
 import EarningIcon from 'assets/images/earning.svg';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import GetAppTwoToneIcon from '@mui/icons-material/GetAppOutlined';
-import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
-import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined';
-import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined';
+import { MoreHoriz, AccountBalanceWallet, GetAppTwoTone, FileCopyTwoTone, PictureAsPdfTwoTone, ArchiveTwoTone } from '@mui/icons-material';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.dark,
@@ -56,7 +51,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const EarningCard = () => {
+const AccountBalance = () => {
     let accountBalance = useSelector((state) => state.user.accountBalance, shallowEqual);
     const theme = useTheme();
 
@@ -104,7 +99,7 @@ const EarningCard = () => {
                                         aria-haspopup="true"
                                         onClick={handleClick}
                                     >
-                                        <MoreHorizIcon fontSize="inherit" />
+                                        <MoreHoriz fontSize="inherit" />
                                     </Avatar>
                                     <Menu
                                         id="menu-earning-card"
@@ -123,16 +118,16 @@ const EarningCard = () => {
                                         }}
                                     >
                                         <MenuItem onClick={handleClose}>
-                                            <GetAppTwoToneIcon sx={{ mr: 1.75 }} /> Import Card
+                                            <GetAppTwoTone sx={{ mr: 1.75 }} /> Import Card
                                         </MenuItem>
                                         <MenuItem onClick={handleClose}>
-                                            <FileCopyTwoToneIcon sx={{ mr: 1.75 }} /> Copy Data
+                                            <FileCopyTwoTone sx={{ mr: 1.75 }} /> Copy Data
                                         </MenuItem>
                                         <MenuItem onClick={handleClose}>
-                                            <PictureAsPdfTwoToneIcon sx={{ mr: 1.75 }} /> Export
+                                            <PictureAsPdfTwoTone sx={{ mr: 1.75 }} /> Export
                                         </MenuItem>
                                         <MenuItem onClick={handleClose}>
-                                            <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archive File
+                                            <ArchiveTwoTone sx={{ mr: 1.75 }} /> Archive File
                                         </MenuItem>
                                     </Menu>
                                 </Grid>
@@ -142,7 +137,7 @@ const EarningCard = () => {
                             <Grid container alignItems="center">
                                 <Grid item>
                                     <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                        ${accountBalance}
+                                        ${accountBalance.toFixed(2)}
                                     </Typography>
                                 </Grid>
                                 <Grid item>
@@ -154,7 +149,7 @@ const EarningCard = () => {
                                             color: theme.palette.secondary.dark
                                         }}
                                     >
-                                        <AccountBalanceWalletIcon fontSize="inherit" />
+                                        <AccountBalanceWallet fontSize="inherit" />
                                     </Avatar>
                                 </Grid>
                             </Grid>
@@ -177,4 +172,4 @@ const EarningCard = () => {
     );
 };
 
-export default EarningCard;
+export default AccountBalance;

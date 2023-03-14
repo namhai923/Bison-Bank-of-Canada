@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { blankState } from 'config';
+import blankState from 'assets/data/blankState';
 
 const userInfo = localStorage.getItem('userInfo') !== null ? JSON.parse(localStorage.getItem('userInfo')) : blankState;
 

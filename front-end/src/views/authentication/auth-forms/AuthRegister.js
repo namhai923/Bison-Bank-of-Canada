@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, Button, FormControl, FormHelperText, Grid, InputLabel, OutlinedInput, useMediaQuery } from '@mui/material';
@@ -10,29 +10,11 @@ import { Formik } from 'formik';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import bbcApi from 'api/bbcApi';
-import { setUser } from '../userSlice';
 
-const AuthRegister = ({ ...others }) => {
+const AuthRegister = (props) => {
+    let { handleSubmit } = props;
     const theme = useTheme();
-    let navigate = useNavigate();
-    let dispatch = useDispatch();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-
-    let handleSubmit = async (values) => {
-        let userName = values.email;
-        let firstName = values.fname;
-        let lastName = values.lname;
-        let accountBalance = 0;
-        if (values.balance) {
-            accountBalance = values.balance;
-        }
-        await bbcApi.createUser({ userName, firstName, lastName, accountBalance });
-        let userInfo = await bbcApi.getUser(userName);
-        let action = setUser(userInfo);
-        dispatch(action);
-        navigate('/');
-    };
 
     return (
         <>
@@ -41,22 +23,28 @@ const AuthRegister = ({ ...others }) => {
                     email: '',
                     fname: '',
                     lname: '',
-                    balance: 0
+                    balance: ''
                 }}
                 validationSchema={Yup.object().shape({
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    fname: Yup.string().max(255).required('First Name is required'),
-                    lname: Yup.string().max(255).required('Last Name is required'),
+                    fname: Yup.string()
+                        .max(255)
+                        .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
+                        .required('First Name is required'),
+                    lname: Yup.string()
+                        .max(255)
+                        .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
+                        .required('Last Name is required'),
                     balance: Yup.number()
                         .min(0, "Can't be negative")
                         .max(100000, 'Too much, less than $100,000 please')
                         .integer('Should be an integer')
-                        .nullable(true)
+                        .required('Account balance is required')
                 })}
                 onSubmit={(values) => handleSubmit(values)}
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-                    <form noValidate onSubmit={handleSubmit} {...others}>
+                    <form noValidate onSubmit={handleSubmit}>
                         <Grid container spacing={matchDownSM ? 0 : 2}>
                             <Grid item xs={12} sm={6}>
                                 <FormControl
@@ -75,7 +63,7 @@ const AuthRegister = ({ ...others }) => {
                                         inputProps={{}}
                                     />
                                     {touched.fname && errors.fname && (
-                                        <FormHelperText error id="standard-weight-helper-text--register">
+                                        <FormHelperText error id="standard-weight-helper-text-fname-register">
                                             {errors.fname}
                                         </FormHelperText>
                                     )}
@@ -98,7 +86,7 @@ const AuthRegister = ({ ...others }) => {
                                         inputProps={{}}
                                     />
                                     {touched.lname && errors.lname && (
-                                        <FormHelperText error id="standard-weight-helper-text--register">
+                                        <FormHelperText error id="standard-weight-helper-text-lname-register">
                                             {errors.lname}
                                         </FormHelperText>
                                     )}
@@ -118,7 +106,7 @@ const AuthRegister = ({ ...others }) => {
                                 inputProps={{}}
                             />
                             {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text--register">
+                                <FormHelperText error id="standard-weight-helper-text-email-register">
                                     {errors.email}
                                 </FormHelperText>
                             )}
@@ -136,7 +124,7 @@ const AuthRegister = ({ ...others }) => {
                                 inputProps={{}}
                             />
                             {touched.balance && errors.balance && (
-                                <FormHelperText error id="standard-weight-helper-text--register">
+                                <FormHelperText error id="standard-weight-helper-text-balance-register">
                                     {errors.balance}
                                 </FormHelperText>
                             )}
@@ -162,6 +150,10 @@ const AuthRegister = ({ ...others }) => {
             </Formik>
         </>
     );
+};
+
+AuthRegister.propTypes = {
+    handleSubmit: PropTypes.func.isRequired
 };
 
 export default AuthRegister;

@@ -1,8 +1,8 @@
 import axiosClient from './axiosClient';
 
 let bbcApi = {
-    sendRecords: (params) => {
-        let url = `/admin/sendRecords`;
+    transfer: (params) => {
+        let url = `/${params.userName}/transfer`;
         return axiosClient.post(url, { params });
     },
     createUser: (params) => {

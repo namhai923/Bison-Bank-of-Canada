@@ -7,14 +7,4 @@ const config = {
     borderRadius: 12
 };
 
-const blankState = {
-    userName: '',
-    firstName: 'Bison',
-    lastName: '',
-    accountBalance: 0,
-    expenseHistory: [],
-    transferHistory: []
-};
-
 export default config;
-export { blankState };

@@ -1,9 +1,13 @@
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
+import sortByTime from 'utils/sortByTime';
 
 // assets
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
@@ -36,8 +40,24 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
 
-const LightCard = () => {
+const LatestTransfer = () => {
     const theme = useTheme();
+    let userInfo = useSelector((state) => state.user);
+    let [latest, setLatest] = useState(() => {
+        let latestTransfer = 0;
+        if (userInfo.transferHistory.length > 0) {
+            latestTransfer = sortByTime(userInfo.transferHistory)[userInfo.transferHistory.length - 1].amount;
+        }
+        return latestTransfer;
+    });
+
+    useEffect(() => {
+        let latestTransfer = 0;
+        if (userInfo.transferHistory.length > 0) {
+            latestTransfer = sortByTime(userInfo.transferHistory)[userInfo.transferHistory.length - 1].amount;
+        }
+        setLatest(latestTransfer);
+    }, [userInfo]);
 
     return (
         <>
@@ -64,7 +84,7 @@ const LightCard = () => {
                                     mt: 0.45,
                                     mb: 0.45
                                 }}
-                                primary={<Typography variant="h4">$203k</Typography>}
+                                primary={<Typography variant="h4">${latest}</Typography>}
                                 secondary={
                                     <Typography
                                         variant="subtitle2"
@@ -85,4 +105,4 @@ const LightCard = () => {
     );
 };
 
-export default LightCard;
+export default LatestTransfer;

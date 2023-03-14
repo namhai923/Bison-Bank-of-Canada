@@ -37,10 +37,10 @@ router.get("/:name", async (req, res, next) => {
       // If not found in cache then go to database to search
       let user = await User.findOne({ userName: userName });
 
-      // Set cache and set it to expired in 300 seconds
-      cache.set(userName, user);
-      setCacheExpire(userName, CACHE_EXPIRED_IN_SECONDS);
       if (user !== null) {
+        // Set cache and set it to expired in 300 seconds
+        cache.set(userName, user);
+        setCacheExpire(userName, CACHE_EXPIRED_IN_SECONDS);
         res.status(200).send(user);
       } else {
         res.status(404).send("User Not Found.");
@@ -116,7 +116,7 @@ router.post("/:name/transfer", async (req, res, next) => {
     if (errorMessage === "") {
       res.status(200).send("Successfully processed transfer");
     } else {
-      res.status(400).send("Errors:\n" + errorMessage);
+      res.status(400).send(errorMessage);
     }
   } catch (err) {
     res.status(500).json({ ErrorMessage: err.message });
