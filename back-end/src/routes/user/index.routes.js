@@ -116,7 +116,7 @@ router.post("/:name/transfer", async (req, res, next) => {
     if (errorMessage === "") {
       res.status(200).send("Successfully processed transfer");
     } else {
-      res.status(400).send("Errors:\n" + errorMessage);
+      res.status(400).send(errorMessage);
     }
   } catch (err) {
     res.status(500).json({ ErrorMessage: err.message });
