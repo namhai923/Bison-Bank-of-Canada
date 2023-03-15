@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { editLocation } from './filterSlice';
 
 const style = {
     position: 'absolute',
@@ -24,10 +26,25 @@ export default function BasicModal() {
     const handleClose = () => setOpen(false);
     const [location, setLocation] = useState('');
     const [category, setCategory] = useState('');
+    let dispatch = useDispatch();
 
     const calculateFilter = () => {
-        console.log(location);
-        console.log(category);
+        let storeObj = {};
+        category !== '' ? (storeObj.category = category) : (storeObj.category = null);
+        location !== '' ? (storeObj.location = location) : (storeObj.location = null);
+
+        let a1 = editLocation({ locationInfo: storeObj });
+        dispatch(a1);
+    };
+
+    const resetFilter = () => {
+        let storeObj = {
+            location: null,
+            category: null
+        };
+
+        let action = editLocation({ locationInfo: storeObj });
+        dispatch(action);
     };
 
     return (
@@ -74,6 +91,9 @@ export default function BasicModal() {
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <Button variant="contained" onClick={calculateFilter} style={{ margin: '20px' }}>
                             Filter
+                        </Button>
+                        <Button variant="contained" onClick={resetFilter} style={{ margin: '20px' }}>
+                            Reset
                         </Button>
                     </div>
                 </Box>
