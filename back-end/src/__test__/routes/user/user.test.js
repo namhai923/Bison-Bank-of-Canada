@@ -158,7 +158,7 @@ describe("Testing User index", () => {
         amount: transferAmount,
       });
     expect(res.statusCode).toBe(200);
-    expect(res.text).toBe("Successfully processed transfer");
+    expect(res.body.userName).toBe(userName);
   });
 
   it("/Get check user balance after transfer", async () => {
