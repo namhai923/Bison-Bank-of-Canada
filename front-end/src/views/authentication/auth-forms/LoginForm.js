@@ -8,7 +8,7 @@ import { Formik } from 'formik';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
-const AuthLogin = (props) => {
+const LoginForm = (props) => {
     let { handleSubmit } = props;
     const theme = useTheme();
 
@@ -70,8 +70,8 @@ const AuthLogin = (props) => {
     );
 };
 
-AuthLogin.propTypes = {
+LoginForm.propTypes = {
     handleSubmit: PropTypes.func
 };
 
-export default AuthLogin;
+export default LoginForm;

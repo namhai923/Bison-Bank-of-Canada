@@ -1,15 +1,4 @@
-import months from 'assets/data/months';
-
-let LineChart = (type, data) => {
-    let current = new Date();
-
-    let name = '';
-    if (type === 'month') {
-        name = months[current.getMonth()];
-    } else {
-        name = current.getFullYear();
-    }
-
+let lineChartData = (chartData) => {
     return {
         type: 'line',
         height: 90,
@@ -32,8 +21,8 @@ let LineChart = (type, data) => {
                 width: 3
             },
             yaxis: {
-                min: 0,
-                max: 100
+                min: chartData.min,
+                max: chartData.max
             },
             tooltip: {
                 theme: 'dark',
@@ -44,7 +33,7 @@ let LineChart = (type, data) => {
                     show: false
                 },
                 y: {
-                    title: 'Total Order'
+                    title: 'Total Spending'
                 },
                 marker: {
                     show: false
@@ -53,11 +42,11 @@ let LineChart = (type, data) => {
         },
         series: [
             {
-                name: name,
-                data: data
+                name: chartData.name,
+                data: chartData.data
             }
         ]
     };
 };
 
-export default LineChart;
+export default lineChartData;

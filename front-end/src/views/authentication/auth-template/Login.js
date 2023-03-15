@@ -9,7 +9,7 @@ import { Divider, Grid, FormHelperText, Stack, Typography, useMediaQuery } from 
 // project imports
 import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
-import AuthLogin from '../auth-forms/AuthLogin';
+import LoginForm from '../auth-forms/LoginForm';
 import Logo from 'ui-component/Logo';
 import { setUser } from '../userSlice';
 import bbcApi from 'api/bbcApi';
@@ -80,7 +80,7 @@ const Login = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthLogin handleSubmit={handleSubmit} />
+                                        <LoginForm handleSubmit={handleSubmit} />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />

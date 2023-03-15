@@ -4,14 +4,14 @@ import { shallowEqual, useSelector } from 'react-redux';
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
+import { MoreHoriz, AccountBalanceWallet, FileCopyTwoTone } from '@mui/icons-material';
+
+//third-party
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-// import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
-
-// assets
 import EarningIcon from 'assets/images/earning.svg';
-import { MoreHoriz, AccountBalanceWallet, GetAppTwoTone, FileCopyTwoTone, PictureAsPdfTwoTone, ArchiveTwoTone } from '@mui/icons-material';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.dark,
@@ -117,18 +117,11 @@ const AccountBalance = () => {
                                             horizontal: 'right'
                                         }}
                                     >
-                                        <MenuItem onClick={handleClose}>
-                                            <GetAppTwoTone sx={{ mr: 1.75 }} /> Import Card
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>
-                                            <FileCopyTwoTone sx={{ mr: 1.75 }} /> Copy Data
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>
-                                            <PictureAsPdfTwoTone sx={{ mr: 1.75 }} /> Export
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>
-                                            <ArchiveTwoTone sx={{ mr: 1.75 }} /> Archive File
-                                        </MenuItem>
+                                        <CopyToClipboard text={localStorage.userInfo}>
+                                            <MenuItem onClick={handleClose}>
+                                                <FileCopyTwoTone sx={{ mr: 1.75 }} /> Copy Data
+                                            </MenuItem>
+                                        </CopyToClipboard>
                                     </Menu>
                                 </Grid>
                             </Grid>

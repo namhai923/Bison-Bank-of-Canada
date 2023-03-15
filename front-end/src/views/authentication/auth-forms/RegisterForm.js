@@ -11,7 +11,7 @@ import { Formik } from 'formik';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
-const AuthRegister = (props) => {
+const RegisterForm = (props) => {
     let { handleSubmit } = props;
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -152,8 +152,8 @@ const AuthRegister = (props) => {
     );
 };
 
-AuthRegister.propTypes = {
+RegisterForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired
 };
 
-export default AuthRegister;
+export default RegisterForm;
