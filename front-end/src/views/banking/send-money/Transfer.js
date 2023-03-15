@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import bbcApi from 'api/bbcApi';
+import { setUser } from 'views/authentication/userSlice';
 
 let Transfer = () => {
     let dispatch = useDispatch();
@@ -15,12 +16,18 @@ let Transfer = () => {
     let handleSubmit = async (values) => {
         try {
             let userName = userInfo.userName;
-            await bbcApi.transfer({ userName, receiverName: values.receiver, amount: values.amount });
-            let updateUser = await bbcApi.getUser(userName);
-            let action = setUser(updateUser);
-            dispatch(action);
+            if (userName !== '') {
+                let updateUser = await bbcApi.transfer({ userName, receiverName: values.receiver, amount: values.amount });
+                let action = setUser(updateUser);
+                dispatch(action);
+                setError('');
+                alert('Your money is successfully transfered');
+            } else {
+                setError('You have to login first');
+            }
         } catch (error) {
             if (error.name === 'AxiosError') {
+                console.log(error);
                 setError(error.response.data);
             }
             console.log(error);
@@ -44,8 +51,10 @@ let Transfer = () => {
                     <Card>
                         <CardHeader title="Transfer" />
                         <Divider />
+
                         <CardContent>
-                            <Stack spacing={3} sx={{ maxWidth: 400 }}>
+                            <Stack spacing={1} sx={{ maxWidth: 400 }}>
+                                <FormHelperText error>{error}</FormHelperText>
                                 <TextField
                                     fullWidth
                                     label="Receiver"
@@ -60,7 +69,6 @@ let Transfer = () => {
                                         {errors.receiver}
                                     </FormHelperText>
                                 )}
-
                                 <TextField
                                     fullWidth
                                     label="Amount"

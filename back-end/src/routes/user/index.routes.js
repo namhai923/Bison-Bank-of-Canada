@@ -57,7 +57,6 @@ router.post("/:name/transfer", async (req, res, next) => {
 
     let senderName = req.params["name"];
     let { receiverName, amount } = req.body;
-
     if (receiverName == null || amount == null) {
       throw new Error("Missing require parameter in request body.");
     }
