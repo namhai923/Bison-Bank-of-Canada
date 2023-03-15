@@ -32,7 +32,10 @@ export default function BasicModal() {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Open modal</Button>
+            {/*<Button onClick={handleOpen}>Open modal</Button>*/}
+            <Button variant="contained" onClick={handleOpen} style={{ margin: '20px' }}>
+                Filter
+            </Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h2" component="h2" align="center">
