@@ -27,7 +27,6 @@ let Transfer = () => {
             }
         } catch (error) {
             if (error.name === 'AxiosError') {
-                console.log(error);
                 setError(error.response.data);
             }
             console.log(error);
