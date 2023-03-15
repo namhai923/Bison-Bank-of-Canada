@@ -114,7 +114,7 @@ router.post("/:name/transfer", async (req, res, next) => {
     }
 
     if (errorMessage === "") {
-      res.status(200).send(cache.get(senderName));
+      res.status(200).send(sender);
     } else {
       res.status(400).send(errorMessage);
     }
