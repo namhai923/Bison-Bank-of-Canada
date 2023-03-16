@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
+import FilterModal from '../../views/banking/dashboard/FilterModal';
 
 // assets
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
@@ -38,6 +39,7 @@ const ListCard = (props) => {
                 <Grid item xs={12}>
                     <SubCard>
                         <CardContent>
+                            <FilterModal />
                             {rows.length === 0 ? (
                                 <Typography variant="h2" align="center">
                                     {emptyMessage}
