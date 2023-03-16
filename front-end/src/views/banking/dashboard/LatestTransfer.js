@@ -45,8 +45,9 @@ const LatestTransfer = () => {
     let userInfo = useSelector((state) => state.user);
     let [latest, setLatest] = useState(() => {
         let latestTransfer = 0;
-        if (userInfo.transferHistory.length > 0) {
-            latestTransfer = sortByTime(userInfo.transferHistory)[userInfo.transferHistory.length - 1].amount;
+        let sendTransfer = userInfo.transferHistory.filter((transfer) => transfer.sender === userInfo.userName);
+        if (sendTransfer.length > 0) {
+            latestTransfer = sortByTime(sendTransfer)[sendTransfer.length - 1].amount;
         }
         return latestTransfer;
     });

@@ -1,12 +1,13 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editLocation } from './filterSlice';
+
+import { TextField, Chip, Typography, Modal, Button, Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { IconFilter } from '@tabler/icons';
+
+import CustomSelect from 'ui-component/extended/CustomSelect';
+import categories from 'assets/data/categories';
 
 const style = {
     position: 'absolute',
@@ -21,11 +22,12 @@ const style = {
     p: 4
 };
 
-export default function BasicModal() {
-    let userInfo = useSelector((state) => state.user);
-    const [open, setOpen] = React.useState(false);
+let FilterModal = () => {
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const theme = useTheme();
+
     const [location, setLocation] = useState('');
     let [category, setCategory] = useState('');
     let dispatch = useDispatch();
@@ -72,13 +74,33 @@ export default function BasicModal() {
     };
 
     return (
-        <div>
-            {/*<Button onClick={handleOpen}>Open modal</Button>*/}
-            <Button variant="contained" onClick={handleOpen} style={{ margin: '20px' }}>
-                Filter
-            </Button>
+        <>
+            <Chip
+                label="Filter"
+                icon={<IconFilter />}
+                sx={{
+                    alignItems: 'center',
+                    borderRadius: '27px',
+                    transition: 'all .2s ease-in-out',
+                    borderColor: theme.palette.primary.light,
+                    backgroundColor: theme.palette.primary.light,
+                    '&[aria-controls="menu-list-grow"], &:hover': {
+                        borderColor: theme.palette.primary.main,
+                        background: `${theme.palette.primary.main}!important`,
+                        color: theme.palette.primary.light
+                    }
+                }}
+                variant="outlined"
+                aria-controls={open ? 'menu-list-grow' : undefined}
+                aria-haspopup="true"
+                onClick={handleOpen}
+                color="primary"
+            />
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box sx={style}>
+                    <CustomSelect options={categories} />
+                    <CustomSelect options={categories} />
+
                     <Typography id="modal-modal-title" variant="h2" component="h2" align="center">
                         Filter Menu
                     </Typography>
@@ -132,6 +154,8 @@ export default function BasicModal() {
                     </div>
                 </Box>
             </Modal>
-        </div>
+        </>
     );
-}
+};
+
+export default FilterModal;

@@ -22,8 +22,8 @@ import SubCard from 'ui-component/cards/SubCard';
 import FilterModal from '../../views/banking/dashboard/FilterModal';
 
 // assets
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import { gridSpacing } from 'store/constant';
+import FilterModal from 'views/banking/dashboard/FilterModal';
 
 const ListCard = (props) => {
     let { labels, rows, emptyMessage, title } = props;
@@ -82,7 +82,7 @@ const ListCard = (props) => {
                                                                 ml: 2
                                                             }}
                                                         >
-                                                            <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
+                                                            <row.display.icon fontSize="small" color="inherit" />
                                                         </Avatar>
                                                     </TableRow>
                                                 ))}
