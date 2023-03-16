@@ -41,10 +41,10 @@ Transfer Money:
 1. As a user, I should be able to see the reduction of the exact transfer amount from my bank account after I complete my transfer.
 2. As a user, I should be able to see an increment of total amount in my bank account after someone has transferred me the money.
 3. As a user, I want the app to prevent me from transfering more money than I already have in my bank account by showing some kind of alert message.
-4. As a user I want the app to show me the name of the receiver after entering their bank account number so that I can confirm the name of the person I want to transfer my money to before sending it.
 
 **optional:**
 
+4. As a user I want the app to show me the name of the receiver after entering their bank account number so that I can confirm the name of the person I want to transfer my money to before sending it.
 5. As a user, I should be able to set a 4 digit pin for the receiver to enter before the money gets transferred to their bank account.
 6. As a user and receiver of money, I should be able to enter the 4 digit pin set by user before I can accept the transfer.
 7. As a user I want the app to show me a confirmation dialog (or a JS alert dialog) to confirm the amount before sending the money.
