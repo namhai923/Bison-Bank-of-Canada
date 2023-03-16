@@ -23,10 +23,7 @@ const ExpenseHistory = () => {
     let title = 'Expense History';
     let filterInfo = useSelector((state) => state.filter);
 
-    console.log('Your filter info --> ' + filterInfo.location);
     useEffect(() => {
-        console.log('Popular --> loc = ' + filterInfo.location + ' cat = ' + filterInfo.category);
-        console.log('Running....');
         let expenseHistory = userInfo.expenseHistory;
         let temp = [];
         let counter = 1;

@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { TextField } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { editLocation } from './filterSlice';
 
 const style = {
@@ -16,18 +16,39 @@ const style = {
     width: 400,
     bgcolor: 'background.paper',
     border: '2px solid #000',
+    borderRadius: '25px',
     boxShadow: 24,
     p: 4
 };
 
 export default function BasicModal() {
+    let userInfo = useSelector((state) => state.user);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [location, setLocation] = useState('');
-    const [category, setCategory] = useState('');
+    let [category, setCategory] = useState('');
     let dispatch = useDispatch();
 
+    const getLocations = () => {
+        let expenseHistory = userInfo.expenseHistory;
+        let list = [];
+        for (let i = 0; i < expenseHistory.length; i++) {
+            if (!list.includes(expenseHistory[i].location)) list.push(expenseHistory[i].location);
+        }
+        return list;
+    };
+
+    const getCategory = () => {
+        let expenseHistory = userInfo.expenseHistory;
+        let list = [];
+        for (let i = 0; i < expenseHistory.length; i++) {
+            if (!list.includes(expenseHistory[i].category)) list.push(expenseHistory[i].category);
+        }
+        return list;
+    };
+    let allLocations = getLocations();
+    let categories = getCategory();
     const calculateFilter = () => {
         let storeObj = {};
         category !== '' ? (storeObj.category = category) : (storeObj.category = null);
@@ -35,6 +56,9 @@ export default function BasicModal() {
 
         let a1 = editLocation({ locationInfo: storeObj });
         dispatch(a1);
+
+        setCategory('');
+        setLocation('');
     };
 
     const resetFilter = () => {
@@ -61,32 +85,42 @@ export default function BasicModal() {
                     <Typography variant="h3" id="modal-modal-description" sx={{ mt: 2 }} align="center" style={{ padding: '15px' }}>
                         Location:
                     </Typography>
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <TextField
-                            hiddenLabel
-                            id="filled-hidden-label-small"
-                            defaultValue=""
-                            variant="filled"
-                            size="small"
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Age"
+                            value={location}
                             onChange={(e) => {
                                 setLocation(e.target.value);
                             }}
-                        />
-                    </div>
+                        >
+                            {allLocations.map(function (loc, index) {
+                                return <MenuItem value={loc}>{loc}</MenuItem>;
+                            })}
+                        </Select>
+                    </FormControl>
                     <Typography variant="h3" id="modal-modal-description" sx={{ mt: 2 }} align="center" style={{ padding: '15px' }}>
                         Category:
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <TextField
-                            hiddenLabel
-                            id="filled-hidden-label-small"
-                            defaultValue=""
-                            variant="filled"
-                            size="small"
-                            onChange={(e) => {
-                                setCategory(e.target.value);
-                            }}
-                        />
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                label="Age"
+                                value={category}
+                                onChange={(e) => {
+                                    setCategory(e.target.value);
+                                }}
+                            >
+                                {categories.map(function (cat, index) {
+                                    return <MenuItem value={cat}>{cat}</MenuItem>;
+                                })}
+                            </Select>
+                        </FormControl>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <Button variant="contained" onClick={calculateFilter} style={{ margin: '20px' }}>
