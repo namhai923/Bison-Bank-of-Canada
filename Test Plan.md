@@ -6,8 +6,8 @@
 |**Version** |**Change Date**|**By**|**Description**|
 | :-: | :-: | :-: | :-: |
 |version number|Date of Change|Name of person who made changes|Description of the changes made|
-|V1|Feb 17|Yixi Wu|Test existing finished feature with acceptance testCI pipeline run automated unit/integration test
-|||||
+|V1|Feb 17|Yixi Wu|Test existing finished feature with acceptance testCI pipeline run automated unit/integration test|
+|V2|Mar 16|Yixi Wu|Test all functional feature|
 |||||
 
 
@@ -18,13 +18,14 @@
 
 Scope defines the features, functional or non-functional requirements of the software that **will be** tested.
 
-**Finished Functional Feature:** 
-Track User expense                                will be tested with acceptance test
-Send records, unit test and integration test exist.  
+**Functional**
 
-**Unfinished Feature:**
-Transfer money                      backend part done, unit test and integration test exist
-Hanlde large amount of user: Will be run through load test in the future
+For all of the Functional feature, Unit test and integration test exists, acceptance test step is under this document
+
+
+**Non-Functional**
+
+Hanlde large amount of user: Will be run through load test in next sprint
 
 ## **Roles and Responsibilities** 
 
@@ -102,19 +103,31 @@ Please run both the backend and frontend first before doing acceptance test
 
 Transfer Money:
 1. As a user, I should be able to see the reduction of the exact transfer amount from my bank account after I complete my transfer. 
+
 Test step: Opean two login page, enter the user email "elonmusk@twitter.com" and "daddybezos@amazon.com" respectively, mark down the two account balance. Inside "elonmusk@twitter.com" user, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount "100", then hit "Send" button. Go back to your "Dashboard" on the left-hand side menu, check your purple card that shows remaining balance, it should be reducted with 100
 
 2. As a user, I should be able to see an increment of total amount in my bank account after someone has transferred me the money.
+
 Test step: Opean two login page, enter the user email "elonmusk@twitter.com" and "daddybezos@amazon.com" respectively, mark down the two account balance. Inside "elonmusk@twitter.com" user, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount "100", then hit "Send" button. Go to "daddybezos@amazon.com" account and check its remaining balance in the purple card in the top left corner, it should have 100 increased in the balance.
+
 3. As a user, I want the app to prevent me from transfering more money than I already have in my bank account by showing some kind of alert message.
+
 Test step: Opean login page, enter the user email "anotherdude@gmail.com" mark down the current account balance, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount that is greater than the account balance, then hit "Send" button. It should 
-4. As a user I want the app to show me the name of the receiver after entering their bank account number so that I can confirm the name of the person I want to transfer my money to before sending it.
 
 
 Track Expense:
 1. As a user, I should be able to see my past expense.
-Test step: In login page, enter the user email "elonmusk@twitter.com" and click signin. In the middle, you should be able to see an expense history table.
+
+Test step: In login page, enter the user email "elonmusk@twitter.com" and click signin. In the left hand sign menu, select expense history, you should be able to see an expense history table.
+
 2. As a user, I should be able to see my remaining balance.
+
 Test step: In login page, enter the user email "elonmusk@twitter.com" and click signin. In the top left corner, you should be able to see a purple card with your account balance.
-3. As a user, I should be able to filter/sort my expense based on category/time/amount.
-4. As a user, I should be able to sum my past expense based on time/category.
+
+3. As a user, I should be able to filter/sort my expense based on category/location.
+
+Test step: In login page, enter the user email "elonmusk@twitter.com" and click signin. In the left hand sign menu, select expense history, you should be able to see an expense history table. On the top left corner, click the filter button, choose the category you want to filter, the expense table should shows filter the expense based on the filter label you choose.
+
+4. As a user, I should be able to sum my past expense based on time.
+
+Test step: In login page, enter the user email "elonmusk@twitter.com" and click signin. In the top middle card, you should be able to choose to see the sum of your expense by year or by month.
