@@ -2,13 +2,20 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 // material-ui
-import { Avatar, Grid, CardContent, Typography, Table, TablePagination } from '@mui/material';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import {
+    Avatar,
+    Grid,
+    CardContent,
+    Typography,
+    Table,
+    TablePagination,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper
+} from '@mui/material';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';

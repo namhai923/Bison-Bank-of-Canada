@@ -9,12 +9,13 @@ import Chart from 'react-apexcharts';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-import LineChart from 'utils/LineChart';
+import lineChartData from 'views/banking/dashboard/chart-data/lineChartData';
+import months from 'assets/data/months';
 
 // assets
 import { LocalMallOutlined, Payment } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
-import currentData from 'utils/currentData';
+import filterAmountByTime from 'utils/filterAmountByTime';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,
@@ -58,12 +59,30 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 
+let createChartData = (type, lineData) => {
+    let chartData = {};
+    let compareDate = new Date();
+
+    chartData.data = filterAmountByTime('year', compareDate, lineData);
+    chartData.min = Math.floor(Math.min(...chartData.data));
+    chartData.max = Math.ceil(Math.max(...chartData.data));
+    if (type === 'month') {
+        chartData.data = filterAmountByTime('month', compareDate, lineData);
+        chartData.name = months[compareDate.getMonth()];
+    } else {
+        chartData.name = compareDate.getFullYear();
+    }
+    return chartData;
+};
+
 const TotalSpending = () => {
     const theme = useTheme();
     let userInfo = useSelector((state) => state.user);
-    let [lineData, setLineData] = useState(() => {
-        let totalSpending = userInfo.expenseHistory.concat(userInfo.transferHistory);
-        return currentData('month', totalSpending);
+
+    let [chartData, setChartData] = useState(() => {
+        let sendTransfer = userInfo.transferHistory.filter((transfer) => transfer.sender === userInfo.userName);
+        let totalSpending = userInfo.expenseHistory.concat(sendTransfer);
+        return createChartData('year', totalSpending);
     });
 
     const [timeValue, setTimeValue] = useState(false);
@@ -72,12 +91,15 @@ const TotalSpending = () => {
     };
 
     useEffect(() => {
-        let totalSpending = userInfo.expenseHistory.concat(userInfo.transferHistory);
+        let newChartData = {};
+        let sendTransfer = userInfo.transferHistory.filter((transfer) => transfer.sender === userInfo.userName);
+        let totalSpending = userInfo.expenseHistory.concat(sendTransfer);
         if (timeValue) {
-            setLineData(currentData('month', totalSpending));
+            newChartData = createChartData('month', totalSpending);
         } else {
-            setLineData(currentData('year', totalSpending));
+            newChartData = createChartData('year', totalSpending);
         }
+        setChartData(newChartData);
     }, [timeValue, userInfo]);
 
     return (
@@ -130,7 +152,7 @@ const TotalSpending = () => {
                                         <Grid item>
                                             <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
                                                 $
-                                                {lineData
+                                                {chartData.data
                                                     .reduce((total, current) => {
                                                         return total + current;
                                                     }, 0)
@@ -163,7 +185,7 @@ const TotalSpending = () => {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    {timeValue ? <Chart {...LineChart('month', lineData)} /> : <Chart {...LineChart('year', lineData)} />}
+                                    {timeValue ? <Chart {...lineChartData(chartData)} /> : <Chart {...lineChartData(chartData)} />}
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -2,9 +2,9 @@ import { lazy } from 'react';
 
 // project imports
 import Loadable from 'ui-component/Loadable';
-// login option 3 routing
-const AuthLogin = Loadable(lazy(() => import('views/authentication/auth-template/Login')));
-const AuthRegister = Loadable(lazy(() => import('views/authentication/auth-template/Register')));
+
+const Login = Loadable(lazy(() => import('views/authentication/auth-template/Login')));
+const Register = Loadable(lazy(() => import('views/authentication/auth-template/Register')));
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
 const AuthenticationRoutes = {
@@ -12,11 +12,11 @@ const AuthenticationRoutes = {
     children: [
         {
             path: '/login',
-            element: <AuthLogin />
+            element: <Login />
         },
         {
             path: '/register',
-            element: <AuthRegister />
+            element: <Register />
         }
     ]
 };

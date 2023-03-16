@@ -18,7 +18,7 @@ const ExpenseHistory = () => {
     //     return displayRows;
     // });
 
-    let labels = ['Transaction Id', 'Merchant', 'Date', 'Category', 'Price'];
+    let labels = ['Expense Id', 'Merchant', 'Date', 'Category', 'Price'];
     let emptyMessage = 'Your Expenses Will Appear Here! Make Your First Transaction In Order To Show Display It Here';
     let title = 'Expense History';
     let filterInfo = useSelector((state) => state.filter);

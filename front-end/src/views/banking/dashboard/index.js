@@ -3,13 +3,11 @@ import { Grid } from '@mui/material';
 
 // project imports
 import AccountBalance from './AccountBalance';
-import ExpenseHistory from '../history/ExpenseHistory';
 import TotalSpending from './TotalSpending';
 import LatestExpense from './LatestExpense';
 import LatestTransfer from './LatestTransfer';
 import { gridSpacing } from 'store/constant';
-
-// ==============================|| DEFAULT DASHBOARD ||============================== //
+import TotalGrowthBarChart from './TotalGrowthBarChart';
 
 const Dashboard = () => {
     return (
@@ -37,7 +35,7 @@ const Dashboard = () => {
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} md={12}>
-                        <ExpenseHistory />
+                        <TotalGrowthBarChart />
                     </Grid>
                 </Grid>
             </Grid>
