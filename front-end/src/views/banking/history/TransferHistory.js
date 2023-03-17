@@ -1,11 +1,27 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ListCard from 'ui-component/cards/ListCard';
 import createData from 'utils/createData';
+import bbcApi from '../../../api/bbcApi';
+import { setUser } from '../../authentication/userSlice';
 
 const TransferHistory = () => {
     let userInfo = useSelector((state) => state.user);
+    let dispatch = useDispatch();
+
+    window.addEventListener('load', async () => {
+        if (userInfo === null || userInfo.userName === '') return;
+
+        try {
+            let user = await bbcApi.getUser(userInfo.userName);
+            let action = setUser(user);
+            dispatch(action);
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
     let [rows] = useState(() => {
         let counter = 1;
         let temp = userInfo.transferHistory;
