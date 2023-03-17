@@ -81,6 +81,9 @@ Track Expense Sequence
 Send Records Sequence
 ![This is the sequence Diagram](/SendRecordsSeq.png)
 
+Transfer Money Sequence
+![This is the sequence Diagram](/TransferSeq.png)
+
 ## Running the app
 Run backend:
 cd into the back-end folder first, you will need a .env file with the following content: (for ease of grading/testing purpose, we are stroing this secret in README in plain text)
