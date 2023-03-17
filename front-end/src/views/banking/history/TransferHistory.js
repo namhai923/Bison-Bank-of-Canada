@@ -9,7 +9,6 @@ import { setUser } from '../../authentication/userSlice';
 const TransferHistory = () => {
     let userInfo = useSelector((state) => state.user);
     let filterInfo = useSelector((state) => state.filter);
-
     let dispatch = useDispatch();
 
     window.addEventListener('load', async () => {
