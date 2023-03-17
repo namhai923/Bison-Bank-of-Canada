@@ -1,9 +1,13 @@
-import { createStore } from 'redux';
-import reducer from './reducer';
+import customizationReducer from '../layout/MainLayout/customizeSlice';
+import userReducer from '../views/authentication/userSlice';
+import filterReducer from '../ui-component/filter/filterSlice';
 
-// ==============================|| REDUX - MAIN STORE ||============================== //
+const { configureStore } = require('@reduxjs/toolkit');
 
-const store = createStore(reducer);
-const persister = 'Free';
-
-export { store, persister };
+export default configureStore({
+    reducer: {
+        customization: customizationReducer,
+        user: userReducer,
+        filter: filterReducer
+    }
+});

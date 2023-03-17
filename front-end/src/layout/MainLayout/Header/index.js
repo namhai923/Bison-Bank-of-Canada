@@ -10,6 +10,7 @@ import ProfileSection from './ProfileSection';
 // assets
 import { IconMenu2 } from '@tabler/icons';
 import WelcomeSection from './WelcomeSection';
+import LogoSection from '../LogoSection';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
@@ -27,6 +28,9 @@ const Header = ({ handleLeftDrawerToggle }) => {
                     }
                 }}
             >
+                <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
+                    <LogoSection />
+                </Box>
                 <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
                         variant="rounded"

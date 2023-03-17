@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
+import { ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
-import { MENU_OPEN, SET_MENU } from 'store/actions';
+import { openMenu, setMenu } from '../../../customizeSlice';
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -17,7 +17,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 const NavItem = ({ item, level }) => {
     const theme = useTheme();
-    const dispatch = useDispatch();
+    let dispatch = useDispatch();
     const customization = useSelector((state) => state.customization);
     const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -47,8 +47,12 @@ const NavItem = ({ item, level }) => {
     }
 
     const itemHandler = (id) => {
-        dispatch({ type: MENU_OPEN, id });
-        if (matchesSM) dispatch({ type: SET_MENU, opened: false });
+        let action = openMenu(id);
+        dispatch(action);
+        if (matchesSM) {
+            action = setMenu(false);
+            dispatch(action);
+        }
     };
 
     // active menu item on page load
@@ -58,7 +62,8 @@ const NavItem = ({ item, level }) => {
             .split('/')
             .findIndex((id) => id === item.id);
         if (currentIndex > -1) {
-            dispatch({ type: MENU_OPEN, id: item.id });
+            let action = openMenu({ id: item.id });
+            dispatch(action);
         }
         // eslint-disable-next-line
     }, []);
@@ -93,15 +98,6 @@ const NavItem = ({ item, level }) => {
                     )
                 }
             />
-            {item.chip && (
-                <Chip
-                    color={item.chip.color}
-                    variant={item.chip.variant}
-                    size={item.chip.size}
-                    label={item.chip.label}
-                    avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
-                />
-            )}
         </ListItemButton>
     );
 };

@@ -10,6 +10,13 @@ let axiosClient = axios.create({
     paramSerializer: (params) => queryString.stringify(params)
 });
 
+axiosClient.interceptors.request.use((config) => {
+    return config;
+}),
+    (error) => {
+        throw error;
+    };
+
 axiosClient.interceptors.response.use(
     (response) => {
         if (response && response.data) {
@@ -18,11 +25,12 @@ axiosClient.interceptors.response.use(
         return response;
     },
     (error) => {
-        if (error.response.status === 404) {
-            return null;
-        } else {
-            throw error;
-        }
+        throw error;
+        // if (error.response.status === 404) {
+        //     return null;
+        // } else {
+        //     throw error;
+        // }
     }
 );
 export default axiosClient;

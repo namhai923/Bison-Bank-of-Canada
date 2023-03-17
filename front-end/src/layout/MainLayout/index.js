@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
@@ -6,16 +5,10 @@ import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
 
-// project imports
-import Breadcrumbs from 'ui-component/extended/Breadcrumbs';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import navigation from 'menu-items';
 import { drawerWidth } from 'store/constant';
-import { SET_MENU } from 'store/actions';
-
-// assets
-import { IconChevronRight } from '@tabler/icons';
+import { setMenu } from './customizeSlice';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -65,19 +58,15 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 const MainLayout = () => {
     const theme = useTheme();
-    const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
+    const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 
     // Handle left drawer
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
     const dispatch = useDispatch();
     const handleLeftDrawerToggle = () => {
-        dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
+        let action = setMenu(!leftDrawerOpened);
+        dispatch(action);
     };
-
-    useEffect(() => {
-        dispatch({ type: SET_MENU, opened: !matchDownMd });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [matchDownMd]);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -99,12 +88,10 @@ const MainLayout = () => {
             </AppBar>
 
             {/* drawer */}
-            <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+            <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
 
             {/* main content */}
             <Main theme={theme} open={leftDrawerOpened}>
-                {/* breadcrumb */}
-                <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
                 <Outlet />
             </Main>
         </Box>

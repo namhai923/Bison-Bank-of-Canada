@@ -2,6 +2,7 @@ const request = require("supertest");
 const server = require("../../../../index");
 const mongoose = require("mongoose");
 const app = require("../../../app");
+const { clearCacheTimeout } = require("../../../cache");
 
 const locationName = "superstore";
 const userNameList = ["user1@gmail.com", "user2@gmail.com","user3@gmail.com","user4@gmail.com","user5@gmail.com"];
@@ -28,11 +29,18 @@ afterAll(async () => {
   for (let collection of collections) {
     await collection.deleteMany({});
   }
+  clearCacheTimeout();
   await mongoose.connection.close();
   server.close();
 });
 
 describe("Testing send transaction records", () => {
+
+  it("/Post /sendRecords sendRecord with invalid body", async () => {
+    const res = await request(app).post("/admin/sendRecords").send("Invalid body");
+    expect(res.statusCode).toBe(500);
+    expect(res.text).toEqual(expect.stringContaining("Missing require parameter in request body."));
+  });
 
   it("/Post /sendRecords sendRecord amount not a number", async () => {
     const res = await request(app).post("/admin/sendRecords").send({

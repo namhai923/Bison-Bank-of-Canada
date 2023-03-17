@@ -1,0 +1,30 @@
+import a from './alphabet/letter-a.svg';
+import b from './alphabet/letter-b.svg';
+import c from './alphabet/letter-c.svg';
+import d from './alphabet/letter-d.svg';
+import e from './alphabet/letter-e.svg';
+import f from './alphabet/letter-f.svg';
+import g from './alphabet/letter-g.svg';
+import h from './alphabet/letter-h.svg';
+import i from './alphabet/letter-i.svg';
+import j from './alphabet/letter-j.svg';
+import k from './alphabet/letter-k.svg';
+import l from './alphabet/letter-l.svg';
+import m from './alphabet/letter-m.svg';
+import n from './alphabet/letter-n.svg';
+import o from './alphabet/letter-o.svg';
+import p from './alphabet/letter-p.svg';
+import q from './alphabet/letter-q.svg';
+import r from './alphabet/letter-r.svg';
+import s from './alphabet/letter-s.svg';
+import t from './alphabet/letter-t.svg';
+import u from './alphabet/letter-u.svg';
+import v from './alphabet/letter-v.svg';
+import w from './alphabet/letter-w.svg';
+import x from './alphabet/letter-x.svg';
+import y from './alphabet/letter-y.svg';
+import z from './alphabet/letter-z.svg';
+
+let alphabetAvatar = { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z };
+
+export default alphabetAvatar;

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
-// import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -23,28 +23,43 @@ import {
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
-import User1 from 'assets/images/users/user-round.svg';
+import alphabetAvatar from 'assets/images/alphabetAvatar';
+import blankState from 'assets/data/blankState';
+import { setUser } from 'views/authentication/userSlice';
 
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons';
 
-// ==============================|| PROFILE MENU ||============================== //
-
 const ProfileSection = () => {
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
-    // const navigate = useNavigate();
+    let navigate = useNavigate();
+    let dispatch = useDispatch();
 
+    let userInfo = useSelector((state) => state.user);
+    let customization = useSelector((state) => state.customization);
     const [open, setOpen] = useState(false);
+    let [icon, setIcon] = useState(() => {
+        let icon = alphabetAvatar.b;
+        for (let key of Object.keys(alphabetAvatar)) {
+            if (key === Array.from(userInfo.firstName.toLowerCase())[0]) {
+                icon = alphabetAvatar[key];
+            }
+        }
+        return icon;
+    });
+
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = useRef(null);
-    const handleLogout = async () => {
-        console.log('Logout');
-        // if (route && route !== '') {
-        //         navigate(route);
-        //     }
+
+    const handleLogout = async (event) => {
+        let action = setUser(blankState);
+        dispatch(action);
+        navigate('/');
+        localStorage.clear();
+        handleClose(event);
+        setIcon(alphabetAvatar.b);
     };
 
     const handleClose = (event) => {
@@ -63,9 +78,8 @@ const ProfileSection = () => {
         if (prevOpen.current === true && open === false) {
             anchorRef.current.focus();
         }
-
         prevOpen.current = open;
-    }, [open]);
+    }, [open, userInfo]);
 
     return (
         <>
@@ -91,7 +105,7 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={User1}
+                        src={icon}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
@@ -135,15 +149,13 @@ const ProfileSection = () => {
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                                     <Box sx={{ p: 2 }}>
-                                        <Stack>
-                                            <Stack direction="row" spacing={0.5} alignItems="center">
-                                                <Typography variant="h4" sx={{ fontWeight: 400 }}>
-                                                    Good,
-                                                </Typography>
-                                                <Typography component="span" variant="h4">
-                                                    Morning!
-                                                </Typography>
-                                            </Stack>
+                                        <Stack direction="row" spacing={0.5} alignItems="center">
+                                            <Typography variant="h4" sx={{ fontWeight: 400 }}>
+                                                Good Morning,
+                                            </Typography>
+                                            <Typography component="span" variant="h4">
+                                                {userInfo.firstName} {userInfo.lastName}!
+                                            </Typography>
                                         </Stack>
                                         <Divider />
                                     </Box>
