@@ -6,7 +6,7 @@ import store from "../store"
 import { BrowserRouter } from 'react-router-dom';
 import config from '../config';
 import '@testing-library/jest-dom';
-import  { vSchema } from "../views/authentication/auth-forms/AuthRegister";
+import  { vSchema } from "../views/authentication/auth-forms/RegisterForm";
 
 const customRender = component => render(
     <BrowserRouter basename={config.basename}>

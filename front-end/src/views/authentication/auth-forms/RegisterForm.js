@@ -10,7 +10,23 @@ import { Formik } from 'formik';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-
+const vSchema = Yup.object().shape({
+    email: Yup.string().email('Must be a valid email').max(50).required('Email is required'),
+    fname: Yup.string()
+        .max(50, 'Cannot have more than 50 characters')
+        .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
+        .required('First Name is required'),
+    lname: Yup.string()
+        .max(50, 'Cannot have more than 50 characters')
+        .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
+        .required('Last Name is required'),
+    balance: Yup.number()
+        .min(0, "Can't be negative")
+        .max(100000, 'Too much, less than $100,000 please')
+        .integer('Should be an integer')
+        .required('Account balance is required')
+});
+export { vSchema };
 const RegisterForm = (props) => {
     let { handleSubmit } = props;
     const theme = useTheme();
@@ -25,22 +41,7 @@ const RegisterForm = (props) => {
                     lname: '',
                     balance: ''
                 }}
-                validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    fname: Yup.string()
-                        .max(255)
-                        .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
-                        .required('First Name is required'),
-                    lname: Yup.string()
-                        .max(255)
-                        .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
-                        .required('Last Name is required'),
-                    balance: Yup.number()
-                        .min(0, "Can't be negative")
-                        .max(100000, 'Too much, less than $100,000 please')
-                        .integer('Should be an integer')
-                        .required('Account balance is required')
-                })}
+                validationSchema={vSchema}
                 onSubmit={(values) => handleSubmit(values)}
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
@@ -137,6 +138,7 @@ const RegisterForm = (props) => {
                                     disabled={isSubmitting}
                                     fullWidth
                                     size="large"
+                                    data-testid="signUpButton"
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
