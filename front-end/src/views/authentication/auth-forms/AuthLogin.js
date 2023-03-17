@@ -8,19 +8,23 @@ import { Formik } from 'formik';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
+const vSchema = Yup.object().shape({
+    email: Yup.string().email('Must be a valid email').max(50).required('Email is required')
+});
+export { vSchema };
+
 const AuthLogin = (props) => {
     let { handleSubmit } = props;
     const theme = useTheme();
-
     return (
         <>
             <Formik
                 initialValues={{
                     email: ''
                 }}
-                validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
-                })}
+                validationSchema={
+                    vSchema
+                }
                 onSubmit={(values) => handleSubmit(values.email)}
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
@@ -29,6 +33,7 @@ const AuthLogin = (props) => {
                             <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-login"
+                                data-testid = 'UsernameInputBox'
                                 type="email"
                                 value={values.email}
                                 name="email"
@@ -58,6 +63,7 @@ const AuthLogin = (props) => {
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
+                                    data-testid = 'sign'
                                 >
                                     Sign in
                                 </Button>
