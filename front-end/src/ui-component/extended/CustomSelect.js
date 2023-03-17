@@ -1,7 +1,12 @@
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+
 import chroma from 'chroma-js';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import PropTypes from 'prop-types';
+import { InputLabel } from '@mui/material';
+
+import { setFilter } from 'ui-component/filter/filterSlice';
 
 const colourStyles = {
     control: (styles) => ({ ...styles, backgroundColor: 'white' }),
@@ -42,13 +47,55 @@ const colourStyles = {
 
 const animatedComponents = makeAnimated();
 
+let getOptions = (data, color) => {
+    let options = new Set(data);
+    options = [...options].map((item) => {
+        return { value: item, label: item, color };
+    });
+    return options;
+};
+
 let CustomSelect = (props) => {
-    return <Select isMulti styles={colourStyles} isSearchable components={animatedComponents} closeMenuOnSelect={false} {...props} />;
+    let { label, field, data, color } = props;
+    let { name } = field;
+
+    let dispatch = useDispatch();
+    let filterInfo = useSelector((state) => state.filter);
+
+    let handleChange = (selectedOptions) => {
+        let filter = selectedOptions.map((item) => item.value);
+        let action = setFilter({ type: name, filter });
+        dispatch(action);
+    };
+
+    return (
+        <>
+            <InputLabel htmlFor={name}>{label}</InputLabel>
+            <Select
+                {...props}
+                id={name}
+                isMulti
+                styles={colourStyles}
+                isSearchable
+                options={getOptions(
+                    data.map((item) => item[name]),
+                    color
+                )}
+                defaultValue={getOptions(filterInfo[name], color)}
+                components={animatedComponents}
+                closeMenuOnSelect={false}
+                placeholder={`--Filter by ${name}`}
+                onChange={handleChange}
+            />
+        </>
+    );
 };
 
 CustomSelect.propTypes = {
-    value: PropTypes.arrayOf(PropTypes.object),
-    editMode: PropTypes.bool
+    label: PropTypes.string,
+    field: PropTypes.object,
+    data: PropTypes.arrayOf(PropTypes.object),
+    color: PropTypes.string
 };
 
 export default CustomSelect;

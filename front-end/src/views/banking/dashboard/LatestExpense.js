@@ -55,7 +55,7 @@ const LatestExpense = () => {
 
     useEffect(() => {
         let latestExpense = 0;
-        if (userInfo.transferHistory.length > 0) {
+        if (userInfo.expenseHistory.length > 0) {
             latestExpense = sortByTime(userInfo.expenseHistory)[userInfo.expenseHistory.length - 1].amount;
         }
         setLatest(latestExpense);

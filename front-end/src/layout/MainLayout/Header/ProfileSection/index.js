@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -35,7 +35,7 @@ const ProfileSection = () => {
     let navigate = useNavigate();
     let dispatch = useDispatch();
 
-    let userInfo = useSelector((state) => state.user, shallowEqual);
+    let userInfo = useSelector((state) => state.user);
     let customization = useSelector((state) => state.customization);
     const [open, setOpen] = useState(false);
     let [icon, setIcon] = useState(() => {

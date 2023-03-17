@@ -19,14 +19,13 @@ import {
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
-import FilterModal from '../../views/banking/dashboard/FilterModal';
+import FilterModal from 'ui-component/filter/FilterModal';
 
 // assets
 import { gridSpacing } from 'store/constant';
-import FilterModal from 'views/banking/dashboard/FilterModal';
 
 const ListCard = (props) => {
-    let { labels, rows, emptyMessage, title } = props;
+    let { labels, rows, emptyMessage, title, filterLabels, filterData } = props;
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -46,7 +45,7 @@ const ListCard = (props) => {
                 <Grid item xs={12}>
                     <SubCard>
                         <CardContent>
-                            <FilterModal />
+                            <FilterModal filterLabels={filterLabels} filterData={filterData} />
                             {rows.length === 0 ? (
                                 <Typography variant="h2" align="center">
                                     {emptyMessage}
@@ -112,7 +111,9 @@ ListCard.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.string),
     rows: PropTypes.array,
     emptyMessage: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
+    filterLabels: PropTypes.arrayOf(PropTypes.object),
+    filterData: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default ListCard;
