@@ -9,7 +9,7 @@ export default function createData(type, data) {
     let { date, amount } = data;
 
     if (amount <= 10) {
-        (color = '#fff'), (background = '#ffc107');
+        (color = '#fff'), (background = '#4caf50');
     } else if (amount >= 50) {
         (color = '#fff'), (background = '#f44336');
     } else {

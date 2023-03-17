@@ -1,7 +1,7 @@
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const WelcomeMessage = () => {
-    let userInfo = useSelector((state) => state.user, shallowEqual);
+    let userInfo = useSelector((state) => state.user);
 
     return <h1 style={{ paddingLeft: '25px' }}> Welcome, {userInfo.firstName}!</h1>;
 };

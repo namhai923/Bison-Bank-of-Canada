@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -49,10 +49,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 
-// ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
-
 const AccountBalance = () => {
-    let accountBalance = useSelector((state) => state.user.accountBalance, shallowEqual);
+    let accountBalance = useSelector((state) => state.user.accountBalance);
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);

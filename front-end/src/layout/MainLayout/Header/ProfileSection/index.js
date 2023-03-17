@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -35,8 +35,8 @@ const ProfileSection = () => {
     let navigate = useNavigate();
     let dispatch = useDispatch();
 
-    let userInfo = useSelector((state) => state.user, shallowEqual);
-    const customization = useSelector((state) => state.customization);
+    let userInfo = useSelector((state) => state.user);
+    let customization = useSelector((state) => state.customization);
     const [open, setOpen] = useState(false);
     let [icon, setIcon] = useState(() => {
         let icon = alphabetAvatar.b;
@@ -53,11 +53,12 @@ const ProfileSection = () => {
      * */
     const anchorRef = useRef(null);
 
-    const handleLogout = async () => {
+    const handleLogout = async (event) => {
         let action = setUser(blankState);
         dispatch(action);
         navigate('/');
         localStorage.clear();
+        handleClose(event);
         setIcon(alphabetAvatar.b);
     };
 
@@ -148,15 +149,13 @@ const ProfileSection = () => {
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                                     <Box sx={{ p: 2 }}>
-                                        <Stack>
-                                            <Stack direction="row" spacing={0.5} alignItems="center">
-                                                <Typography variant="h4" sx={{ fontWeight: 400 }}>
-                                                    Good Morning,
-                                                </Typography>
-                                                <Typography component="span" variant="h4">
-                                                    {userInfo.firstName} {userInfo.lastName}!
-                                                </Typography>
-                                            </Stack>
+                                        <Stack direction="row" spacing={0.5} alignItems="center">
+                                            <Typography variant="h4" sx={{ fontWeight: 400 }}>
+                                                Good Morning,
+                                            </Typography>
+                                            <Typography component="span" variant="h4">
+                                                {userInfo.firstName} {userInfo.lastName}!
+                                            </Typography>
                                         </Stack>
                                         <Divider />
                                     </Box>
