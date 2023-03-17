@@ -7,6 +7,11 @@ import { Formik } from 'formik';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import bbcApi from 'api/bbcApi';
 import { setUser } from 'views/authentication/userSlice';
+const vSchema = Yup.object().shape({
+    receiver: Yup.string().email('Must be a valid email').max(50).required('Email is required'),
+    amount: Yup.number().min(1, 'Should be greater than 0').required('Amount is required')
+});
+export { vSchema };
 
 let Transfer = () => {
     let dispatch = useDispatch();
@@ -39,10 +44,7 @@ let Transfer = () => {
                 receiver: '',
                 amount: ''
             }}
-            validationSchema={Yup.object().shape({
-                receiver: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                amount: Yup.number().min(1, 'Should be greater than 0').required('Amount is required')
-            })}
+            validationSchema={vSchema}
             onSubmit={(values) => handleSubmit(values)}
         >
             {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
