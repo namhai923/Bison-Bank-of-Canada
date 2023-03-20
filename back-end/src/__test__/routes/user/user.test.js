@@ -232,12 +232,10 @@ describe("Testing User index", () => {
     expect(res.body.category).toBe(expenseCategory);
   });
 
-  it("/Get check user balance after transfer", async () => {
+  it("/Get check user balance after expense", async () => {
     const user = await request(app)
       .get("/user/" + userName)
       .send();
-    expect(user.body.accountBalance).toBe(
-      originalBalance - transferAmount - expenseAmount
-    );
+    expect(user.body.accountBalance).toBe(originalBalance - expenseAmount);
   });
 });
