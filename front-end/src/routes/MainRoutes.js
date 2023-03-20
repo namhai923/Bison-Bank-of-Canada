@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import PrivateRoute from './PrivateRoute';
 
 // dashboard routing
 const Dashboard = Loadable(lazy(() => import('views/banking/dashboard')));
@@ -14,7 +15,11 @@ const Transfer = Loadable(lazy(() => import('views/banking/send-money/Transfer')
 
 const MainRoutes = {
     path: '/',
-    element: <MainLayout />,
+    element: (
+        <PrivateRoute>
+            <MainLayout />
+        </PrivateRoute>
+    ),
     children: [
         {
             path: '/',

@@ -1,6 +1,6 @@
 let blankState = {
     userName: '',
-    firstName: 'Bison',
+    firstName: '',
     lastName: '',
     accountBalance: 0,
     expenseHistory: [],

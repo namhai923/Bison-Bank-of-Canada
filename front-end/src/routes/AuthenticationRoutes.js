@@ -8,7 +8,6 @@ const Register = Loadable(lazy(() => import('views/authentication/auth-template/
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
 const AuthenticationRoutes = {
-    path: '/',
     children: [
         {
             path: '/login',

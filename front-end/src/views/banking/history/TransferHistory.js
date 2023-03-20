@@ -1,27 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import ListCard from 'ui-component/cards/ListCard';
 import createData from 'utils/createData';
-import bbcApi from '../../../api/bbcApi';
-import { setUser } from '../../authentication/userSlice';
 
 const TransferHistory = () => {
     let userInfo = useSelector((state) => state.user);
     let filterInfo = useSelector((state) => state.filter);
-    let dispatch = useDispatch();
-
-    window.addEventListener('load', async () => {
-        if (userInfo === null || userInfo.userName === '') return;
-
-        try {
-            let user = await bbcApi.getUser(userInfo.userName);
-            let action = setUser(user);
-            dispatch(action);
-        } catch (error) {
-            console.log(error);
-        }
-    });
 
     let labels = ['Transfer Id', ' ', 'Receiver/Recipeint', 'Date', 'Amount'];
     let filterLabels = [

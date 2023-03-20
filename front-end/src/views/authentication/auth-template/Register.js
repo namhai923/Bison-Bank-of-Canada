@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
@@ -18,6 +18,7 @@ const Register = () => {
     const theme = useTheme();
     let navigate = useNavigate();
     let dispatch = useDispatch();
+    let location = useLocation();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     let [error, setError] = useState('');
 
@@ -29,7 +30,11 @@ const Register = () => {
             let userInfo = await bbcApi.getUser(userName);
             let action = setUser(userInfo);
             dispatch(action);
-            navigate('/');
+            if (location.state?.from) {
+                navigate(location.state.from);
+            } else {
+                navigate('/');
+            }
         } catch (error) {
             if (error.name === 'AxiosError') {
                 setError(error.response.data);
