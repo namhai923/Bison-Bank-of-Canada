@@ -8,7 +8,7 @@ import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material'
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { drawerWidth } from 'store/constant';
-import { setMenu } from './customizeSlice';
+import { setMenu } from '../../store/customizeSlice';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({

@@ -11,7 +11,7 @@ import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
 import Logo from 'ui-component/Logo';
 import RegisterForm from '../auth-forms/RegisterForm';
-import { setUser } from '../userSlice';
+import { setUser } from '../../../store/userSlice';
 import bbcApi from 'api/bbcApi';
 
 const Register = () => {

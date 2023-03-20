@@ -62,6 +62,7 @@ router.post("/:name/transfer", async (req, res, next) => {
     }
     let sender = await User.findOne({ userName: senderName });
     let receiver = await User.findOne({ userName: receiverName });
+    let transferHistory;
 
     if (receiver != null) {
       if (isNaN(amount)) {
@@ -81,7 +82,7 @@ router.post("/:name/transfer", async (req, res, next) => {
                 parseFloat(receiver.accountBalance * 100) + amount * 100
               ) / 100;
 
-            let transferHistory = {
+            transferHistory = {
               sender: senderName,
               receiver: receiverName,
               date: Date.now(),
@@ -113,7 +114,7 @@ router.post("/:name/transfer", async (req, res, next) => {
     }
 
     if (errorMessage === "") {
-      res.status(200).send(sender);
+      res.status(200).send(transferHistory);
     } else {
       res.status(400).send(errorMessage);
     }

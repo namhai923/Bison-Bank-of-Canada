@@ -25,7 +25,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
 import blankState from 'assets/data/blankState';
-import { setUser } from 'views/authentication/userSlice';
+import { setUser } from 'store/userSlice';
 
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons';

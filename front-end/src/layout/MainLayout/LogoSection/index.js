@@ -7,7 +7,7 @@ import { ButtonBase } from '@mui/material';
 // project imports
 import config from 'config';
 import Logo from 'ui-component/Logo';
-import { openMenu } from '../customizeSlice';
+import { openMenu } from '../../../store/customizeSlice';
 
 // ==============================|| MAIN LOGO ||============================== //
 

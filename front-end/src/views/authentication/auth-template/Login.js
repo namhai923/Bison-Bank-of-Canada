@@ -11,7 +11,7 @@ import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
 import LoginForm from '../auth-forms/LoginForm';
 import Logo from 'ui-component/Logo';
-import { setUser } from '../userSlice';
+import { setUser } from '../../../store/userSlice';
 import bbcApi from 'api/bbcApi';
 
 // assets

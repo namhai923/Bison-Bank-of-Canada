@@ -12,7 +12,7 @@ import themes from 'themes';
 
 //project import
 import bbcApi from 'api/bbcApi';
-import { setUser } from 'views/authentication/userSlice';
+import { setUser } from 'store/userSlice';
 
 const App = () => {
     const customization = useSelector((state) => state.customization);
