@@ -167,7 +167,6 @@ describe("Testing User index", () => {
     expect(receiver.body.accountBalance).toBe(originalBalance + transferAmount);
   });
 
-  //----------------------------------------------------------------
   it("/Post /user/{userName}/expense fail with null body", async () => {
     const res = await request(app)
       .post("/user/" + userName + "/expense")
