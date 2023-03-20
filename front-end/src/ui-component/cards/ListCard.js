@@ -62,27 +62,29 @@ const ListCard = (props) => {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                                    <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                                                    <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                                         <TableCell component="th" scope="row">
                                                             {row.transNumber}
                                                         </TableCell>
-                                                        {Object.values(row.data).map((data) => (
-                                                            <TableCell align="left">{data}</TableCell>
+                                                        {Object.values(row.data).map((value) => (
+                                                            <TableCell align="left">{value}</TableCell>
                                                         ))}
-                                                        <Avatar
-                                                            variant="rounded"
-                                                            sx={{
-                                                                width: 16,
-                                                                height: 16,
-                                                                borderRadius: '5px',
-                                                                backgroundColor: row.display.background,
-                                                                color: row.display.color,
-                                                                ml: 2
-                                                            }}
-                                                        >
-                                                            <row.display.icon fontSize="small" color="inherit" />
-                                                        </Avatar>
+                                                        <TableCell component="th" scope="row">
+                                                            <Avatar
+                                                                variant="rounded"
+                                                                sx={{
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    borderRadius: '5px',
+                                                                    backgroundColor: row.display.background,
+                                                                    color: row.display.color,
+                                                                    ml: 2
+                                                                }}
+                                                            >
+                                                                <row.display.icon fontSize="small" color="inherit" />
+                                                            </Avatar>
+                                                        </TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>

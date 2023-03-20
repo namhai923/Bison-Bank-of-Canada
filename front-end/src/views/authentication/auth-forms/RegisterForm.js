@@ -26,7 +26,7 @@ const vSchema = Yup.object().shape({
         .integer('Should be an integer')
         .required('Account balance is required')
 });
-export { vSchema };
+
 const RegisterForm = (props) => {
     let { handleSubmit } = props;
     const theme = useTheme();
@@ -63,11 +63,7 @@ const RegisterForm = (props) => {
                                         onChange={handleChange}
                                         inputProps={{}}
                                     />
-                                    {touched.fname && errors.fname && (
-                                        <FormHelperText error id="standard-weight-helper-text-fname-register">
-                                            {errors.fname}
-                                        </FormHelperText>
-                                    )}
+                                    {touched.fname && errors.fname && <FormHelperText error>{errors.fname}</FormHelperText>}
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -86,11 +82,7 @@ const RegisterForm = (props) => {
                                         onChange={handleChange}
                                         inputProps={{}}
                                     />
-                                    {touched.lname && errors.lname && (
-                                        <FormHelperText error id="standard-weight-helper-text-lname-register">
-                                            {errors.lname}
-                                        </FormHelperText>
-                                    )}
+                                    {touched.lname && errors.lname && <FormHelperText error>{errors.lname}</FormHelperText>}
                                 </FormControl>
                             </Grid>
                         </Grid>
@@ -106,11 +98,7 @@ const RegisterForm = (props) => {
                                 onChange={handleChange}
                                 inputProps={{}}
                             />
-                            {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text-email-register">
-                                    {errors.email}
-                                </FormHelperText>
-                            )}
+                            {touched.email && errors.email && <FormHelperText error>{errors.email}</FormHelperText>}
                         </FormControl>
 
                         <FormControl fullWidth error={Boolean(touched.balance && errors.balance)} sx={{ ...theme.typography.customInput }}>
@@ -124,11 +112,7 @@ const RegisterForm = (props) => {
                                 onChange={handleChange}
                                 inputProps={{}}
                             />
-                            {touched.balance && errors.balance && (
-                                <FormHelperText error id="standard-weight-helper-text-balance-register">
-                                    {errors.balance}
-                                </FormHelperText>
-                            )}
+                            {touched.balance && errors.balance && <FormHelperText error>{errors.balance}</FormHelperText>}
                         </FormControl>
 
                         <Box sx={{ mt: 2 }}>
@@ -159,3 +143,4 @@ RegisterForm.propTypes = {
 };
 
 export default RegisterForm;
+export { vSchema };

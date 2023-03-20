@@ -10,7 +10,7 @@ import Routes from 'routes';
 // defaultTheme
 import themes from 'themes';
 
-//project import
+//project imports
 import bbcApi from 'api/bbcApi';
 import { setUser } from 'store/userSlice';
 

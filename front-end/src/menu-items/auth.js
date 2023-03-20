@@ -17,7 +17,6 @@ const auth = {
             title: 'Authentication',
             type: 'collapse',
             icon: icons.IconKey,
-
             children: [
                 {
                     id: 'login',

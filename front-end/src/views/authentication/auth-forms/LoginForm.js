@@ -11,7 +11,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 const vSchema = Yup.object().shape({
     email: Yup.string().email('Must be a valid email').max(50).required('Email is required')
 });
-export { vSchema };
+
 const LoginForm = (props) => {
     let { handleSubmit } = props;
     const theme = useTheme();
@@ -39,11 +39,7 @@ const LoginForm = (props) => {
                                 label="Email Address / Username"
                                 inputProps={{}}
                             />
-                            {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text-email-login">
-                                    {errors.email}
-                                </FormHelperText>
-                            )}
+                            {touched.email && errors.email && <FormHelperText error>{errors.email}</FormHelperText>}
                         </FormControl>
                         {errors.submit && (
                             <Box sx={{ mt: 3 }}>
@@ -78,3 +74,4 @@ LoginForm.propTypes = {
 };
 
 export default LoginForm;
+export { vSchema };

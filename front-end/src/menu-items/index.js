@@ -1,10 +1,7 @@
 import banking from './banking';
-import auth from './auth';
-
-// ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-    items: [banking, auth]
+    items: [banking]
 };
 
 export default menuItems;

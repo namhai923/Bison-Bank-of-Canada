@@ -1,10 +1,10 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, FormHelperText, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { toast } from 'react-toastify';
 
 // project imports
 import AuthWrapper from '../AuthWrapper';
@@ -20,27 +20,34 @@ const Register = () => {
     let dispatch = useDispatch();
     let location = useLocation();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-    let [error, setError] = useState('');
 
     let handleSubmit = async (values) => {
-        try {
-            let userName = values.email;
-
-            await bbcApi.createUser({ userName, firstName: values.fname, lastName: values.lname, accountBalance: values.balance });
-            let userInfo = await bbcApi.getUser(userName);
-            let action = setUser(userInfo);
-            dispatch(action);
-            if (location.state?.from) {
-                navigate(location.state.from);
-            } else {
-                navigate('/');
+        toast.promise(
+            bbcApi
+                .createUser({ userName: values.email, firstName: values.fname, lastName: values.lname, accountBalance: values.balance })
+                .then((result) => {
+                    let action = setUser(result);
+                    dispatch(action);
+                    if (location.state?.from) {
+                        navigate(location.state.from);
+                    } else {
+                        navigate('/');
+                    }
+                }),
+            {
+                pending: 'Hold on a sec ⌛',
+                success: 'Hooray 🎉🎉🎉',
+                error: {
+                    render({ data }) {
+                        if (data.name === 'AxiosError') {
+                            return data.response.data;
+                        } else {
+                            console.log(data);
+                        }
+                    }
+                }
             }
-        } catch (error) {
-            if (error.name === 'AxiosError') {
-                setError(error.response.data);
-            }
-            console.log(error);
-        }
+        );
     };
 
     return (
@@ -79,7 +86,6 @@ const Register = () => {
                                                     >
                                                         Enter your credentials to continue
                                                     </Typography>
-                                                    <FormHelperText error>{error}</FormHelperText>
                                                 </Stack>
                                             </Grid>
                                         </Grid>

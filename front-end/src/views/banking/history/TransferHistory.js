@@ -8,7 +8,7 @@ const TransferHistory = () => {
     let userInfo = useSelector((state) => state.user);
     let filterInfo = useSelector((state) => state.filter);
 
-    let labels = ['Transfer Id', ' ', 'Receiver/Recipeint', 'Date', 'Amount'];
+    let labels = ['Transfer Id', '', 'Receiver/Recipeint', 'Date', 'Amount', ''];
     let filterLabels = [
         { label: 'Sender', color: '#C22E28' },
         { label: 'Receiver', color: '#F95587' }

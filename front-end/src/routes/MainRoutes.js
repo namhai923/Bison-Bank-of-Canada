@@ -7,9 +7,10 @@ import PrivateRoute from './PrivateRoute';
 
 // dashboard routing
 const Dashboard = Loadable(lazy(() => import('views/banking/dashboard')));
-const TransferHistory = Loadable(lazy(() => import('views/banking/history/TransferHistory')));
+const Profile = Loadable(lazy(() => import('views/profile')));
 const ExpenseHistory = Loadable(lazy(() => import('views/banking/history/ExpenseHistory')));
-const Transfer = Loadable(lazy(() => import('views/banking/send-money/Transfer')));
+const TransferHistory = Loadable(lazy(() => import('views/banking/history/TransferHistory')));
+const SpendMoney = Loadable(lazy(() => import('views/banking/spend-money')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -26,16 +27,25 @@ const MainRoutes = {
             element: <Dashboard />
         },
         {
-            path: '/send',
-            element: <Transfer />
+            path: '/profile',
+            element: <Profile />
         },
         {
-            path: '/expense',
-            element: <ExpenseHistory />
+            path: 'spend',
+            element: <SpendMoney />
         },
         {
-            path: '/transfer',
-            element: <TransferHistory />
+            path: 'history',
+            children: [
+                {
+                    path: 'expense',
+                    element: <ExpenseHistory />
+                },
+                {
+                    path: 'transfer',
+                    element: <TransferHistory />
+                }
+            ]
         }
     ]
 };

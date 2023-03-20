@@ -1,10 +1,10 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, FormHelperText, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { toast } from 'react-toastify';
 
 // project imports
 import AuthWrapper from '../AuthWrapper';
@@ -23,26 +23,34 @@ const Login = () => {
     let dispatch = useDispatch();
     let navigate = useNavigate();
     let location = useLocation();
-    let [error, setError] = useState('');
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
     let handleSubmit = async (username) => {
-        try {
-            let user = await bbcApi.getUser(username);
-            let action = setUser(user);
-            dispatch(action);
-            if (location.state?.from) {
-                navigate(location.state.from);
-            } else {
-                navigate('/');
+        toast.promise(
+            bbcApi.getUser(username).then((result) => {
+                let action = setUser(result);
+                dispatch(action);
+                if (location.state?.from) {
+                    navigate(location.state.from);
+                } else {
+                    navigate('/');
+                }
+            }),
+            {
+                pending: 'Hold on a sec ⌛',
+                success: 'Hooray 🎉🎉🎉',
+                error: {
+                    render({ data }) {
+                        if (data.name === 'AxiosError') {
+                            return data.response.data;
+                        } else {
+                            console.log(data);
+                        }
+                    }
+                }
             }
-        } catch (error) {
-            if (error.name === 'AxiosError') {
-                setError(error.response.data);
-            }
-            console.log(error);
-        }
+        );
     };
 
     return (
@@ -79,7 +87,6 @@ const Login = () => {
                                                     >
                                                         Enter your credentials to continue
                                                     </Typography>
-                                                    <FormHelperText error>{error}</FormHelperText>
                                                 </Stack>
                                             </Grid>
                                         </Grid>

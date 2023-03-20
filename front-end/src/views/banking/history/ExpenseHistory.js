@@ -8,7 +8,7 @@ const ExpenseHistory = () => {
     let userInfo = useSelector((state) => state.user);
     let filterInfo = useSelector((state) => state.filter);
 
-    let labels = ['Expense Id', 'Merchant', 'Date', 'Category', 'Price'];
+    let labels = ['Expense Id', 'Merchant', 'Date', 'Category', 'Price', ''];
     let filterLabels = [
         { label: 'Location', color: '#6390F0' },
         { label: 'Category', color: '#6F35FC' }

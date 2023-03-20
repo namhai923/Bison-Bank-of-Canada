@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -28,7 +27,7 @@ import blankState from 'assets/data/blankState';
 import { setUser } from 'store/userSlice';
 
 // assets
-import { IconLogout, IconSettings } from '@tabler/icons';
+import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
 
 const ProfileSection = () => {
     const theme = useTheme();
@@ -71,6 +70,10 @@ const ProfileSection = () => {
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
+    };
+
+    let profileClick = () => {
+        navigate('/profile');
     };
 
     const prevOpen = useRef(open);
@@ -159,6 +162,13 @@ const ProfileSection = () => {
                                         </Stack>
                                         <Divider />
                                     </Box>
+
+                                    <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={profileClick}>
+                                        <ListItemIcon>
+                                            <IconUser stroke={1.5} size="1.3rem" />
+                                        </ListItemIcon>
+                                        <ListItemText primary={<Typography variant="body2">User Profile</Typography>} />
+                                    </ListItemButton>
 
                                     <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={handleLogout}>
                                         <ListItemIcon>
