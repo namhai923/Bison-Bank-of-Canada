@@ -1,6 +1,9 @@
-import sortByTime from './sortByTime';
+let sortByTime = (data) => {
+    let sortedData = [...data];
+    return sortedData.sort((a, b) => new Date(a.date) - new Date(b.date));
+};
 
-export default function filterAmountByTime(type, compareDate, data) {
+let filterAmountByTime = (type, compareDate, data) => {
     let filtered = sortByTime(data);
 
     if (type === 'month') {
@@ -21,4 +24,6 @@ export default function filterAmountByTime(type, compareDate, data) {
             .map((item) => item.amount);
     }
     return filtered;
-}
+};
+
+export { sortByTime, filterAmountByTime };

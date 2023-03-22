@@ -1,4 +1,3 @@
-import months from 'assets/data/months';
 import { KeyboardArrowUpOutlined, KeyboardArrowDownOutlined } from '@mui/icons-material';
 
 export default function createData(type, data) {
@@ -15,9 +14,6 @@ export default function createData(type, data) {
     } else {
         (color = '#fff'), (background = '#ffc107');
     }
-
-    let dateData = new Date(date);
-    date = months[dateData.getMonth()] + ' ' + dateData.getDate() + ', ' + dateData.getFullYear();
 
     if (type === 'expense') {
         let { location, category } = data;

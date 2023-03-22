@@ -92,7 +92,7 @@ let ProfileForm = () => {
                 initialValues={{
                     fname: userInfo.firstName,
                     lname: userInfo.lastName,
-                    dob: userInfo.dob || '',
+                    dob: userInfo.dob,
                     phone: userInfo.phoneNumber || ''
                 }}
                 validationSchema={vSchema}

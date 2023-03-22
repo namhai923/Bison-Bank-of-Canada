@@ -22,6 +22,7 @@ import {
 import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
 import FilterModal from 'ui-component/filter/FilterModal';
+import months from 'assets/data/months';
 
 // assets
 import { gridSpacing } from 'store/constant';
@@ -154,6 +155,14 @@ const ListCard = (props) => {
                                                             {Object.entries(row.data).map(([key, value]) => {
                                                                 if (key === 'amount') {
                                                                     value = '$' + value.toFixed(2);
+                                                                } else if (key === 'date') {
+                                                                    let date = new Date(value);
+                                                                    value =
+                                                                        months[date.getMonth()] +
+                                                                        ' ' +
+                                                                        date.getDate() +
+                                                                        ', ' +
+                                                                        date.getFullYear();
                                                                 }
                                                                 return <TableCell align="left">{value}</TableCell>;
                                                             })}

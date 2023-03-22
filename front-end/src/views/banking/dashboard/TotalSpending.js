@@ -15,7 +15,7 @@ import months from 'assets/data/months';
 // assets
 import { LocalMallOutlined, Payment } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
-import filterAmountByTime from 'utils/filterAmountByTime';
+import { filterAmountByTime } from 'utils/timeUtils';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,

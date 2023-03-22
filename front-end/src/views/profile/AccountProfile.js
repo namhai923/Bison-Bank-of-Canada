@@ -36,7 +36,7 @@ let AccountProfile = () => {
                         {userInfo.dob && `${months[`${dob.getMonth()}`]} ${dob.getDate()}, ${dob.getFullYear()}`}
                     </Typography>
                     <Typography color="text.secondary" variant="body2">
-                        {userInfo.phoneNumber !== '' && `${userInfo.phoneNumber}`}
+                        {userInfo.phoneNumber && `${userInfo.phoneNumber}`}
                     </Typography>
                 </Box>
             </CardContent>
