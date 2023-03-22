@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
 
-import AnimateButton from 'ui-component/extended/AnimateButton';
 import bbcApi from 'api/bbcApi';
 import { addTransfer } from 'store/userSlice';
 
@@ -53,7 +52,7 @@ let Transfer = () => {
             validationSchema={vSchema}
             onSubmit={(values) => handleSubmit(values)}
         >
-            {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+            {({ errors, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                 <form noValidate onSubmit={handleSubmit}>
                     <Grid container spacing={matchDownSM ? 0 : 2}>
                         <Grid item xs={12}>
@@ -61,9 +60,9 @@ let Transfer = () => {
                                 fullWidth
                                 label="Receiver"
                                 name="receiver"
-                                onBlur={handleBlur}
                                 onChange={handleChange}
                                 type="email"
+                                required
                                 value={values.receiver}
                             />
                             {touched.receiver && errors.receiver && <FormHelperText error>{errors.receiver}</FormHelperText>}
@@ -75,7 +74,7 @@ let Transfer = () => {
                                 type="number"
                                 value={values.amount}
                                 name="amount"
-                                onBlur={handleBlur}
+                                required
                                 onChange={handleChange}
                             />
                             {touched.amount && errors.amount && <FormHelperText error>{errors.amount}</FormHelperText>}
@@ -83,19 +82,9 @@ let Transfer = () => {
                     </Grid>
 
                     <CardActions sx={{ justifyContent: 'flex-start' }}>
-                        <AnimateButton>
-                            <Button
-                                disableElevation
-                                disabled={isSubmitting}
-                                fullWidth
-                                size="large"
-                                type="submit"
-                                variant="contained"
-                                color="secondary"
-                            >
-                                Send
-                            </Button>
-                        </AnimateButton>
+                        <Button disableElevation type="submit" disabled={isSubmitting} variant="contained">
+                            Send
+                        </Button>
                     </CardActions>
                 </form>
             )}

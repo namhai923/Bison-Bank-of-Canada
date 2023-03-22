@@ -15,19 +15,15 @@ export default function createData(type, data) {
     } else {
         (color = '#fff'), (background = '#ffc107');
     }
-    if (amount % 1 == 0) {
-        amount = amount + '.00';
-    }
 
     let dateData = new Date(date);
     date = months[dateData.getMonth()] + ' ' + dateData.getDate() + ', ' + dateData.getFullYear();
-    amount = '$' + amount;
 
     if (type === 'expense') {
         let { location, category } = data;
 
         icon = KeyboardArrowDownOutlined;
-        return { data: { merchant: location, date, category, price: amount }, display: { color, background, icon } };
+        return { data: { merchant: location, date, category, amount }, display: { color, background, icon } };
     } else {
         let senderOrReceiver;
         let otherPerson;

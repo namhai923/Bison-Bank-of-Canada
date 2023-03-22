@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
 
-import AnimateButton from 'ui-component/extended/AnimateButton';
 import bbcApi from 'api/bbcApi';
 import { addExpense } from 'store/userSlice';
 
@@ -63,7 +62,7 @@ let Expense = () => {
             validationSchema={vSchema}
             onSubmit={(values) => handleSubmit(values)}
         >
-            {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+            {({ errors, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                 <form noValidate onSubmit={handleSubmit}>
                     <Grid container spacing={matchDownSM ? 0 : 2}>
                         <Grid item xs={12} sm={6}>
@@ -71,9 +70,9 @@ let Expense = () => {
                                 fullWidth
                                 label="Location"
                                 name="location"
-                                onBlur={handleBlur}
                                 onChange={handleChange}
                                 type="text"
+                                required
                                 value={values.location}
                             />
                             {touched.location && errors.location && <FormHelperText error>{errors.location}</FormHelperText>}
@@ -83,9 +82,9 @@ let Expense = () => {
                                 fullWidth
                                 label="Category"
                                 name="category"
-                                onBlur={handleBlur}
                                 onChange={handleChange}
                                 type="text"
+                                required
                                 value={values.category}
                             />
                             {touched.category && errors.category && <FormHelperText error>{errors.category}</FormHelperText>}
@@ -97,7 +96,7 @@ let Expense = () => {
                                 type="number"
                                 value={values.amount}
                                 name="amount"
-                                onBlur={handleBlur}
+                                required
                                 onChange={handleChange}
                             />
                             {touched.amount && errors.amount && <FormHelperText error>{errors.amount}</FormHelperText>}
@@ -105,19 +104,9 @@ let Expense = () => {
                     </Grid>
 
                     <CardActions sx={{ justifyContent: 'flex-start' }}>
-                        <AnimateButton>
-                            <Button
-                                disableElevation
-                                disabled={isSubmitting}
-                                fullWidth
-                                size="large"
-                                type="submit"
-                                variant="contained"
-                                color="secondary"
-                            >
-                                Pay
-                            </Button>
-                        </AnimateButton>
+                        <Button disableElevation type="submit" disabled={isSubmitting} variant="contained">
+                            Pay
+                        </Button>
                     </CardActions>
                 </form>
             )}

@@ -91,7 +91,7 @@ describe("Testing User index", () => {
       });
     expect(res.statusCode).toBe(400);
     expect(res.text).toEqual(
-      expect.stringContaining(receiverUserName + " does not exists")
+      expect.stringContaining("Receiver does not exists")
     );
   });
 
@@ -141,7 +141,7 @@ describe("Testing User index", () => {
       });
     expect(res.statusCode).toBe(400);
     expect(res.text).toEqual(
-      expect.stringContaining(userName + " account balance not enough")
+      expect.stringContaining("Account balance not enough")
     );
   });
 
@@ -215,7 +215,7 @@ describe("Testing User index", () => {
       });
     expect(res.statusCode).toBe(400);
     expect(res.text).toEqual(
-      expect.stringContaining(userName + " account balance not enough")
+      expect.stringContaining("Account balance not enough")
     );
   });
 

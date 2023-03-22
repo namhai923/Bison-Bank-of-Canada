@@ -55,6 +55,12 @@ let userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    dob: {
+      type: Date,
+    },
+    phoneNumber: {
+      type: String,
+    },
     accountBalance: {
       type: Decimal128,
       default: 0,

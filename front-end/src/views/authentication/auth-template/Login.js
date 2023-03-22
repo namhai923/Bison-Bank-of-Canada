@@ -39,7 +39,7 @@ const Login = () => {
             }),
             {
                 pending: 'Hold on a sec ⌛',
-                success: 'Hooray 🎉🎉🎉',
+                success: 'Welcome to BBC 🎉🎉🎉',
                 error: {
                     render({ data }) {
                         if (data.name === 'AxiosError') {

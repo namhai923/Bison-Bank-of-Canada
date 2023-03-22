@@ -7,6 +7,8 @@ let initialState = {
     userName: userInfo.userName,
     firstName: userInfo.firstName,
     lastName: userInfo.lastName,
+    dob: userInfo.dob,
+    phoneNumber: userInfo.phoneNumber,
     accountBalance: userInfo.accountBalance,
     expenseHistory: userInfo.expenseHistory,
     transferHistory: userInfo.transferHistory

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
+import { Box, Button, TextField, FormHelperText } from '@mui/material';
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -24,23 +24,20 @@ const LoginForm = (props) => {
                 validationSchema={vSchema}
                 onSubmit={(values) => handleSubmit(values.email)}
             >
-                {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+                {({ errors, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit}>
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-email-login"
-                                type="email"
-                                data-testid="UsernameInputBox"
-                                value={values.email}
-                                name="email"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                label="Email Address / Username"
-                                inputProps={{}}
-                            />
-                            {touched.email && errors.email && <FormHelperText error>{errors.email}</FormHelperText>}
-                        </FormControl>
+                        <TextField
+                            sx={{ ...theme.typography.customInput }}
+                            fullWidth
+                            type="email"
+                            label="Email Address / Username"
+                            data-testid="UsernameInputBox"
+                            value={values.email}
+                            name="email"
+                            required
+                            onChange={handleChange}
+                        />
+                        {touched.email && errors.email && <FormHelperText error>{errors.email}</FormHelperText>}
                         {errors.submit && (
                             <Box sx={{ mt: 3 }}>
                                 <FormHelperText error>{errors.submit}</FormHelperText>

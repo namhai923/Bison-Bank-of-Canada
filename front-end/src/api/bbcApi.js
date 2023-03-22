@@ -9,6 +9,10 @@ let bbcApi = {
         let url = `/user/${username}`;
         return axiosClient.get(url);
     },
+    updateUser: (params) => {
+        let url = `/user/${params.userName}`;
+        return axiosClient.post(url, { ...params });
+    },
     transfer: (params) => {
         let url = `/user/${params.userName}/transfer`;
         let receiverName = params.receiverName;

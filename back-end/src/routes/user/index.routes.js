@@ -51,6 +51,42 @@ router.get("/:name", async (req, res, next) => {
   }
 });
 
+router.post("/:name", async (req, res, next) => {
+  try {
+    let userName = req.params["name"];
+    let { firstName, lastName, dob, phoneNumber } = req.body;
+    if (
+      firstName == null ||
+      lastName == null ||
+      dob == null ||
+      phoneNumber == null
+    ) {
+      throw new Error("Missing require parameter in request body.");
+    }
+    let user = await User.findOne({ userName: userName });
+    let updateProfile;
+
+    if (user !== null) {
+      user.firstName = firstName;
+      user.lastName = lastName;
+      user.dob = dob;
+      user.phoneNumber = phoneNumber;
+
+      updateProfile = await user.save();
+
+      if (cache.has(user)) {
+        cache.set(userName, user);
+      }
+
+      res.status(200).send(updateProfile);
+    } else {
+      res.status(404).send("User Not Found.");
+    }
+  } catch (err) {
+    res.status(500).json({ ErrorMessage: err.message });
+  }
+});
+
 router.post("/:name/transfer", async (req, res, next) => {
   try {
     var errorMessage = "";
@@ -66,10 +102,10 @@ router.post("/:name/transfer", async (req, res, next) => {
 
     if (receiver != null) {
       if (isNaN(amount)) {
-        errorMessage += "Transfer amount must be a number.\n";
+        errorMessage = "Transfer amount must be a number.";
       } else {
         if (amount <= 0) {
-          errorMessage += "Transfer amount must be greater than 0.\n";
+          errorMessage = "Transfer amount must be greater than 0.";
         } else {
           if (sender.accountBalance >= amount) {
             sender.accountBalance =
@@ -101,12 +137,12 @@ router.post("/:name/transfer", async (req, res, next) => {
               cache.set(receiverName, receiver);
             }
           } else {
-            errorMessage += senderName + " account balance not enough\n";
+            errorMessage = "Account balance not enough.";
           }
         }
       }
     } else {
-      errorMessage += receiverName + " does not exists\n";
+      errorMessage = "Receiver does not exists.";
     }
 
     if (errorMessage === "") {
@@ -132,10 +168,10 @@ router.post("/:name/expense", async (req, res, next) => {
     let newExpense;
 
     if (isNaN(amount)) {
-      errorMessage += "Expense amount must be a number.\n";
+      errorMessage = "Expense amount must be a number.";
     } else {
       if (amount <= 0) {
-        errorMessage += "Expense amount must be greater than 0.\n";
+        errorMessage = "Expense amount must be greater than 0.";
       } else {
         if (user.accountBalance >= amount) {
           user.accountBalance =
@@ -151,14 +187,14 @@ router.post("/:name/expense", async (req, res, next) => {
 
           user.expenseHistory.push(newExpense);
 
-          await Promise.all([user.save()]);
+          await user.save();
 
           //Update cache
           if (cache.has(user)) {
             cache.set(userName, user);
           }
         } else {
-          errorMessage += userName + " account balance not enough\n";
+          errorMessage = "Account balance not enough.";
         }
       }
     }

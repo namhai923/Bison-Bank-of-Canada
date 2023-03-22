@@ -17,18 +17,15 @@ const TransferHistory = () => {
     let title = 'Transfer History';
 
     let [rows, setRows] = useState(() => {
-        let counter = 1;
         let temp = userInfo.transferHistory;
         let displayRows = temp.map((item) => {
             let data = { email: userInfo.userName, date: item.date, sender: item.sender, receiver: item.receiver, amount: item.amount };
-            let row = createData('transfer', data);
-            return { ...row, transNumber: counter++ };
+            return createData('transfer', data);
         });
         return displayRows;
     });
 
     useEffect(() => {
-        let counter = 1;
         let temp = userInfo.transferHistory;
         let displayRows = temp
             .filter((item) => {
@@ -39,8 +36,7 @@ const TransferHistory = () => {
             })
             .map((item) => {
                 let data = { email: userInfo.userName, date: item.date, sender: item.sender, receiver: item.receiver, amount: item.amount };
-                let row = createData('transfer', data);
-                return { ...row, transNumber: counter++ };
+                return createData('transfer', data);
             });
         setRows(displayRows);
     }, [filterInfo, userInfo]);

@@ -1,19 +1,23 @@
 // material-ui
-import { Typography } from '@mui/material';
+import { Container, Unstable_Grid2 as Grid } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-
-// ==============================|| SAMPLE PAGE ||============================== //
+import AccountProfile from './AccountProfile';
+import ProFileForm from './ProfileForm';
 
 const Profile = () => (
-    <MainCard title="Sample Card">
-        <Typography variant="body2">
-            Lorem ipsum dolor sit amen, consenter nipissing eli, sed do elusion tempos incident ut laborers et doolie magna alissa. Ut enif
-            ad minim venice, quin nostrum exercitation illampu laborings nisi ut liquid ex ea commons construal. Duos aube grue dolor in
-            reprehended in voltage veil esse colum doolie eu fujian bulla parian. Exceptive sin ocean cuspidate non president, sunk in culpa
-            qui officiate descent molls anim id est labours.
-        </Typography>
+    <MainCard title="User Profile">
+        <Container maxWidth="lg">
+            <Grid container spacing={3}>
+                <Grid xs={12} md={6} lg={4}>
+                    <AccountProfile />
+                </Grid>
+                <Grid xs={12} md={6} lg={8}>
+                    <ProFileForm />
+                </Grid>
+            </Grid>
+        </Container>
     </MainCard>
 );
 

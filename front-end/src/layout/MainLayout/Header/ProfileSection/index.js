@@ -18,6 +18,7 @@ import {
     Stack,
     Typography
 } from '@mui/material';
+import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -25,9 +26,6 @@ import Transitions from 'ui-component/extended/Transitions';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
 import blankState from 'assets/data/blankState';
 import { setUser } from 'store/userSlice';
-
-// assets
-import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
 
 const ProfileSection = () => {
     const theme = useTheme();
@@ -37,15 +35,6 @@ const ProfileSection = () => {
     let userInfo = useSelector((state) => state.user);
     let customization = useSelector((state) => state.customization);
     const [open, setOpen] = useState(false);
-    let [icon, setIcon] = useState(() => {
-        let icon = alphabetAvatar.b;
-        for (let key of Object.keys(alphabetAvatar)) {
-            if (key === Array.from(userInfo.firstName.toLowerCase())[0]) {
-                icon = alphabetAvatar[key];
-            }
-        }
-        return icon;
-    });
 
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
@@ -58,7 +47,6 @@ const ProfileSection = () => {
         navigate('/');
         localStorage.clear();
         handleClose(event);
-        setIcon(alphabetAvatar.b);
     };
 
     const handleClose = (event) => {
@@ -72,8 +60,9 @@ const ProfileSection = () => {
         setOpen((prevOpen) => !prevOpen);
     };
 
-    let profileClick = () => {
+    let profileClick = (event) => {
         navigate('/profile');
+        handleClose(event);
     };
 
     const prevOpen = useRef(open);
@@ -108,7 +97,7 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={icon}
+                        src={userInfo.firstName === '' ? IconUser : alphabetAvatar[`${userInfo.firstName.toLowerCase()[0]}`]}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
