@@ -1,11 +1,18 @@
-import { useRoutes } from 'react-router-dom';
+import { useRoutes, Navigate } from 'react-router-dom';
 
 // routes
-import BankingRoutes from './BankingRoutes';
+import MainRoutes from './MainRoutes';
 import AuthenticationRoutes from './AuthenticationRoutes';
-
-// ==============================|| ROUTING RENDER ||============================== //
+import NotFoundRoute from './NotFoundRoute';
 
 export default function ThemeRoutes() {
-    return useRoutes([BankingRoutes, AuthenticationRoutes]);
+    return useRoutes([
+        MainRoutes,
+        AuthenticationRoutes,
+        NotFoundRoute,
+        {
+            path: '*',
+            element: <Navigate to="/page-not-found" replace />
+        }
+    ]);
 }

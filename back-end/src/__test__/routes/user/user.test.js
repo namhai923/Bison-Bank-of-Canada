@@ -24,6 +24,9 @@ describe("Testing User index", () => {
   const receiverUserName = "anotheruser@gmail.com";
   const receiverFirstName = "another";
   const receiverLastName = "user";
+  const expenseLocation = "Superstore";
+  const expenseCategory = "grocery";
+  const expenseAmount = 30.55;
 
   it("/Post /user Should create a user", async () => {
     const res = await request(app).post("/user").send({
@@ -88,9 +91,7 @@ describe("Testing User index", () => {
       });
     expect(res.statusCode).toBe(400);
     expect(res.text).toEqual(
-      expect.stringContaining(
-        "Transfer failed: " + receiverUserName + " does not exists"
-      )
+      expect.stringContaining("Receiver does not exists")
     );
   });
 
@@ -114,9 +115,7 @@ describe("Testing User index", () => {
       });
     expect(res.statusCode).toBe(400);
     expect(res.text).toEqual(
-      expect.stringContaining(
-        "Transfer failed: transfer amount must be a number."
-      )
+      expect.stringContaining("Transfer amount must be a number.")
     );
   });
 
@@ -129,13 +128,11 @@ describe("Testing User index", () => {
       });
     expect(res.statusCode).toBe(400);
     expect(res.text).toEqual(
-      expect.stringContaining(
-        "Transfer failed: transfer amount must be greater than 0."
-      )
+      expect.stringContaining("Transfer amount must be greater than 0.")
     );
   });
 
-  it("/Post /user/{userName}/transfer fail with amount less than 0", async () => {
+  it("/Post /user/{userName}/transfer fail with account balance not enough", async () => {
     const res = await request(app)
       .post("/user/" + userName + "/transfer")
       .send({
@@ -144,9 +141,7 @@ describe("Testing User index", () => {
       });
     expect(res.statusCode).toBe(400);
     expect(res.text).toEqual(
-      expect.stringContaining(
-        "Transfer failed: " + userName + " account balance not enough"
-      )
+      expect.stringContaining("Account balance not enough")
     );
   });
 
@@ -158,7 +153,7 @@ describe("Testing User index", () => {
         amount: transferAmount,
       });
     expect(res.statusCode).toBe(200);
-    expect(res.body.userName).toBe(userName);
+    expect(res.body.sender).toBe(userName);
   });
 
   it("/Get check user balance after transfer", async () => {
@@ -170,5 +165,77 @@ describe("Testing User index", () => {
       .send();
     expect(sender.body.accountBalance).toBe(originalBalance - transferAmount);
     expect(receiver.body.accountBalance).toBe(originalBalance + transferAmount);
+  });
+
+  it("/Post /user/{userName}/expense fail with null body", async () => {
+    const res = await request(app)
+      .post("/user/" + userName + "/expense")
+      .send("Invalid Body");
+    expect(res.statusCode).toBe(500);
+    expect(res.text).toEqual(
+      expect.stringContaining("Missing require parameter in request body.")
+    );
+  });
+
+  it("/Post /user/{userName}/expense fail with amount not a number", async () => {
+    const res = await request(app)
+      .post("/user/" + userName + "/expense")
+      .send({
+        location: expenseLocation,
+        category: expenseCategory,
+        amount: "notAnNumber",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.text).toEqual(
+      expect.stringContaining("Expense amount must be a number.")
+    );
+  });
+
+  it("/Post /user/{userName}/expense fail with amount less than 0", async () => {
+    const res = await request(app)
+      .post("/user/" + userName + "/expense")
+      .send({
+        location: expenseLocation,
+        category: expenseCategory,
+        amount: -1,
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.text).toEqual(
+      expect.stringContaining("Expense amount must be greater than 0.")
+    );
+  });
+
+  it("/Post /user/{userName}/expense fail with account balance not enough", async () => {
+    const res = await request(app)
+      .post("/user/" + userName + "/expense")
+      .send({
+        location: expenseLocation,
+        category: expenseCategory,
+        amount: amountLarge,
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.text).toEqual(
+      expect.stringContaining("Account balance not enough")
+    );
+  });
+
+  it("/Post /user/{userName}/expense success", async () => {
+    const res = await request(app)
+      .post("/user/" + userName + "/expense")
+      .send({
+        location: expenseLocation,
+        category: expenseCategory,
+        amount: expenseAmount,
+      });
+    expect(res.statusCode).toBe(200);
+    expect(res.body.location).toBe(expenseLocation);
+    expect(res.body.category).toBe(expenseCategory);
+  });
+
+  it("/Get check user balance after expense", async () => {
+    const user = await request(app)
+      .get("/user/" + userName)
+      .send();
+    expect(user.body.accountBalance).toBe(originalBalance - expenseAmount);
   });
 });

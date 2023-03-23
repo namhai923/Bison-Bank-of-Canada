@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
-import { openMenu, setMenu } from '../../../customizeSlice';
+import { openMenu, setMenu } from '../../../../../store/customizeSlice';
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';

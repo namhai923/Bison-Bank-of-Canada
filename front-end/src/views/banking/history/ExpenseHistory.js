@@ -8,7 +8,7 @@ const ExpenseHistory = () => {
     let userInfo = useSelector((state) => state.user);
     let filterInfo = useSelector((state) => state.filter);
 
-    let labels = ['Expense Id', 'Merchant', 'Date', 'Category', 'Price'];
+    let labels = ['Expense Id', 'Merchant', 'Date', 'Category', 'Amount', ''];
     let filterLabels = [
         { label: 'Location', color: '#6390F0' },
         { label: 'Category', color: '#6F35FC' }
@@ -17,18 +17,15 @@ const ExpenseHistory = () => {
     let title = 'Expense History';
 
     let [rows, setRows] = useState(() => {
-        let counter = 1;
         let temp = userInfo.expenseHistory;
         let displayRows = temp.map((item) => {
             let data = { location: item.location, date: item.date, category: item.category, amount: item.amount };
-            let row = createData('expense', data);
-            return { ...row, transNumber: counter++ };
+            return createData('expense', data);
         });
         return displayRows;
     });
 
     useEffect(() => {
-        let counter = 1;
         let temp = userInfo.expenseHistory;
         let displayRows = temp
             .filter((item) => {
@@ -39,8 +36,7 @@ const ExpenseHistory = () => {
             })
             .map((item) => {
                 let data = { location: item.location, date: item.date, category: item.category, amount: item.amount };
-                let row = createData('expense', data);
-                return { ...row, transNumber: counter++ };
+                return createData('expense', data);
             });
         setRows(displayRows);
     }, [filterInfo, userInfo]);

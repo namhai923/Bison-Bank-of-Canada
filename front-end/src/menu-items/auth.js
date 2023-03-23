@@ -17,21 +17,18 @@ const auth = {
             title: 'Authentication',
             type: 'collapse',
             icon: icons.IconKey,
-
             children: [
                 {
                     id: 'login',
                     title: 'Login',
                     type: 'item',
-                    url: '/login',
-                    target: true
+                    url: '/login'
                 },
                 {
                     id: 'register',
                     title: 'Register',
                     type: 'item',
-                    url: '/register',
-                    target: true
+                    url: '/register'
                 }
             ]
         }

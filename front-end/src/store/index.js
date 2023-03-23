@@ -1,5 +1,5 @@
-import customizationReducer from '../layout/MainLayout/customizeSlice';
-import userReducer from '../views/authentication/userSlice';
+import customizationReducer from './customizeSlice';
+import userReducer from './userSlice';
 import filterReducer from '../ui-component/filter/filterSlice';
 
 const { configureStore } = require('@reduxjs/toolkit');

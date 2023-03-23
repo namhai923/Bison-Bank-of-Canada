@@ -13,7 +13,7 @@ import Chart from 'react-apexcharts';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import barChartData from './chart-data/barChartData';
-import filterAmountByTime from 'utils/filterAmountByTime';
+import { filterAmountByTime } from 'utils/timeUtils';
 
 let createChartData = (expense, transfer) => {
     let current = new Date();

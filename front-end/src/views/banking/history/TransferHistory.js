@@ -1,29 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import ListCard from 'ui-component/cards/ListCard';
 import createData from 'utils/createData';
-import bbcApi from '../../../api/bbcApi';
-import { setUser } from '../../authentication/userSlice';
 
 const TransferHistory = () => {
     let userInfo = useSelector((state) => state.user);
     let filterInfo = useSelector((state) => state.filter);
-    let dispatch = useDispatch();
 
-    window.addEventListener('load', async () => {
-        if (userInfo === null || userInfo.userName === '') return;
-
-        try {
-            let user = await bbcApi.getUser(userInfo.userName);
-            let action = setUser(user);
-            dispatch(action);
-        } catch (error) {
-            console.log(error);
-        }
-    });
-
-    let labels = ['Transfer Id', ' ', 'Receiver/Recipeint', 'Date', 'Amount'];
+    let labels = ['Transfer Id', '', 'Receiver/Recipeint', 'Date', 'Amount', ''];
     let filterLabels = [
         { label: 'Sender', color: '#C22E28' },
         { label: 'Receiver', color: '#F95587' }
@@ -32,18 +17,15 @@ const TransferHistory = () => {
     let title = 'Transfer History';
 
     let [rows, setRows] = useState(() => {
-        let counter = 1;
         let temp = userInfo.transferHistory;
         let displayRows = temp.map((item) => {
             let data = { email: userInfo.userName, date: item.date, sender: item.sender, receiver: item.receiver, amount: item.amount };
-            let row = createData('transfer', data);
-            return { ...row, transNumber: counter++ };
+            return createData('transfer', data);
         });
         return displayRows;
     });
 
     useEffect(() => {
-        let counter = 1;
         let temp = userInfo.transferHistory;
         let displayRows = temp
             .filter((item) => {
@@ -54,8 +36,7 @@ const TransferHistory = () => {
             })
             .map((item) => {
                 let data = { email: userInfo.userName, date: item.date, sender: item.sender, receiver: item.receiver, amount: item.amount };
-                let row = createData('transfer', data);
-                return { ...row, transNumber: counter++ };
+                return createData('transfer', data);
             });
         setRows(displayRows);
     }, [filterInfo, userInfo]);
