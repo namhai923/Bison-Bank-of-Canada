@@ -74,7 +74,7 @@ router.post("/:name", async (req, res, next) => {
 
       updateProfile = await user.save();
 
-      if (cache.has(user)) {
+      if (cache.has(userName)) {
         cache.set(userName, user);
       }
 
@@ -90,8 +90,8 @@ router.post("/:name", async (req, res, next) => {
 router.post("/:name/transfer", async (req, res, next) => {
   try {
     var errorMessage = "";
-
     let senderName = req.params["name"];
+    uName = senderName;
     let { receiverName, amount } = req.body;
     if (receiverName == null || amount == null) {
       throw new Error("Missing require parameter in request body.");
@@ -101,7 +101,7 @@ router.post("/:name/transfer", async (req, res, next) => {
     let newTransfer;
 
     if (receiver != null) {
-      if (isNaN(amount)) {
+      if (isNaN(amount) && isNaN(parseFloat(amount))) {
         errorMessage = "Transfer amount must be a number.";
       } else {
         if (amount <= 0) {
@@ -190,7 +190,7 @@ router.post("/:name/expense", async (req, res, next) => {
           await user.save();
 
           //Update cache
-          if (cache.has(user)) {
+          if (cache.has(userName)) {
             cache.set(userName, user);
           }
         } else {

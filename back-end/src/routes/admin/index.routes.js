@@ -17,7 +17,7 @@ router.post("/sendRecords", async (req, res, next) => {
     for (var record of records) {
       let user = await User.findOne({ userName: record.userName });
       if (user !== null) {
-        if( !isNaN(record.amount) ){
+        if( !isNaN(record.amount) && !isNaN(parseFloat(record.amount))){
           if ( record.amount > 0) {
             if (record.amount < user.accountBalance) {
               user.accountBalance =
@@ -26,7 +26,7 @@ router.post("/sendRecords", async (req, res, next) => {
                 ) / 100;
               user.expenseHistory.push({
                 location: location,
-                date: record.date,
+                date: record.date ?? Date.now(),
                 category: record.category,
                 amount: record.amount,
               });
