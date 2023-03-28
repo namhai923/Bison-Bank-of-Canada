@@ -6,7 +6,6 @@ let router = express.Router();
 
 router.post("/sendRecords", async (req, res, next) => {
   try {
-    console.log(req.body);
     var errorMessage = "";
     let { location, records } = req.body;
 

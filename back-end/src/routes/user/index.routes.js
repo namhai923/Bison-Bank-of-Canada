@@ -74,7 +74,7 @@ router.post("/:name", async (req, res, next) => {
 
       updateProfile = await user.save();
 
-      if (cache.has(user)) {
+      if (cache.has(userName)) {
         cache.set(userName, user);
       }
 
@@ -190,7 +190,7 @@ router.post("/:name/expense", async (req, res, next) => {
           await user.save();
 
           //Update cache
-          if (cache.has(user)) {
+          if (cache.has(userName)) {
             cache.set(userName, user);
           }
         } else {

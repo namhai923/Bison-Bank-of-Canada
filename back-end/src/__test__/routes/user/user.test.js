@@ -27,6 +27,10 @@ describe("Testing User index", () => {
   const expenseLocation = "Superstore";
   const expenseCategory = "grocery";
   const expenseAmount = 30.55;
+  const newFirstName = "newFirstName";
+  const newLastName = "newLastName";
+  const dob = new Date(Date.now()).toISOString();
+  const phoneNumber = "1234567899";
 
   it("/Post /user Should create a user", async () => {
     const res = await request(app).post("/user").send({
@@ -104,6 +108,17 @@ describe("Testing User index", () => {
     });
     expect(res.statusCode).toBe(201);
     expect(res.body.userName).toBe(receiverUserName);
+  });
+
+  it("/GET /user transfer receiver success", async () => {
+    const res = await request(app)
+      .get("/user/" + receiverUserName)
+      .send();
+    expect(res.statusCode).toBe(200);
+    expect(res.body.userName).toBe(receiverUserName);
+    expect(res.body.firstName).toBe(receiverFirstName);
+    expect(res.body.lastName).toBe(receiverLastName);
+    expect(res.body.accountBalance).toBe(originalBalance);
   });
 
   it("/Post /user/{userName}/transfer fail with amount not a number", async () => {
@@ -236,6 +251,49 @@ describe("Testing User index", () => {
     const user = await request(app)
       .get("/user/" + userName)
       .send();
-    expect(user.body.accountBalance).toBe(originalBalance - expenseAmount);
+    //We have done a test with transfer before
+    let currentBalance = (originalBalance*100 - expenseAmount*100 - transferAmount*100) / 100;
+    expect(user.body.accountBalance).toBe(currentBalance);
+  });
+
+  it("/Post update user profile", async () => {
+    const res = await request(app)
+      .post("/user/" + userName)
+      .send({
+        firstName: newFirstName,
+        lastName: newLastName,
+        dob: dob,
+        phoneNumber: phoneNumber,
+      });
+    expect(res.statusCode).toBe(200);
+    expect(res.body.firstName).toBe(newFirstName);
+    expect(res.body.lastName).toBe(newLastName);
+    expect(res.body.dob).toBe(dob);
+    expect(res.body.phoneNumber).toBe(phoneNumber);
+  });
+
+  it("/Post update user profile", async () => {
+    const res = await request(app)
+      .post("/user/" + "randomUserName@gmail.com")
+      .send({
+        firstName: newFirstName,
+        lastName: newLastName,
+        dob: dob,
+        phoneNumber: phoneNumber,
+      });
+    expect(res.statusCode).toBe(404);
+    expect(res.text).toEqual(
+      expect.stringContaining("User Not Found.")
+    );
+  });
+
+  it("/Post update user profile", async () => {
+    const res = await request(app)
+      .post("/user/" + userName)
+      .send();
+    expect(res.statusCode).toBe(500);
+    expect(res.text).toEqual(
+      expect.stringContaining("Missing require parameter in request body.")
+    );
   });
 });
