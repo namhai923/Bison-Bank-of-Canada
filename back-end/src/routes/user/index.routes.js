@@ -130,12 +130,9 @@ router.post("/:name/transfer", async (req, res, next) => {
             await Promise.all([sender.save(), receiver.save()]);
 
             //Update cache
-            if (cache.has(senderName)) {
-              cache.set(senderName, sender);
-            }
-            if (cache.has(receiverName)) {
-              cache.set(receiverName, receiver);
-            }
+            cache.set(senderName, sender);
+            cache.set(receiverName, receiver);
+            
           } else {
             errorMessage = "Account balance not enough.";
           }
