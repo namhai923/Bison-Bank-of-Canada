@@ -124,7 +124,3 @@ Start the backend
 And send a record with the following format
 ![This is a tutorial to send postman request](/SendRecordsPostman.png)
 You can send as many record item as you want, the list does not limit to only two records, but all the fields are needed
-
-
-## Coding style
-We use prettier package to format the code and follow camel case naming convention for variable
