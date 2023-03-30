@@ -23,9 +23,14 @@ Scope defines the features, functional or non-functional requirements of the sof
 For all of the Functional feature, Unit test and integration test exists, acceptance test step is under this document
 
 
-**Non-Functional**
+**Non-Functional/ LoadTest**
 
-Hanlde large amount of user: Will be run through load test in next sprint
+Require Jmeter.
+Instruction to run loadtest:
+Requires .env file to have connectionString to loadtest DB
+1. In backend folder, type "npm run loadtest"
+2. Delete the Users Collection in the mongoDB if it exist
+3. run the jmx file under the loadtest folder using jmeter
 
 ## **Roles and Responsibilities** 
 
@@ -66,7 +71,7 @@ Setup automated CI pipeline: everytime a PR is created, or a PR is merged, autom
 ## **Test Completeness**
 Here you define the criterias that will deem your testing complete. For instance, a few criteria to check Test Completeness would be
 
-- 100% code coverage
+- 100% code coverage on testable subject (This app puts a lot of try catch so that the application will fail gracefully if error happens, some catch block is hard to reach when running unit test/integration test thus are not covered)
 - Automated test will run everytime new changes are push or PR is created
 - acceptance test can succeed
 - Test can caught bug and be fixed right away if it was created by new PR
@@ -104,11 +109,11 @@ Please run both the backend and frontend first before doing acceptance test
 Transfer Money:
 1. As a user, I should be able to see the reduction of the exact transfer amount from my bank account after I complete my transfer. 
 
-Test step: Opean two login page, enter the user email "elonmusk@twitter.com" and "daddybezos@amazon.com" respectively, mark down the two account balance. Inside "elonmusk@twitter.com" user, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount "100", then hit "Send" button. Go back to your "Dashboard" on the left-hand side menu, check your purple card that shows remaining balance, it should be reducted with 100
+Test step: Opean two login page using two different browser, enter the user email "elonmusk@twitter.com" and "daddybezos@amazon.com" respectively, mark down the two account balance. Inside "elonmusk@twitter.com" user, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount "100", then hit "Send" button. Go back to your "Dashboard" on the left-hand side menu, check your purple card that shows remaining balance, it should be reducted with 100
 
 2. As a user, I should be able to see an increment of total amount in my bank account after someone has transferred me the money.
 
-Test step: Opean two login page, enter the user email "elonmusk@twitter.com" and "daddybezos@amazon.com" respectively, mark down the two account balance. Inside "elonmusk@twitter.com" user, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount "100", then hit "Send" button. Go to "daddybezos@amazon.com" account and check its remaining balance in the purple card in the top left corner, it should have 100 increased in the balance.
+Test step: Opean two login page using different browser, enter the user email "elonmusk@twitter.com" and "daddybezos@amazon.com" respectively, mark down the two account balance. Inside "elonmusk@twitter.com" user, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount "100", then hit "Send" button. Go to "daddybezos@amazon.com" account and check its remaining balance in the purple card in the top left corner, it should have 100 increased in the balance.
 
 3. As a user, I want the app to prevent me from transfering more money than I already have in my bank account by showing some kind of alert message.
 

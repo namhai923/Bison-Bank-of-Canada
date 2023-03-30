@@ -19,10 +19,10 @@ const banking = {
             icon: icons.IconDashboard
         },
         {
-            id: 'send',
-            title: 'Send money',
+            id: 'spend',
+            title: 'Spend money',
             type: 'item',
-            url: '/send',
+            url: '/spend',
             icon: icons.IconWallet
         },
         {
@@ -35,13 +35,13 @@ const banking = {
                     id: 'expense',
                     title: 'Expense',
                     type: 'item',
-                    url: '/expense'
+                    url: '/history/expense'
                 },
                 {
                     id: 'transfer',
                     title: 'Transfer',
                     type: 'item',
-                    url: '/transfer'
+                    url: '/history/transfer'
                 }
             ]
         }

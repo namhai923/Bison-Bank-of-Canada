@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, FormControl, FormHelperText, Grid, InputLabel, OutlinedInput, useMediaQuery } from '@mui/material';
+import { Box, Button, FormHelperText, Grid, TextField, useMediaQuery } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -10,6 +10,7 @@ import { Formik } from 'formik';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
+
 const vSchema = Yup.object().shape({
     email: Yup.string().email('Must be a valid email').max(50).required('Email is required'),
     fname: Yup.string()
@@ -26,7 +27,7 @@ const vSchema = Yup.object().shape({
         .integer('Should be an integer')
         .required('Account balance is required')
 });
-export { vSchema };
+
 const RegisterForm = (props) => {
     let { handleSubmit } = props;
     const theme = useTheme();
@@ -44,92 +45,64 @@ const RegisterForm = (props) => {
                 validationSchema={vSchema}
                 onSubmit={(values) => handleSubmit(values)}
             >
-                {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+                {({ errors, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit}>
                         <Grid container spacing={matchDownSM ? 0 : 2}>
                             <Grid item xs={12} sm={6}>
-                                <FormControl
+                                <TextField
                                     fullWidth
-                                    error={Boolean(touched.fname && errors.fname)}
                                     sx={{ ...theme.typography.customInput }}
-                                >
-                                    <InputLabel htmlFor="outlined-adornment-fname-register">First Name</InputLabel>
-                                    <OutlinedInput
-                                        id="outlined-adornment-fname-register"
-                                        type="text"
-                                        value={values.fname}
-                                        name="fname"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        inputProps={{}}
-                                    />
-                                    {touched.fname && errors.fname && (
-                                        <FormHelperText error id="standard-weight-helper-text-fname-register">
-                                            {errors.fname}
-                                        </FormHelperText>
-                                    )}
-                                </FormControl>
+                                    type="text"
+                                    label="First Name"
+                                    value={values.fname}
+                                    name="fname"
+                                    required
+                                    onChange={handleChange}
+                                />
+                                {touched.fname && errors.fname && <FormHelperText error>{errors.fname}</FormHelperText>}
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <FormControl
+                                <TextField
                                     fullWidth
-                                    error={Boolean(touched.lname && errors.lname)}
                                     sx={{ ...theme.typography.customInput }}
-                                >
-                                    <InputLabel htmlFor="outlined-adornment-lname-register">Last Name</InputLabel>
-                                    <OutlinedInput
-                                        id="outlined-adornment-lname-register"
-                                        type="text"
-                                        value={values.lname}
-                                        name="lname"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        inputProps={{}}
-                                    />
-                                    {touched.lname && errors.lname && (
-                                        <FormHelperText error id="standard-weight-helper-text-lname-register">
-                                            {errors.lname}
-                                        </FormHelperText>
-                                    )}
-                                </FormControl>
+                                    type="text"
+                                    label="Last Name"
+                                    value={values.lname}
+                                    name="lname"
+                                    required
+                                    onChange={handleChange}
+                                />
+                                {touched.lname && errors.lname && <FormHelperText error>{errors.lname}</FormHelperText>}
                             </Grid>
                         </Grid>
 
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-email-register"
-                                type="email"
-                                value={values.email}
-                                name="email"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                inputProps={{}}
-                            />
-                            {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text-email-register">
-                                    {errors.email}
-                                </FormHelperText>
-                            )}
-                        </FormControl>
+                        <TextField
+                            fullWidth
+                            sx={{ ...theme.typography.customInput }}
+                            id="outlined-adornment-email-register"
+                            type="email"
+                            label="Email Address / Username"
+                            value={values.email}
+                            name="email"
+                            required
+                            onChange={handleChange}
+                            inputProps={{}}
+                        />
+                        {touched.email && errors.email && <FormHelperText error>{errors.email}</FormHelperText>}
 
-                        <FormControl fullWidth error={Boolean(touched.balance && errors.balance)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-balance-register">Account Balance</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-balance-register"
-                                type="number"
-                                value={values.balance}
-                                name="balance"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                inputProps={{}}
-                            />
-                            {touched.balance && errors.balance && (
-                                <FormHelperText error id="standard-weight-helper-text-balance-register">
-                                    {errors.balance}
-                                </FormHelperText>
-                            )}
-                        </FormControl>
+                        <TextField
+                            fullWidth
+                            sx={{ ...theme.typography.customInput }}
+                            id="outlined-adornment-balance-register"
+                            type="number"
+                            label="Account Balance"
+                            value={values.balance}
+                            name="balance"
+                            required
+                            onChange={handleChange}
+                            inputProps={{}}
+                        />
+                        {touched.balance && errors.balance && <FormHelperText error>{errors.balance}</FormHelperText>}
 
                         <Box sx={{ mt: 2 }}>
                             <AnimateButton>
@@ -138,8 +111,8 @@ const RegisterForm = (props) => {
                                     disabled={isSubmitting}
                                     fullWidth
                                     size="large"
-                                    data-testid="signUpButton"
                                     type="submit"
+                                    data-testid="signUpButton"
                                     variant="contained"
                                     color="secondary"
                                 >
@@ -159,3 +132,4 @@ RegisterForm.propTypes = {
 };
 
 export default RegisterForm;
+export { vSchema };
