@@ -16,15 +16,14 @@ import barChartData from './chart-data/barChartData';
 import { filterAmountByTime } from 'utils/timeUtils';
 
 let createChartData = (expense, transfer) => {
-    let current = new Date();
     let chartData = {};
     chartData.expense = [];
     chartData.transfer = [];
 
     for (let i = 0; i < 12; i++) {
-        current.setMonth(i);
-        let monthlyExpense = filterAmountByTime('month', current, expense);
-        let monthlyTransfer = filterAmountByTime('month', current, transfer);
+        let firstDayOfMonth = new Date(new Date().getFullYear(), i, 1);
+        let monthlyExpense = filterAmountByTime('month', firstDayOfMonth, expense);
+        let monthlyTransfer = filterAmountByTime('month', firstDayOfMonth, transfer);
         chartData.expense.push(
             monthlyExpense
                 .reduce((total, current) => {
@@ -43,7 +42,7 @@ let createChartData = (expense, transfer) => {
     return chartData;
 };
 
-const TotalGrowthBarChart = () => {
+const SpendingBarChart = () => {
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
     let userInfo = useSelector((state) => state.user);
@@ -125,4 +124,4 @@ const TotalGrowthBarChart = () => {
     );
 };
 
-export default TotalGrowthBarChart;
+export default SpendingBarChart;

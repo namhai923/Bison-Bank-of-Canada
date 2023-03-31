@@ -10,8 +10,8 @@ const TransferHistory = () => {
 
     let labels = ['Transfer Id', '', 'Receiver/Recipeint', 'Date', 'Amount', ''];
     let filterLabels = [
-        { label: 'Sender', color: '#C22E28' },
-        { label: 'Receiver', color: '#F95587' }
+        { label: 'Sender', color: '#1e88e5' },
+        { label: 'Receiver', color: '#5e35b1' }
     ];
     let emptyMessage = 'You have not made or recieved any transfer so far. Send money to your friends to get started!';
     let title = 'Transfer History';
