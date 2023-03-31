@@ -93,7 +93,7 @@ const ListCard = (props) => {
         setOrderBy(event);
     };
 
-    const filteredRows = applySortFilter(rows, getComparator(order, orderBy));
+    const sortedRows = applySortFilter(rows, getComparator(order, orderBy));
 
     return (
         <MainCard title={title} content={false}>
@@ -145,7 +145,7 @@ const ListCard = (props) => {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {filteredRows
+                                                {sortedRows
                                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                                     .map((row, index) => (
                                                         <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
