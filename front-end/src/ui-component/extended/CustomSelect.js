@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import chroma from 'chroma-js';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import { InputLabel } from '@mui/material';
+import { InputLabel, useTheme } from '@mui/material';
 
 import { setFilter } from 'ui-component/filter/filterSlice';
 
@@ -56,6 +56,7 @@ let getOptions = (data, color) => {
 };
 
 let CustomSelect = (props) => {
+    let theme = useTheme();
     let { label, field, data, color } = props;
     let { name } = field;
 
@@ -70,7 +71,9 @@ let CustomSelect = (props) => {
 
     return (
         <>
-            <InputLabel htmlFor={name}>{label}</InputLabel>
+            <InputLabel focused sx={{ ...theme.typography.customInput }} htmlFor={name}>
+                {label}
+            </InputLabel>
             <Select
                 {...props}
                 id={name}
