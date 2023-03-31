@@ -7,7 +7,7 @@ import TotalSpending from './TotalSpending';
 import LatestExpense from './LatestExpense';
 import LatestTransfer from './LatestTransfer';
 import { gridSpacing } from 'store/constant';
-import TotalGrowthBarChart from './TotalGrowthBarChart';
+import SpendingBarChart from './SpendingBarChart';
 
 const Dashboard = () => {
     return (
@@ -35,7 +35,7 @@ const Dashboard = () => {
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} md={12}>
-                        <TotalGrowthBarChart />
+                        <SpendingBarChart />
                     </Grid>
                 </Grid>
             </Grid>
