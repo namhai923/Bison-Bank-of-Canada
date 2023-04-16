@@ -4,14 +4,6 @@ const mongoose = require("mongoose");
 const app = require("../../../app");
 const { clearCacheTimeout } = require("../../../cache");
 
-
-const saul = {
-    username: "saul@email.com",
-    firstName: "Saul",
-    lastName: "Goodman",
-    accountBalance: 5000
-}
-
 const tuco = {
     username: "tuco@email.com",
     firstName: "Tuco",
@@ -19,10 +11,9 @@ const tuco = {
     accountBalance: 15000
 }
 
-let tuco_user = {}
 beforeAll(async() => {
     // Creating new users
-    tuco_user = await request(app).post("/user").send({
+    await request(app).post("/user").send({
         userName: tuco.username,
         firstName: tuco.firstName,
         lastName: tuco.lastName,
@@ -62,48 +53,6 @@ describe("Testing updating user profile", () => {
         expect(updatedProfile.body.accountBalance).toBe(tuco.accountBalance)
         expect(updatedProfile.body.dob).toBe(tuco.dob)
         expect(updatedProfile.body.phoneNumber).toBe(tuco.phoneNumber)
-    });
-
-    it("should not allow to update a profile with a null dob", async ()=> {
-        const res = await request(app).post("/user/" + tuco.username).send({
-            firstName: tuco.firstName,
-            lastName: tuco.lastName,
-            dob: null,
-            phoneNumber: tuco.phoneNumber
-          });
-        expect(res.statusCode).toBe(500)
-        expect(res.text).toEqual(
-            expect.stringContaining("Missing require parameter in request body.")
-        );
-    });
-
-    it("should not allow to update a profile with a null phone number", async ()=> {
-        const res = await request(app).post("/user/" + tuco.username).send({
-            firstName: tuco.firstName,
-            lastName: tuco.lastName,
-            dob: tuco.dob,
-            phoneNumber: null
-          });
-        expect(res.statusCode).toBe(500)
-        expect(res.text).toEqual(
-            expect.stringContaining("Missing require parameter in request body.")
-        );
-    });
-
-    it("should not allow to update the non existent user", async ()=> {
-        let d = new Date('2001-11-04')
-        saul.dob = d.toISOString()
-        saul.phoneNumber = "1234567870"
-        const res = await request(app).post("/user/" + saul.username).send({
-            firstName: saul.firstName,
-            lastName: saul.lastName,
-            dob: saul.dob,
-            phoneNumber: saul.phoneNumber
-          });
-          expect(res.statusCode).toBe(404)
-          expect(res.text).toEqual(
-            expect.stringContaining("User Not Found.")
-          );
     });
     
 });

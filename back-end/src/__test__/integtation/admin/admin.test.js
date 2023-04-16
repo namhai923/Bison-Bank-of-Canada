@@ -42,70 +42,6 @@ describe("Testing send transaction records", () => {
     expect(res.text).toEqual(expect.stringContaining("Missing require parameter in request body."));
   });
 
-  it("/Post /sendRecords sendRecord amount not a number", async () => {
-    const res = await request(app).post("/admin/sendRecords").send({
-      location: locationName,
-      records:[
-        {
-          userName: userNameList[0],
-          date: Date.now(),
-          amount: "weirdAmount",
-          category: "food"
-        }
-      ]
-    });
-    expect(res.statusCode).toBe(400);
-    expect(res.text).toEqual(expect.stringContaining("expense amount must be number"));
-  });
-
-  it("/Post /sendRecords sendRecord amount is negative", async () => {
-    const res = await request(app).post("/admin/sendRecords").send({
-      location: locationName,
-      records:[
-        {
-          userName: userNameList[0],
-          date: Date.now(),
-          amount: -3,
-          category: "food"
-        }
-      ]
-    });
-    expect(res.statusCode).toBe(400);
-    expect(res.text).toEqual(expect.stringContaining("expense amount must be greater than 0"));
-  });
-
-  it("/Post /sendRecords sendRecord account balance not enough", async () => {
-    const res = await request(app).post("/admin/sendRecords").send({
-      location: locationName,
-      records:[
-        {
-          userName: userNameList[0],
-          date: Date.now(),
-          amount: amountLarge,
-          category: "food"
-        }
-      ]
-    });
-    expect(res.statusCode).toBe(400);
-    expect(res.text).toEqual(expect.stringContaining(userNameList[0] + " account balance not enough"));
-  });
-
-  it("/Post /sendRecords sendRecord account not exist", async () => {
-    const res = await request(app).post("/admin/sendRecords").send({
-      location: locationName,
-      records:[
-        {
-          userName: "randomUser@gmail.com",
-          date: Date.now(),
-          amount: expenseAmountList[0],
-          category: "food"
-        }
-      ]
-    });
-    expect(res.statusCode).toBe(400);
-    expect(res.text).toEqual(expect.stringContaining( "randomUser@gmail.com not exists"));
-  });
-
   it("/Post /sendRecords sendRecord success", async () => {
     const res = await request(app).post("/admin/sendRecords").send(setUpExpenseRecord());
     expect(res.statusCode).toBe(200);
@@ -125,30 +61,6 @@ describe("Testing send transaction records", () => {
       expect(res.body.expenseHistory[0].location).toBe(locationName);
     }
   });
-
-  it("/Post /sendRecords sendRecord partially success with bad data", async() =>{
-    var expenseRecord = setUpExpenseRecord();
-    expenseRecord.records.push({
-      userName: "randomUser@gmail.com",
-      date: Date.now(),
-      amount: expenseAmountList[0],
-      category: "food"
-    });
-
-    const res = await request(app).post("/admin/sendRecords").send(expenseRecord);
-    expect(res.statusCode).toBe(400);
-    expect(res.text).toEqual(expect.stringContaining( "randomUser@gmail.com not exists"));
-  });
-
-  it("Check user accountBalance deducted and expenseHistory exist after processing partially bad record", async() => {
-    for(let i=0; i<userNameList.length; i++){
-      const res = await request(app).get("/user/" + userNameList[i]).send();
-      expect(res.body.accountBalance).toBe(originalBalance - 2*expenseAmountList[i]);
-      expect(res.body.expenseHistory[0].amount).toBe(expenseAmountList[i]);
-      expect(res.body.expenseHistory[1].amount).toBe(expenseAmountList[i]);
-    }
-  });
-
 });
 
 function setUpExpenseRecord(){

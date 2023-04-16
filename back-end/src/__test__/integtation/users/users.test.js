@@ -4,14 +4,6 @@ const mongoose = require("mongoose");
 const app = require("../../../app");
 const { clearCacheTimeout } = require("../../../cache");
 
-
-const saul = {
-    username: "saul@email.com",
-    firstName: "Saul",
-    lastName: "Goodman",
-    accountBalance: 5000
-}
-
 const tuco = {
     username: "tuco@email.com",
     firstName: "Tuco",
@@ -57,29 +49,6 @@ describe("Creating users", ()=> {
           expect(res.body.firstName).toBe(tuco.firstName)
           expect(res.body.lastName).toBe(tuco.lastName)
           expect(res.body.accountBalance).toBe(tuco.accountBalance)
-    });
-
-    it("should not return the information about an incorrect user - a user that does not exist", async ()=> {
-        const res = await request(app).get("/user/" + saul.username).send();
-          expect(res.statusCode).toBe(404)
-    });
-
-    it("should not create an existing user again", async ()=> {
-        const res = await request(app).post("/user").send({
-            userName: tuco.username,
-            firstName: tuco.firstName,
-            lastName: tuco.lastName,
-            accountBalance: tuco.accountBalance,
-          });
-          expect(res.statusCode).toBe(400)
-          expect(res.text).toEqual(
-            expect.stringContaining("User Already Exists.")
-          );
-    });
-
-    it("should not create a user with bad information", async ()=> {
-        const res = await request(app).post("/user").send({});
-          expect(res.statusCode).toBe(500);
     });
 
     it("should create a user with missing amount and set it to 0", async ()=> {

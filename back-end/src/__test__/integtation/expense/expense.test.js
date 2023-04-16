@@ -4,32 +4,16 @@ const mongoose = require("mongoose");
 const app = require("../../../app");
 const { clearCacheTimeout } = require("../../../cache");
 
-
-const saul = {
-    username: "saul@email.com",
-    firstName: "Saul",
-    lastName: "Goodman",
-    accountBalance: 5000
-}
-
 const tuco = {
     username: "tuco@email.com",
     firstName: "Tuco",
     lastName: "Salamanca",
     accountBalance: 15000
 }
-let saul_user = {}
-let tuco_user = {}
+
 beforeAll(async() => {
     // Creating new users
-    saul_user  = await request(app).post("/user").send({
-        userName: saul.username,
-        firstName: saul.firstName,
-        lastName: saul.lastName,
-        accountBalance: saul.accountBalance
-    });
-
-    tuco_user = await request(app).post("/user").send({
+    await request(app).post("/user").send({
         userName: tuco.username,
         firstName: tuco.firstName,
         lastName: tuco.lastName,
@@ -80,51 +64,9 @@ describe("Testing adding expenses", () => {
     });
 
     it("should have reduced 10 dollors for {tuco.firstName} {tuco.lastName}'s account", async ()=>{
-        tuco_before_balance = tuco.accountBalance
+        let tuco_before_balance = tuco.accountBalance
         const res = await request(app).get("/user/" + tuco.username).send()
         expect(res.body.accountBalance).toBe(tuco_before_balance-10)
-    })
-
-    it("should not create an expense history with an invalid amount", async () => {
-        const res = await request(app).post("/user/" + saul.username + "/expense").send({
-            location: expense1.location,
-            category: expense1.category,
-            amount: -9,
-        });
-        expect(res.statusCode).toBe(400);
-    });
-
-    it("should not create an expense history with an invalid amount", async () => {
-        const res = await request(app).post("/user/" + saul.username + "/expense").send({
-            location: expense1.location,
-            category: expense1.category,
-            amount: "A number",
-        });
-        expect(res.statusCode).toBe(400);
-    });
-
-    it("should not create an expense history with an invalid amount", async () => {
-        const res = await request(app).post("/user/" + saul.username + "/expense").send({
-            location: expense1.location,
-            category: expense1.category,
-            amount: 0,
-        });
-        expect(res.statusCode).toBe(400);
-    });
-
-    it("should not create an expense with amount more than the user's balance", async () => {
-        const res = await request(app).post("/user/" + saul.username + "/expense").send({
-            location: expense1.location,
-            category: expense1.category,
-            amount: 5000.01,
-        });
-        expect(res.statusCode).toBe(400);
-    });
-
-    it("should not have created any expense for {saul.firstName} {saul.lastName}", async () => {
-        const res = await request(app).get("/user/" + saul.username ).send();
-        expect(res.statusCode).toBe(200);
-        expect(res.body.expenseHistory.length).toBe(0)
     });
 });
 

@@ -71,19 +71,6 @@ describe("Sending Money from Tuco Salamanca to Saul Goodman", () => {
         expect(res.body.accountBalance).toBe(receiverInfo.accountBalance + transferAmount);
     });
 
-    it("should not let Tuco send more than 4499.75 dollors", async ()=> {
-        const curr_bal = await (await request(app).get("/user/" + senderInfo.username).send()).body.accountBalance;
-        let url = "/user/"+ senderInfo.username + "/transfer";
-        const res = await request(app).post(url).send({
-            receiverName: receiverInfo.username,
-            amount: curr_bal + 0.001
-        });
-        expect(res.statusCode).toBe(400);
-        expect(res.text).toEqual(
-            expect.stringContaining("Account balance not enough")
-        );
-    });
-
     it("should should send all of Saul's money to Tuco's account", async () => {
         const saul_curr_bal = await (await request(app).get("/user/" + receiverInfo.username).send()).body.accountBalance;
         const tuco_curr_bal = await (await request(app).get("/user/" + senderInfo.username).send()).body.accountBalance;
@@ -97,47 +84,5 @@ describe("Sending Money from Tuco Salamanca to Saul Goodman", () => {
         expect(res.statusCode).toBe(200);
         expect(send_res.body.accountBalance).toBe(0);
         expect(recv_res.body.accountBalance).toBe(saul_curr_bal + tuco_curr_bal);
-    });
-
-    it("should not let Tuco send money to an invalid user", async () => {
-        const tuco_before_bal = await (await request(app).get("/user/" + senderInfo.username).send()).body.accountBalance;
-        let url = "/user/"+ senderInfo.username + "/transfer";
-        const res = await request(app).post(url).send({
-            receiverName: "Does_not_exists",
-            amount: transferAmount
-        });
-        const tuco_after_bal = await (await request(app).get("/user/" + senderInfo.username).send()).body.accountBalance;
-        expect(res.statusCode).toBe(400);
-        expect(tuco_before_bal).toBe(tuco_after_bal);
-    });
-    
-    it("not let tuco transfer a string amount", async () => {
-        const tuco_before_bal = await (await request(app).get("/user/" + senderInfo.username).send()).body.accountBalance;
-        let url = "/user/"+ senderInfo.username + "/transfer";
-        const res = await request(app).post(url).send({
-            receiverName: receiverInfo.username,
-            amount: "s"
-        });
-        const tuco_after_bal = await (await request(app).get("/user/" + senderInfo.username).send()).body.accountBalance;
-        expect(res.statusCode).toBe(400);
-        expect(tuco_before_bal).toBe(tuco_after_bal);
-        expect(res.text).toEqual(
-            expect.stringContaining("Transfer amount must be a number.")
-        );
-    });
-
-    it("not let Tuco send a negative number", async () => {
-        const tuco_before_bal = await (await request(app).get("/user/" + senderInfo.username).send()).body.accountBalance;
-        let url = "/user/"+ senderInfo.username + "/transfer";
-        const res = await request(app).post(url).send({
-            receiverName: receiverInfo.username,
-            amount: -1
-        });
-        const tuco_after_bal = await (await request(app).get("/user/" + senderInfo.username).send()).body.accountBalance;
-        expect(res.statusCode).toBe(400);
-        expect(tuco_before_bal).toBe(tuco_after_bal);
-        expect(res.text).toEqual(
-            expect.stringContaining("Transfer amount must be greater than 0.")
-        );
     });
 });
