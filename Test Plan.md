@@ -8,7 +8,7 @@
 |version number|Date of Change|Name of person who made changes|Description of the changes made|
 |V1|Feb 17|Yixi Wu|Test existing finished feature with acceptance testCI pipeline run automated unit/integration test|
 |V2|Mar 16|Yixi Wu|Test all functional feature|
-|||||
+|V3|Mar 27|Yixi Wu|Add Load Test|
 
 
  # **Introduction**
@@ -68,6 +68,10 @@ Track expense: User should be able to view their remaining balance and past expe
 
 Regression Testing:
 Setup automated CI pipeline: everytime a PR is created, or a PR is merged, automated  unit tests and integration tests will run.
+
+Loat Testing:
+Handle 100 user and 1000 request per miniute, more detail can be found under LoadTest folder
+
 ## **Test Completeness**
 Here you define the criterias that will deem your testing complete. For instance, a few criteria to check Test Completeness would be
 
@@ -109,7 +113,7 @@ Please run both the backend and frontend first before doing acceptance test
 Transfer Money:
 1. As a user, I should be able to see the reduction of the exact transfer amount from my bank account after I complete my transfer. 
 
-Test step: Opean two login page using two different browser, enter the user email "elonmusk@twitter.com" and "daddybezos@amazon.com" respectively, mark down the two account balance. Inside "elonmusk@twitter.com" user, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount "100", then hit "Send" button. Go back to your "Dashboard" on the left-hand side menu, check your purple card that shows remaining balance, it should be reducted with 100
+Test step: Open two login page using two different browser, enter the user email "elonmusk@twitter.com" and "daddybezos@amazon.com" respectively, mark down the two account balance. Inside "elonmusk@twitter.com" user, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount "100", then hit "Send" button. Go back to your "Dashboard" on the left-hand side menu, check your purple card that shows remaining balance, it should be reducted with 100
 
 2. As a user, I should be able to see an increment of total amount in my bank account after someone has transferred me the money.
 
@@ -117,13 +121,13 @@ Test step: Opean two login page using different browser, enter the user email "e
 
 3. As a user, I want the app to prevent me from transfering more money than I already have in my bank account by showing some kind of alert message.
 
-Test step: Opean login page, enter the user email "anotherdude@gmail.com" mark down the current account balance, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount that is greater than the account balance, then hit "Send" button. It should 
+Test step: Open login page, enter the user email "anotherdude@gmail.com" mark down the current account balance, on the left handside menu, click "Send Money", and type in "daddybezos@amazon.com" and enter amount that is greater than the account balance, then hit "Send" button. It should show "Account Balance Not Enough" as popup message
 
 
 Track Expense:
 1. As a user, I should be able to see my past expense.
 
-Test step: In login page, enter the user email "elonmusk@twitter.com" and click signin. In the left hand sign menu, select expense history, you should be able to see an expense history table.
+Test step: In login page, enter the user email "elonmusk@twitter.com" and click signin. In the left hand side menu, select expense history, you should be able to see an expense history table.
 
 2. As a user, I should be able to see my remaining balance.
 
@@ -131,7 +135,7 @@ Test step: In login page, enter the user email "elonmusk@twitter.com" and click 
 
 3. As a user, I should be able to filter/sort my expense based on category/location.
 
-Test step: In login page, enter the user email "elonmusk@twitter.com" and click signin. In the left hand sign menu, select expense history, you should be able to see an expense history table. On the top left corner, click the filter button, choose the category you want to filter, the expense table should shows filter the expense based on the filter label you choose.
+Test step: In login page, enter the user email "elonmusk@twitter.com" and click signin. In the left hand sign menu, select expense history, you should be able to see an expense history table. On the top left corner, click the filter button, choose the category you want to filter, the expense table should shows filter the expense based on the filter label you choose. Sorting the expense history can be done by clicking Date and Amount Inside the table.
 
 4. As a user, I should be able to sum my past expense based on time.
 
