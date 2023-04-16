@@ -5,7 +5,7 @@ const app = require("../../../app");
 const { clearCacheTimeout } = require("../../../cache");
 
 const tuco = {
-    username: "tuco@email.com",
+    userName: "tuco@email.com",
     firstName: "Tuco",
     lastName: "Salamanca",
     accountBalance: 15000
@@ -14,7 +14,7 @@ const tuco = {
 beforeAll(async() => {
     // Creating new users
     await request(app).post("/user").send({
-        userName: tuco.username,
+        userName: tuco.userName,
         firstName: tuco.firstName,
         lastName: tuco.lastName,
         accountBalance: tuco.accountBalance
@@ -37,7 +37,7 @@ describe("Testing updating user profile", () => {
         let d = new Date('2001-01-04')
         tuco.dob = d.toISOString()
         tuco.phoneNumber = "1234567890"
-        const res = await request(app).post("/user/" + tuco.username).send({
+        const res = await request(app).post("/user/" + tuco.userName).send({
             firstName: tuco.firstName,
             lastName: tuco.lastName,
             dob: tuco.dob,
@@ -45,9 +45,9 @@ describe("Testing updating user profile", () => {
           });
           expect(res.statusCode).toBe(200)
 
-        const updatedProfile = await request(app).get("/user/" + tuco.username).send();
+        const updatedProfile = await request(app).get("/user/" + tuco.userName).send();
         expect(updatedProfile.statusCode).toBe(200)
-        expect(updatedProfile.body.userName).toBe(tuco.username)
+        expect(updatedProfile.body.userName).toBe(tuco.userName)
         expect(updatedProfile.body.firstName).toBe(tuco.firstName)
         expect(updatedProfile.body.lastName).toBe(tuco.lastName)
         expect(updatedProfile.body.accountBalance).toBe(tuco.accountBalance)

@@ -5,7 +5,7 @@ const app = require("../../../app");
 const { clearCacheTimeout } = require("../../../cache");
 
 const tuco = {
-    username: "tuco@email.com",
+    userName: "tuco@email.com",
     firstName: "Tuco",
     lastName: "Salamanca",
     accountBalance: 15000
@@ -14,7 +14,7 @@ const tuco = {
 beforeAll(async() => {
     // Creating new users
     await request(app).post("/user").send({
-        userName: tuco.username,
+        userName: tuco.userName,
         firstName: tuco.firstName,
         lastName: tuco.lastName,
         accountBalance: tuco.accountBalance
@@ -38,7 +38,7 @@ describe("Testing adding expenses", () => {
         amount: 10
     }
     it("should create a new expense for {tuco.firstName} {tuco.lastName}", async () => {
-        const res = await request(app).post("/user/" + tuco.username + "/expense").send({
+        const res = await request(app).post("/user/" + tuco.userName + "/expense").send({
             location: expense1.location,
             category: expense1.category,
             amount: expense1.amount,
@@ -50,7 +50,7 @@ describe("Testing adding expenses", () => {
     });
 
     it("{tuco.firstName} {tuco.lastName}'s expense history must be stored by now", async () => {
-        const res = await request(app).get("/user/" + tuco.username).send();
+        const res = await request(app).get("/user/" + tuco.userName).send();
         let expenseList = res.body.expenseHistory;
         let d = expenseList[0].date.split('T')[0]
         let today = new Date()
@@ -64,9 +64,9 @@ describe("Testing adding expenses", () => {
     });
 
     it("should have reduced 10 dollors for {tuco.firstName} {tuco.lastName}'s account", async ()=>{
-        let tuco_before_balance = tuco.accountBalance
-        const res = await request(app).get("/user/" + tuco.username).send()
-        expect(res.body.accountBalance).toBe(tuco_before_balance-10)
+        let tucoBeforeBalance = tuco.accountBalance
+        const res = await request(app).get("/user/" + tuco.userName).send()
+        expect(res.body.accountBalance).toBe(tucoBeforeBalance-10)
     });
 });
 

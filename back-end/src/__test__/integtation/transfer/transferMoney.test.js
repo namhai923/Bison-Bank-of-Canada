@@ -5,14 +5,14 @@ const app = require("../../../app");
 const { clearCacheTimeout } = require("../../../cache");
 
 const senderInfo = {
-    username: "tuco@email.com",
+    userName: "tuco@email.com",
     firstName: "Tuco",
     lastName: "Salamanca",
     accountBalance: 5000
 }
 
 const receiverInfo = {
-    username: "sgoodman@email.com",
+    userName: "sgoodman@email.com",
     firstName: "Saul",
     lastName: "Goadman",
     accountBalance: 10000
@@ -25,14 +25,14 @@ let receiver = {};
 beforeAll(async() => {
     // Create a sender user and a receiver user
     sender  = await request(app).post("/user").send({
-        userName: senderInfo.username,
+        userName: senderInfo.userName,
         firstName: senderInfo.firstName,
         lastName: senderInfo.lastName,
         accountBalance: senderInfo.accountBalance
     });
 
     receiver = await request(app).post("/user").send({
-        userName: receiverInfo.username,
+        userName: receiverInfo.userName,
         firstName: receiverInfo.firstName,
         lastName: receiverInfo.lastName,
         accountBalance: receiverInfo.accountBalance
@@ -51,38 +51,38 @@ afterAll(async () => {
 
 describe("Sending Money from Tuco Salamanca to Saul Goodman", () => {
     it("should reduce 100 dollors from Tuco's account and increment 100 dollors in Saul's account", async () => {
-        let url = "/user/"+ senderInfo.username + "/transfer";
+        let url = "/user/"+ senderInfo.userName + "/transfer";
         const res = await request(app).post(url).send({
-            receiverName: receiverInfo.username,
+            receiverName: receiverInfo.userName,
             amount: transferAmount
         });
         expect(res.statusCode).toBe(200);
     });
 
     it("should have decreased 500 dollors from Tuco's account", async ()=> {
-        const url = "/user/" + senderInfo.username;
+        const url = "/user/" + senderInfo.userName;
         const res = await request(app).get(url).send();
         expect(res.body.accountBalance).toBe(senderInfo.accountBalance - transferAmount);
     });
 
     it("should have increased 500 dollors in Saul's account", async ()=> {
-        const url = "/user/" + receiverInfo.username;
+        const url = "/user/" + receiverInfo.userName;
         const res = await request(app).get(url).send();
         expect(res.body.accountBalance).toBe(receiverInfo.accountBalance + transferAmount);
     });
 
     it("should should send all of Saul's money to Tuco's account", async () => {
-        const saul_curr_bal = await (await request(app).get("/user/" + receiverInfo.username).send()).body.accountBalance;
-        const tuco_curr_bal = await (await request(app).get("/user/" + senderInfo.username).send()).body.accountBalance;
-        let url = "/user/"+ receiverInfo.username + "/transfer";
+        const saulCurrBal = await (await request(app).get("/user/" + receiverInfo.userName).send()).body.accountBalance;
+        const tucoCurrBal = await (await request(app).get("/user/" + senderInfo.userName).send()).body.accountBalance;
+        let url = "/user/"+ receiverInfo.userName + "/transfer";
         const res = await request(app).post(url).send({
-            receiverName: senderInfo.username,
-            amount: saul_curr_bal
+            receiverName: senderInfo.userName,
+            amount: saulCurrBal
         });
-        const send_res = await request(app).get("/user/" + receiverInfo.username).send();
-        const recv_res = await request(app).get("/user/" + senderInfo.username).send();
+        const sendRes = await request(app).get("/user/" + receiverInfo.userName).send();
+        const recvRes = await request(app).get("/user/" + senderInfo.userName).send();
         expect(res.statusCode).toBe(200);
-        expect(send_res.body.accountBalance).toBe(0);
-        expect(recv_res.body.accountBalance).toBe(saul_curr_bal + tuco_curr_bal);
+        expect(sendRes.body.accountBalance).toBe(0);
+        expect(recvRes.body.accountBalance).toBe(saulCurrBal + tucoCurrBal);
     });
 });
