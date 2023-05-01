@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Development
     env:
+      working-directory: ./back-end
       DB_URL: ${{ secrets.DB_URL }}
       TESTDB_URL: ${{ secrets.TESTDB_URL }}
       PORT: ${{ secrets.PORT }}
@@ -41,10 +42,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Run backend tests
+    - name: Install backend dependencies
       working-directory: ./back-end
       run: npm ci
 
-    - name: Install backend dependencies
+    - name: Run backend tests
       working-directory: ./back-end
       run: npm test
