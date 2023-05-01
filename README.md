@@ -84,6 +84,13 @@ Send Records Sequence
 Transfer Money Sequence
 ![This is the sequence Diagram](/TransferSeq.png)
 
+## Running the app
+Run backend:
+cd into the back-end folder first. Inside the back-end folder, type "npm install" then "npm start" to run it
+
+Run frontend:
+cd into the front-end folder. If you don't have node_modules in that folder, run "npm install" on the terminal to install the dependencies. Run "npm start" to start the front-end server. The server will run on localhost:3000. 
+
 ## Instructions (Please Read)
 This section will explain additional instructions about how to use certain features
 
