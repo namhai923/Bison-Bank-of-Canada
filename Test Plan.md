@@ -27,7 +27,6 @@ For all of the Functional feature, Unit test and integration test exists, accept
 
 Require Jmeter.
 **Instruction to run loadtest:**
-Requires .env file to have connectionString to loadtest DB: PORT=5000, and LOADTEST_URL=mongodb+srv://BBCNews:QEXVgUC6qDmNwzxG@cluster0.iw74dsb.mongodb.net/LoadTest?retryWrites=true&w=majority
 1. In backend folder, type "npm run loadtest"
 2. Delete the Users Collection in the mongoDB if it exist
 3. run the jmx file under the loadtest folder using jmeter

@@ -33,7 +33,7 @@ The server can handle more than 500 users usage at the same time or 500 transact
 
 ## Technologies
 
-MERN tech stack (MongoDB, ExpressJS, ReactJS/AngularJS and NodeJS) with Jenkins and Docker
+MERN tech stack (MongoDB, ExpressJS, ReactJS and NodeJS) with GitHub Actions and Docker
 
 ## User Stories
 
@@ -86,15 +86,7 @@ Transfer Money Sequence
 
 ## Running the app
 Run backend:
-cd into the back-end folder first, you will need a .env file with the following content: (for ease of grading/testing purpose, we are stroing this secret in README in plain text)
-
-PORT=5000
-DB_URL=mongodb+srv://BBCNews:QEXVgUC6qDmNwzxG@cluster0.iw74dsb.mongodb.net/Bison-Bank-of-Canada?retryWrites=true&w=majority
-TESTDB_URL=mongodb+srv://BBCNews:QEXVgUC6qDmNwzxG@cluster0.iw74dsb.mongodb.net/Test-DB?retryWrites=true&w=majority
-
-This file needs to be under the back-end folder.
-
-Inside the back-end foler, type "npm install" then "npm start" to run it
+cd into the back-end folder first. Inside the back-end folder, type "npm install" then "npm start" to run it
 
 Run frontend:
 cd into the front-end folder. If you don't have node_modules in that folder, run "npm install" on the terminal to install the dependencies. Run "npm start" to start the front-end server. The server will run on localhost:3000. 
