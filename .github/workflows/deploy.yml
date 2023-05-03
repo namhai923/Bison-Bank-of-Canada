@@ -45,15 +45,13 @@ jobs:
       - name: Docker Backend build and push
         uses: docker/build-push-action@v4
         with:
-          context: "{{defaultContext:back-end}}"
+          context: back-end/
           push: true
-          repository: jessewu10/bbc-backend
-          tags: latest, {{github.run_number}}
+          tags: ljessewu10/bison-bank-of-canada:server
       
       - name: Docker Frontend build and push
         uses: docker/build-push-action@v4
         with:
-          context: "{{defaultContext:front-end}}"
+          context: front-end/
           push: true
-          repository: jessewu10/bbc-frontend
-          tags: latest, {{github.run_number}}
+          tags: jessewu10/bison-bank-of-canada:client
