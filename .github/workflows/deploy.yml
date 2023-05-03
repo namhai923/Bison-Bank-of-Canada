@@ -45,13 +45,13 @@ jobs:
       - name: Docker Backend build and push
         uses: docker/build-push-action@v4
         with:
-          context: "{{defaultContext:back-end}}"
+          context: back-end/
           push: true
           tags: ljessewu10/bison-bank-of-canada:server
       
       - name: Docker Frontend build and push
         uses: docker/build-push-action@v4
         with:
-          context: "{{defaultContext:front-end}}"
+          context: front-end/
           push: true
           tags: jessewu10/bison-bank-of-canada:client
