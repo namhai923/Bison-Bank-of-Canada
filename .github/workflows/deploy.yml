@@ -47,7 +47,7 @@ jobs:
         with:
           context: back-end/
           push: true
-          tags: ljessewu10/bison-bank-of-canada:server
+          tags: jessewu10/bison-bank-of-canada:server
       
       - name: Docker Frontend build and push
         uses: docker/build-push-action@v4
