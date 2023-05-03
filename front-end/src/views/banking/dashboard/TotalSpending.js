@@ -185,7 +185,7 @@ const TotalSpending = () => {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    {timeValue ? <Chart {...lineChartData(chartData)} /> : <Chart {...lineChartData(chartData)} />}
+                                    <Chart {...lineChartData(chartData)} />
                                 </Grid>
                             </Grid>
                         </Grid>
