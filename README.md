@@ -34,6 +34,7 @@ The server can handle more than 500 users usage at the same time or 500 transact
 ## Technologies
 
 MERN tech stack (MongoDB, ExpressJS, ReactJS and NodeJS) with GitHub Actions and Docker
+Supporting Node.js versions: 14.x, 16.x, 18.x
 
 ## User Stories
 

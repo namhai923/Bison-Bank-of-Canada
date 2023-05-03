@@ -10,24 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: Development
-    # env:
-    #   working-directory: ./front-end
-
-
-    # steps:
-    # - uses: actions/checkout@v2
-    # - name: Setup Node.js 
-    #   uses: actions/setup-node@v2
-    #   with:
-    #     node-version: 18.15.0
-
-    # - name: Install frontend dependencies
-    #   working-directory: ./front-end
-    #   run: npm ci
-      
-    # - name: Run frontend tests
-    #   working-directory: ./front-end
-    #   run: npm test
 
     strategy:
       matrix:
@@ -41,10 +23,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install backend dependencies
+    - name: Install frontend dependencies
       working-directory: ./front-end
       run: npm ci
 
-    - name: Run backend tests
+    - name: Run frontend tests
       working-directory: ./front-end
       run: npm test
