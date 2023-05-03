@@ -45,6 +45,7 @@ jobs:
       - name: Docker Backend build and push
         uses: docker/build-push-action@v4
         with:
+          context: "{{defaultContext:back-end}}"
           push: true
           repository: jessewu10/bbc-backend
           tags: latest, {{github.run_number}}
