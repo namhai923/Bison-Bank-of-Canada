@@ -1,16 +1,9 @@
-# FROM node:17-alpine
-# WORKDIR /Bison-Bank-of-Canada/front-end
-# COPY . .
-# RUN npm install
-# EXPOSE 3000
-# CMD ["npm", "ci"]
-# CMD ["npm", "start"]
-
 FROM node:17-alpine
-WORKDIR /Bison-Bank-of-Canada/front-end
-COPY package*.json ./
+RUN mkdir -p /app
+WORKDIR /app
+COPY front-end/package*.json ./
 RUN npm install
-COPY . .
-ENV PORT=3000
+COPY front-end/ .
+RUN npm run build
 EXPOSE 3000
 CMD ["npm", "start"]
