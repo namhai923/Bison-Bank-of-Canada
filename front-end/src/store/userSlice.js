@@ -25,14 +25,14 @@ export let userSlice = createSlice({
         },
         addTransfer: (state, action) => {
             state.transferHistory.push(action.payload);
-            let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            userInfo.transferHistory.push(action.payload);
+            state.accountBalance -= action.payload.amount;
+            localStorage.setItem('userInfo', JSON.stringify(state));
             return state;
         },
         addExpense: (state, action) => {
             state.expenseHistory.push(action.payload);
-            let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            userInfo.expenseHistory.push(action.payload);
+            state.accountBalance -= action.payload.amount;
+            localStorage.setItem('userInfo', JSON.stringify(state));
             return state;
         }
     }

@@ -46,6 +46,7 @@ const ProfileSection = () => {
         dispatch(action);
         navigate('/');
         localStorage.clear();
+        sessionStorage.clear();
         handleClose(event);
     };
 

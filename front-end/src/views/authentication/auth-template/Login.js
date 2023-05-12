@@ -26,9 +26,10 @@ const Login = () => {
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
-    let handleSubmit = async (username) => {
+    let handleSubmit = async (values) => {
         toast.promise(
-            bbcApi.getUser(username).then((result) => {
+            bbcApi.getUser({ userName: values.email, password: values.password }).then((result) => {
+                sessionStorage.setItem('password', values.password);
                 let action = setUser(result);
                 dispatch(action);
                 if (location.state?.from) {

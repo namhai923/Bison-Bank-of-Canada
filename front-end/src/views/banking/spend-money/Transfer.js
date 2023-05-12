@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useTheme } from '@mui/material/styles';
@@ -5,6 +6,8 @@ import { Button, CardActions, FormHelperText, TextField, useMediaQuery, Grid } f
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
+// import { io } from 'socket.io-client';
+import socket from 'socket';
 
 import bbcApi from 'api/bbcApi';
 import { addTransfer } from 'store/userSlice';
@@ -17,16 +20,34 @@ const vSchema = Yup.object().shape({
 let Transfer = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    // const socket = useRef();
 
     let dispatch = useDispatch();
     let userInfo = useSelector((state) => state.user);
 
+    // useEffect(() => {
+    //     socket.current = io(process.env.REACT_APP_SOCKET);
+    // }, []);
+
     let handleSubmit = async (values) => {
         toast.promise(
-            bbcApi.transfer({ userName: userInfo.userName, receiverName: values.receiver, amount: values.amount }).then((result) => {
-                let action = addTransfer(result);
-                dispatch(action);
-            }),
+            bbcApi
+                .transfer({
+                    userName: userInfo.userName,
+                    password: sessionStorage.getItem('password'),
+                    receiverName: values.receiver,
+                    amount: values.amount
+                })
+                .then((result) => {
+                    socket.emit('sendTransfer', {
+                        senderId: userInfo.userName,
+                        receiverId: values.receiver,
+                        transfer: values.amount
+                    });
+
+                    let action = addTransfer(result);
+                    dispatch(action);
+                }),
             {
                 pending: 'Hold on a sec ⌛',
                 success: 'Hooray 🎉🎉🎉',

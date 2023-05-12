@@ -24,8 +24,15 @@ const Register = () => {
     let handleSubmit = async (values) => {
         toast.promise(
             bbcApi
-                .createUser({ userName: values.email, firstName: values.fname, lastName: values.lname, accountBalance: values.balance })
+                .registerUser({
+                    userName: values.email,
+                    password: values.password,
+                    firstName: values.fname,
+                    lastName: values.lname,
+                    accountBalance: values.balance
+                })
                 .then((result) => {
+                    sessionStorage.setItem('password', values.password);
                     let action = setUser(result);
                     dispatch(action);
                     if (location.state?.from) {

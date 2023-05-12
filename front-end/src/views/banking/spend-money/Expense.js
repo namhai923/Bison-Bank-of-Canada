@@ -31,7 +31,13 @@ let Expense = () => {
     let handleSubmit = async (values) => {
         toast.promise(
             bbcApi
-                .expense({ userName: userInfo.userName, location: values.location, category: values.category, amount: values.amount })
+                .expense({
+                    userName: userInfo.userName,
+                    password: sessionStorage.getItem('password'),
+                    location: values.location,
+                    category: values.category,
+                    amount: values.amount
+                })
                 .then((result) => {
                     let action = addExpense(result);
                     dispatch(action);

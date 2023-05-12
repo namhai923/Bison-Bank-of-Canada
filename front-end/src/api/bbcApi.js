@@ -1,30 +1,25 @@
 import axiosClient from './axiosClient';
 
 let bbcApi = {
-    createUser: (params) => {
-        let url = `/user`;
+    registerUser: (params) => {
+        let url = `/user/register`;
         return axiosClient.post(url, { ...params });
     },
-    getUser: (username) => {
-        let url = `/user/${username}`;
-        return axiosClient.get(url);
+    getUser: (params) => {
+        let url = `/user/getInfo`;
+        return axiosClient.post(url, { ...params });
     },
     updateUser: (params) => {
-        let url = `/user/${params.userName}`;
+        let url = `/user/updateInfo`;
         return axiosClient.post(url, { ...params });
     },
     transfer: (params) => {
-        let url = `/user/${params.userName}/transfer`;
-        let receiverName = params.receiverName;
-        let amount = params.amount;
-        return axiosClient.post(url, { receiverName, amount });
+        let url = `/user/transfer`;
+        return axiosClient.post(url, { ...params });
     },
     expense: (params) => {
-        let url = `/user/${params.userName}/expense`;
-        let location = params.location;
-        let category = params.category;
-        let amount = params.amount;
-        return axiosClient.post(url, { location, category, amount });
+        let url = `/user/expense`;
+        return axiosClient.post(url, { ...params });
     }
 };
 
