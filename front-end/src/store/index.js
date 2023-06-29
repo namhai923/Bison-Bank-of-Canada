@@ -1,13 +1,15 @@
+import { configureStore } from '@reduxjs/toolkit';
+
 import customizationReducer from './customizeSlice';
 import userReducer from './userSlice';
-import filterReducer from '../ui-component/filter/filterSlice';
-
-const { configureStore } = require('@reduxjs/toolkit');
+import filterReducer from './filterSlice';
+import authReducer from './authSlice';
 
 export default configureStore({
     reducer: {
         customization: customizationReducer,
         user: userReducer,
-        filter: filterReducer
+        filter: filterReducer,
+        auth: authReducer
     }
 });

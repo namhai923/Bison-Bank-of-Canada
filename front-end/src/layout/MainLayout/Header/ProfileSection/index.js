@@ -26,6 +26,8 @@ import Transitions from 'ui-component/extended/Transitions';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
 import blankState from 'assets/data/blankState';
 import { setUser } from 'store/userSlice';
+import { logout } from 'store/authSlice';
+import bbcApi from 'api/bbcApi';
 
 const ProfileSection = () => {
     const theme = useTheme();
@@ -42,12 +44,17 @@ const ProfileSection = () => {
     const anchorRef = useRef(null);
 
     const handleLogout = async (event) => {
-        let action = setUser(blankState);
-        dispatch(action);
-        navigate('/');
-        localStorage.clear();
-        sessionStorage.clear();
-        handleClose(event);
+        try {
+            await bbcApi.logoutUser();
+            let action = setUser(blankState);
+            dispatch(action);
+            dispatch(logout());
+            navigate('/');
+            localStorage.clear();
+            handleClose(event);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const handleClose = (event) => {

@@ -33,7 +33,6 @@ let Expense = () => {
             bbcApi
                 .expense({
                     userName: userInfo.userName,
-                    password: sessionStorage.getItem('password'),
                     location: values.location,
                     category: values.category,
                     amount: values.amount

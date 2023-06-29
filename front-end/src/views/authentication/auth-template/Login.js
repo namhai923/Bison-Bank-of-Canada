@@ -11,7 +11,8 @@ import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
 import LoginForm from '../auth-forms/LoginForm';
 import Logo from 'ui-component/Logo';
-import { setUser } from '../../../store/userSlice';
+import { setUser } from 'store/userSlice';
+import { setCredentials } from 'store/authSlice';
 import bbcApi from 'api/bbcApi';
 
 // assets
@@ -28,10 +29,10 @@ const Login = () => {
 
     let handleSubmit = async (values) => {
         toast.promise(
-            bbcApi.getUser({ userName: values.email, password: values.password }).then((result) => {
-                sessionStorage.setItem('password', values.password);
-                let action = setUser(result);
+            bbcApi.loginUser({ userName: values.email, password: values.password }).then((result) => {
+                let action = setUser(result.userInfo);
                 dispatch(action);
+                dispatch(setCredentials(result.accessToken));
                 if (location.state?.from) {
                     navigate(location.state.from);
                 } else {
@@ -43,8 +44,9 @@ const Login = () => {
                 success: 'Welcome to BBC 🎉🎉🎉',
                 error: {
                     render({ data }) {
+                        console.log(data);
                         if (data.name === 'AxiosError') {
-                            return data.response.data;
+                            return data.response.data.message;
                         } else {
                             console.log(data);
                         }

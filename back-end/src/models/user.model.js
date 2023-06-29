@@ -77,14 +77,6 @@ let userSchema = new mongoose.Schema(
   { collection: "Users" }
 );
 
-let credentialSchema = new mongoose.Schema(
-  {
-    userName: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-  },
-  { collection: "Credentials" }
-);
-
 userSchema.set("toJSON", {
   getters: true,
   transform: (doc, ret) => {
@@ -122,7 +114,4 @@ transferSchema.set("toJSON", {
   },
 });
 
-module.exports = {
-  User: mongoose.model("User", userSchema),
-  Credential: mongoose.model("Credential", credentialSchema),
-};
+module.exports = mongoose.model("User", userSchema);

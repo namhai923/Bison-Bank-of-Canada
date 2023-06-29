@@ -25,7 +25,7 @@ const App = () => {
     useEffect(() => {
         let updateUser = async () => {
             try {
-                let user = await bbcApi.getUser({ userName: userInfo.userName, password: sessionStorage.getItem('password') });
+                let user = await bbcApi.getUser({ userName: userInfo.userName });
                 let action = setUser(user);
                 dispatch(action);
             } catch (error) {

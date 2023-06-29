@@ -61,7 +61,6 @@ let ProfileForm = () => {
             bbcApi
                 .updateUser({
                     userName: userInfo.userName,
-                    password: sessionStorage.getItem('password'),
                     firstName: values.fname,
                     lastName: values.lname,
                     dob: values.dob ?? '',

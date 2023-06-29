@@ -34,7 +34,6 @@ let Transfer = () => {
             bbcApi
                 .transfer({
                     userName: userInfo.userName,
-                    password: sessionStorage.getItem('password'),
                     receiverName: values.receiver,
                     amount: values.amount
                 })

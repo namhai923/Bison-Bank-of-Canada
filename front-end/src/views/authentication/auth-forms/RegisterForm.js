@@ -13,6 +13,7 @@ import {
     FormControl,
     OutlinedInput,
     InputLabel,
+    Typography,
     InputAdornment
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -23,6 +24,7 @@ import { Formik } from 'formik';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
+import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 const vSchema = Yup.object().shape({
     email: Yup.string().email('Must be a valid email').max(50).required('Email is required'),
@@ -49,7 +51,9 @@ const RegisterForm = (props) => {
     let { handleSubmit } = props;
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-    const [showPassword, setShowPassword] = useState(false);
+    let [showPassword, setShowPassword] = useState(false);
+    const [strength, setStrength] = useState(0);
+    const [level, setLevel] = useState();
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -57,6 +61,12 @@ const RegisterForm = (props) => {
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
+    };
+
+    const changePassword = (value) => {
+        const temp = strengthIndicator(value);
+        setStrength(temp);
+        setLevel(strengthColor(temp));
     };
 
     return (
@@ -142,7 +152,10 @@ const RegisterForm = (props) => {
                                 type={showPassword ? 'text' : 'password'}
                                 value={values.password}
                                 name="password"
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                    handleChange(e);
+                                    changePassword(e.target.value);
+                                }}
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
@@ -165,6 +178,26 @@ const RegisterForm = (props) => {
                             )}
                         </FormControl>
 
+                        {strength !== 0 && (
+                            <FormControl fullWidth>
+                                <Box sx={{ mb: 2 }}>
+                                    <Grid container spacing={2} alignItems="center">
+                                        <Grid item>
+                                            <Box
+                                                style={{ backgroundColor: level?.color }}
+                                                sx={{ width: level?.length, height: 8, borderRadius: '7px' }}
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="subtitle1" fontSize="0.75rem">
+                                                {level?.label}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                            </FormControl>
+                        )}
+
                         <FormControl fullWidth error={Boolean(touched.balance && errors.balance)}>
                             <InputLabel htmlFor="balance-register">Account Balance</InputLabel>
                             <OutlinedInput
@@ -174,7 +207,7 @@ const RegisterForm = (props) => {
                                 name="balance"
                                 onChange={handleChange}
                                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                label="Account Balance"
+                                label="account balance"
                             />
                             {touched.balance && errors.balance && <FormHelperText error>{errors.balance}</FormHelperText>}
                             {errors.submit && (

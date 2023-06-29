@@ -1,5 +1,4 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -11,14 +10,11 @@ import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
 import Logo from 'ui-component/Logo';
 import RegisterForm from '../auth-forms/RegisterForm';
-import { setUser } from '../../../store/userSlice';
 import bbcApi from 'api/bbcApi';
 
 const Register = () => {
     const theme = useTheme();
     let navigate = useNavigate();
-    let dispatch = useDispatch();
-    let location = useLocation();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
     let handleSubmit = async (values) => {
@@ -31,23 +27,16 @@ const Register = () => {
                     lastName: values.lname,
                     accountBalance: values.balance
                 })
-                .then((result) => {
-                    sessionStorage.setItem('password', values.password);
-                    let action = setUser(result);
-                    dispatch(action);
-                    if (location.state?.from) {
-                        navigate(location.state.from);
-                    } else {
-                        navigate('/');
-                    }
+                .then(() => {
+                    navigate('/login');
                 }),
             {
                 pending: 'Hold on a sec ⌛',
-                success: 'Hooray 🎉🎉🎉',
+                success: 'Account created successfully 🎉🎉🎉',
                 error: {
                     render({ data }) {
                         if (data.name === 'AxiosError') {
-                            return data.response.data;
+                            return data.response.data.message;
                         } else {
                             console.log(data);
                         }
