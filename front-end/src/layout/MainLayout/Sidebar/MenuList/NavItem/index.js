@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
-import { openMenu, setMenu } from '../../../../../store/customizeSlice';
+import { openMenu, setMenu } from '../../../../../app/features/customize/customizeSlice';
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -65,6 +65,7 @@ const NavItem = ({ item, level }) => {
             let action = openMenu({ id: item.id });
             dispatch(action);
         }
+
         // eslint-disable-next-line
     }, []);
 

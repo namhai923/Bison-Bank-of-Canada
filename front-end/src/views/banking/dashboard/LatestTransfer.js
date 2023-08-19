@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
+import MainCard from 'components/cards/MainCard';
 import { sortByTime } from 'utils/timeUtils';
 
 // assets
@@ -40,12 +40,13 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
 
-const LatestTransfer = () => {
+const LatestTransfer = (props) => {
     const theme = useTheme();
-    let userInfo = useSelector((state) => state.user);
+    let { userName, transferHistory } = props;
+
     let [latest, setLatest] = useState(() => {
         let latestTransfer = 0;
-        let sendTransfer = userInfo.transferHistory.filter((transfer) => transfer.sender === userInfo.userName);
+        let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
         if (sendTransfer.length > 0) {
             latestTransfer = sortByTime(sendTransfer)[sendTransfer.length - 1].amount;
         }
@@ -54,12 +55,12 @@ const LatestTransfer = () => {
 
     useEffect(() => {
         let latestTransfer = 0;
-        let sendTransfer = userInfo.transferHistory.filter((transfer) => transfer.sender === userInfo.userName);
+        let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
         if (sendTransfer.length > 0) {
             latestTransfer = sortByTime(sendTransfer)[sendTransfer.length - 1].amount;
         }
         setLatest(latestTransfer);
-    }, [userInfo]);
+    }, [transferHistory, userName]);
 
     return (
         <>
@@ -105,6 +106,11 @@ const LatestTransfer = () => {
             </CardWrapper>
         </>
     );
+};
+
+LatestTransfer.propTypes = {
+    userName: PropTypes.string,
+    transferHistory: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default LatestTransfer;

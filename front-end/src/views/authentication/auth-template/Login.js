@@ -1,5 +1,4 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -10,50 +9,36 @@ import { toast } from 'react-toastify';
 import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
 import LoginForm from '../auth-forms/LoginForm';
-import Logo from 'ui-component/Logo';
-import { setUser } from 'store/userSlice';
-import { setCredentials } from 'store/authSlice';
-import bbcApi from 'api/bbcApi';
-
-// assets
-
-// ================================|| AUTH3 - LOGIN ||================================ //
+import Logo from 'components/Logo';
+import { useLoginMutation } from 'app/features/auth/authApiSlice';
 
 const Login = () => {
     const theme = useTheme();
-    let dispatch = useDispatch();
     let navigate = useNavigate();
     let location = useLocation();
+    const [login] = useLoginMutation();
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
     let handleSubmit = async (values) => {
-        toast.promise(
-            bbcApi.loginUser({ userName: values.email, password: values.password }).then((result) => {
-                let action = setUser(result.userInfo);
-                dispatch(action);
-                dispatch(setCredentials(result.accessToken));
-                if (location.state?.from) {
-                    navigate(location.state.from);
-                } else {
-                    navigate('/');
-                }
-            }),
-            {
-                pending: 'Hold on a sec ⌛',
-                success: 'Welcome to BBC 🎉🎉🎉',
-                error: {
-                    render({ data }) {
-                        console.log(data);
-                        if (data.name === 'AxiosError') {
-                            return data.response.data.message;
-                        } else {
-                            console.log(data);
-                        }
+        toast.promise(login({ userName: values.email, password: values.password }).unwrap(), {
+            pending: 'Hold on a sec ⌛',
+            success: {
+                render() {
+                    if (location.state?.from) {
+                        navigate(location.state.from);
+                    } else {
+                        navigate('/');
                     }
+                    return 'Login successfully 🎉🎉🎉';
+                }
+            },
+            error: {
+                render({ data }) {
+                    return data.data.message;
                 }
             }
-        );
+        });
     };
 
     return (

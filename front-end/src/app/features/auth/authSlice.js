@@ -8,12 +8,12 @@ export let authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setCredentials: (state, action) => {
+        setToken: (state, action) => {
             let accessToken = action.payload;
             state.token = accessToken;
             return state;
         },
-        logout: (state) => {
+        setLogout: (state) => {
             state.token = null;
             return state;
         }
@@ -21,5 +21,5 @@ export let authSlice = createSlice({
 });
 
 let { reducer, actions } = authSlice;
-export let { setCredentials, logout } = actions;
+export let { setToken, setLogout } = actions;
 export default reducer;

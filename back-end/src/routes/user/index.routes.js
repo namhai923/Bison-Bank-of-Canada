@@ -7,12 +7,18 @@ let router = express.Router();
 
 router.use(authenticateJWT);
 
-router.post("/getInfo", userController.getInfo);
+router.get("/getInfo", userController.getInfo);
+
+router.get("/getBalance", userController.getBalance);
+
+router.get("/getExpense", userController.getExpense);
+
+router.get("/getTransfer", userController.getTransfer);
 
 router.post("/updateInfo", userController.updateInfo);
 
-router.post("/transfer", userController.transfer);
-
 router.post("/expense", userController.expense);
+
+router.post("/transfer", userController.transfer);
 
 module.exports = router;

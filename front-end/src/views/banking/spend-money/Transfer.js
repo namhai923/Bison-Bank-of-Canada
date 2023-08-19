@@ -1,16 +1,13 @@
-import { useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { useTheme } from '@mui/material/styles';
 import { Button, CardActions, FormHelperText, TextField, useMediaQuery, Grid } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
-// import { io } from 'socket.io-client';
-import socket from 'socket';
+import jwtDecode from 'jwt-decode';
 
-import bbcApi from 'api/bbcApi';
-import { addTransfer } from 'store/userSlice';
+import { useAddTransferMutation } from 'app/features/user/userApiSlice';
 
 const vSchema = Yup.object().shape({
     receiver: Yup.string().email('Must be a valid email').max(50).required('Email is required'),
@@ -20,43 +17,25 @@ const vSchema = Yup.object().shape({
 let Transfer = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-    // const socket = useRef();
 
-    let dispatch = useDispatch();
-    let userInfo = useSelector((state) => state.user);
-
-    // useEffect(() => {
-    //     socket.current = io(process.env.REACT_APP_SOCKET);
-    // }, []);
+    let token = useSelector((state) => state.auth.token);
+    let [addTransfer] = useAddTransferMutation({ skip: !token });
 
     let handleSubmit = async (values) => {
         toast.promise(
-            bbcApi
-                .transfer({
-                    userName: userInfo.userName,
+            addTransfer({
+                userName: jwtDecode(token).userName,
+                transferInfo: {
                     receiverName: values.receiver,
                     amount: values.amount
-                })
-                .then((result) => {
-                    socket.emit('sendTransfer', {
-                        senderId: userInfo.userName,
-                        receiverId: values.receiver,
-                        transfer: values.amount
-                    });
-
-                    let action = addTransfer(result);
-                    dispatch(action);
-                }),
+                }
+            }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',
-                success: 'Hooray 🎉🎉🎉',
+                success: 'Transfer proceeded 🎉🎉🎉',
                 error: {
                     render({ data }) {
-                        if (data.name === 'AxiosError') {
-                            return data.response.data;
-                        } else {
-                            console.log(data);
-                        }
+                        return data.data.message;
                     }
                 }
             }

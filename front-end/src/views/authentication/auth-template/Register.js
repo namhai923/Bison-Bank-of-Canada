@@ -8,38 +8,36 @@ import { toast } from 'react-toastify';
 // project imports
 import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
-import Logo from 'ui-component/Logo';
+import Logo from 'components/Logo';
 import RegisterForm from '../auth-forms/RegisterForm';
-import bbcApi from 'api/bbcApi';
+import { useRegisterMutation } from 'app/features/auth/authApiSlice';
 
 const Register = () => {
     const theme = useTheme();
     let navigate = useNavigate();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    const [register] = useRegisterMutation();
 
     let handleSubmit = async (values) => {
         toast.promise(
-            bbcApi
-                .registerUser({
-                    userName: values.email,
-                    password: values.password,
-                    firstName: values.fname,
-                    lastName: values.lname,
-                    accountBalance: values.balance
-                })
-                .then(() => {
-                    navigate('/login');
-                }),
+            register({
+                userName: values.email,
+                password: values.password,
+                firstName: values.fname,
+                lastName: values.lname,
+                accountBalance: values.balance
+            }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',
-                success: 'Account created successfully 🎉🎉🎉',
+                success: {
+                    render() {
+                        navigate('/login');
+                        return 'Account created successfully 🎉🎉🎉';
+                    }
+                },
                 error: {
                     render({ data }) {
-                        if (data.name === 'AxiosError') {
-                            return data.response.data.message;
-                        } else {
-                            console.log(data);
-                        }
+                        return data.data.message;
                     }
                 }
             }

@@ -9,26 +9,110 @@ const checkParams = (obj, params) => {
 };
 
 const getInfo = asyncHandler(async (req, res) => {
-  if (!checkParams(req.body, ["userName"])) {
-    return res
-      .status(400)
-      .json({ message: "Missing require parameter in request body." });
+  if (!req.query.userName) {
+    return res.status(400).json({ message: "Missing require parameter." });
   }
 
   // check if the username exist, then return user data
-  let { userName } = req.body;
+  let userName = req.query.userName;
   if (userName === req.user.userName) {
+    let userInfo;
     if (cache.has(userName)) {
-      return res.status(200).json(cache.get(userName));
+      userInfo = cache.get(userName);
     } else {
       // If not found in cache then go to database to search
-      let user = await User.findOne({ userName });
+      userInfo = await User.findOne({ userName });
 
       // Set cache and set it to expired in 300 seconds
-      cache.set(userName, user);
+      cache.set(userName, userInfo);
       setCacheExpire(userName, CACHE_EXPIRED_IN_SECONDS);
-      return res.status(200).json(user);
     }
+    let { firstName, lastName, dob, phoneNumber } = userInfo.toJSON();
+    return res.status(200).json({ firstName, lastName, dob, phoneNumber });
+  } else {
+    return res.status(401).json({
+      message: "You are not allowed to see this account information.",
+    });
+  }
+});
+
+const getBalance = asyncHandler(async (req, res) => {
+  if (!req.query.userName) {
+    return res.status(400).json({ message: "Missing require parameter." });
+  }
+
+  // check if the username exist, then return user data
+  let userName = req.query.userName;
+  if (userName === req.user.userName) {
+    let userInfo;
+    if (cache.has(userName)) {
+      userInfo = cache.get(userName);
+    } else {
+      // If not found in cache then go to database to search
+      userInfo = await User.findOne({ userName });
+
+      // Set cache and set it to expired in 300 seconds
+      cache.set(userName, userInfo);
+      setCacheExpire(userName, CACHE_EXPIRED_IN_SECONDS);
+    }
+    let { accountBalance } = userInfo.toJSON();
+    return res.status(200).json(accountBalance);
+  } else {
+    return res.status(401).json({
+      message: "You are not allowed to see this account information.",
+    });
+  }
+});
+
+const getExpense = asyncHandler(async (req, res) => {
+  if (!req.query.userName) {
+    return res.status(400).json({ message: "Missing require parameter." });
+  }
+
+  // check if the username exist, then return user data
+  let userName = req.query.userName;
+  if (userName === req.user.userName) {
+    let userInfo;
+    if (cache.has(userName)) {
+      userInfo = cache.get(userName);
+    } else {
+      // If not found in cache then go to database to search
+      userInfo = await User.findOne({ userName });
+
+      // Set cache and set it to expired in 300 seconds
+      cache.set(userName, userInfo);
+      setCacheExpire(userName, CACHE_EXPIRED_IN_SECONDS);
+    }
+    let { expenseHistory } = userInfo.toJSON();
+    return res.status(200).json(expenseHistory);
+  } else {
+    return res.status(401).json({
+      message: "You are not allowed to see this account information.",
+    });
+  }
+});
+
+const getTransfer = asyncHandler(async (req, res) => {
+  if (!req.query.userName) {
+    return res.status(400).json({ message: "Missing require parameter." });
+  }
+
+  // check if the username exist, then return user data
+  let userName = req.query.userName;
+  if (userName === req.user.userName) {
+    let userInfo;
+    if (cache.has(userName)) {
+      userInfo = cache.get(userName);
+    } else {
+      // If not found in cache then go to database to search
+      userInfo = await User.findOne({ userName });
+
+      // Set cache and set it to expired in 300 seconds
+      cache.set(userName, userInfo);
+      setCacheExpire(userName, CACHE_EXPIRED_IN_SECONDS);
+    }
+    let { transferHistory } = userInfo.toJSON();
+    return res.status(200).json(transferHistory);
   } else {
     return res.status(401).json({
       message: "You are not allowed to see this account information.",
@@ -38,36 +122,29 @@ const getInfo = asyncHandler(async (req, res) => {
 
 const updateInfo = asyncHandler(async (req, res) => {
   if (
-    !checkParams(req.body, [
-      "userName",
-      "firstName",
-      "lastName",
-      "dob",
-      "phoneNumber",
-    ])
+    !req.query.userName ||
+    !checkParams(req.body, ["firstName", "lastName", "dob", "phoneNumber"])
   ) {
-    return res
-      .status(400)
-      .json({ message: "Missing require parameter in request body." });
+    return res.status(400).json({ message: "Missing require parameter." });
   }
 
-  let { userName, firstName, lastName, dob, phoneNumber } = req.body;
+  let { firstName, lastName, dob, phoneNumber } = req.body;
+  let userName = req.query.userName;
   if (userName === req.user.userName) {
     let user = await User.findOne({ userName });
-    let updateProfile;
 
     user.firstName = firstName;
     user.lastName = lastName;
     user.dob = dob;
     user.phoneNumber = phoneNumber;
 
-    updateProfile = await user.save();
+    await user.save();
 
     if (cache.has(userName)) {
       cache.set(userName, user);
     }
 
-    return res.status(200).json(updateProfile);
+    return res.status(200).json("Information updated!");
   } else {
     return res
       .status(401)
@@ -75,80 +152,16 @@ const updateInfo = asyncHandler(async (req, res) => {
   }
 });
 
-const transfer = asyncHandler(async (req, res) => {
-  if (!checkParams(req.body, ["userName", "receiverName", "amount"])) {
-    return res
-      .status(400)
-      .json({ message: "Missing require parameter in request body." });
-  }
-
-  let { userName: senderName, receiverName, amount } = req.body;
-  if (senderName === req.user.userName) {
-    let errorMessage = "";
-    let sender = await User.findOne({ userName: senderName });
-    let receiver = await User.findOne({ userName: receiverName });
-    let newTransfer;
-    if (receiver != null) {
-      if (isNaN(amount) && isNaN(parseFloat(amount))) {
-        errorMessage = "Transfer amount must be a number.";
-      } else {
-        if (amount <= 0) {
-          errorMessage = "Transfer amount must be greater than 0.";
-        } else {
-          if (sender.accountBalance >= amount) {
-            sender.accountBalance =
-              Math.round(
-                parseFloat(sender.accountBalance * 100) - amount * 100
-              ) / 100;
-            receiver.accountBalance =
-              Math.round(
-                parseFloat(receiver.accountBalance * 100) + amount * 100
-              ) / 100;
-
-            newTransfer = {
-              sender: senderName,
-              receiver: receiverName,
-              date: Date.now(),
-              amount: amount,
-            };
-
-            sender.transferHistory.push(newTransfer);
-            receiver.transferHistory.push(newTransfer);
-
-            await Promise.all([sender.save(), receiver.save()]);
-
-            //Update cache
-            cache.set(senderName, sender);
-            cache.set(receiverName, receiver);
-          } else {
-            errorMessage = "Account balance not enough.";
-          }
-        }
-      }
-    } else {
-      errorMessage = "Receiver does not exists.";
-    }
-
-    if (errorMessage === "") {
-      return res.status(200).json(newTransfer);
-    } else {
-      return res.status(400).json({ message: errorMessage });
-    }
-  } else {
-    return res.status(401).json({
-      message: "You are not allowed to send money from this account",
-    });
-  }
-});
-
 const expense = asyncHandler(async (req, res) => {
-  if (!checkParams(req.body, ["userName", "location", "category", "amount"])) {
-    return res
-      .status(400)
-      .json({ message: "Missing require parameter in request body." });
+  if (
+    !req.query.userName ||
+    !checkParams(req.body, ["location", "category", "amount"])
+  ) {
+    return res.status(400).json({ message: "Missing require parameter." });
   }
 
-  let { userName, location, category, amount } = req.body;
+  let { location, category, amount } = req.body;
+  let userName = req.query.userName;
   if (userName === req.user.userName) {
     let errorMessage = "";
 
@@ -188,7 +201,7 @@ const expense = asyncHandler(async (req, res) => {
     }
 
     if (errorMessage === "") {
-      return res.status(200).json(newExpense);
+      return res.status(200).json("Expense successfully!");
     } else {
       return res.status(400).json({ message: errorMessage });
     }
@@ -199,4 +212,84 @@ const expense = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getInfo, updateInfo, transfer, expense };
+const transfer = asyncHandler(async (req, res) => {
+  if (
+    !req.query.userName ||
+    !checkParams(req.body, ["receiverName", "amount"])
+  ) {
+    return res.status(400).json({ message: "Missing require parameter." });
+  }
+
+  let { receiverName, amount } = req.body;
+  let senderName = req.query.userName;
+  if (senderName === req.user.userName) {
+    let errorMessage = "";
+    if (senderName === receiverName) {
+      errorMessage = "Cannot transfer to yourself!";
+    } else {
+      let sender = await User.findOne({ userName: senderName });
+      let receiver = await User.findOne({ userName: receiverName });
+      let newTransfer;
+      if (receiver != null) {
+        if (isNaN(amount) && isNaN(parseFloat(amount))) {
+          errorMessage = "Transfer amount must be a number.";
+        } else {
+          if (amount <= 0) {
+            errorMessage = "Transfer amount must be greater than 0.";
+          } else {
+            if (sender.accountBalance >= amount) {
+              sender.accountBalance =
+                Math.round(
+                  parseFloat(sender.accountBalance * 100) - amount * 100
+                ) / 100;
+              receiver.accountBalance =
+                Math.round(
+                  parseFloat(receiver.accountBalance * 100) + amount * 100
+                ) / 100;
+
+              newTransfer = {
+                sender: senderName,
+                receiver: receiverName,
+                date: Date.now(),
+                amount: amount,
+              };
+
+              sender.transferHistory.push(newTransfer);
+              receiver.transferHistory.push(newTransfer);
+
+              await Promise.all([sender.save(), receiver.save()]);
+
+              //Update cache
+              cache.set(senderName, sender);
+              cache.set(receiverName, receiver);
+            } else {
+              errorMessage = "Account balance not enough.";
+            }
+          }
+        }
+      } else {
+        errorMessage = "Receiver does not exists.";
+      }
+    }
+
+    if (errorMessage === "") {
+      return res.status(200).json("Transfer successfully!");
+    } else {
+      return res.status(400).json({ message: errorMessage });
+    }
+  } else {
+    return res.status(401).json({
+      message: "You are not allowed to send money from this account",
+    });
+  }
+});
+
+module.exports = {
+  getInfo,
+  getBalance,
+  getExpense,
+  getTransfer,
+  updateInfo,
+  expense,
+  transfer,
+};

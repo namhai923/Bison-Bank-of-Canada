@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -21,22 +22,20 @@ import {
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
-import Transitions from 'ui-component/extended/Transitions';
+import MainCard from 'components/cards/MainCard';
+import Transitions from 'components/extended/Transitions';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
-import blankState from 'assets/data/blankState';
-import { setUser } from 'store/userSlice';
-import { logout } from 'store/authSlice';
-import bbcApi from 'api/bbcApi';
+import { useLogoutMutation } from 'app/features/auth/authApiSlice';
 
-const ProfileSection = () => {
+const ProfileSection = (props) => {
+    let { firstName, lastName } = props;
     const theme = useTheme();
     let navigate = useNavigate();
-    let dispatch = useDispatch();
-
-    let userInfo = useSelector((state) => state.user);
-    let customization = useSelector((state) => state.customization);
     const [open, setOpen] = useState(false);
+
+    let customization = useSelector((state) => state.customization);
+
+    let [logout] = useLogoutMutation();
 
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
@@ -45,12 +44,8 @@ const ProfileSection = () => {
 
     const handleLogout = async (event) => {
         try {
-            await bbcApi.logoutUser();
-            let action = setUser(blankState);
-            dispatch(action);
-            dispatch(logout());
-            navigate('/');
-            localStorage.clear();
+            await logout();
+            navigate('/login');
             handleClose(event);
         } catch (err) {
             console.log(err);
@@ -79,7 +74,7 @@ const ProfileSection = () => {
             anchorRef.current.focus();
         }
         prevOpen.current = open;
-    }, [open, userInfo]);
+    }, [open]);
 
     return (
         <>
@@ -105,7 +100,7 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={userInfo.firstName === '' ? IconUser : alphabetAvatar[`${userInfo.firstName.toLowerCase()[0]}`]}
+                        src={firstName === '' ? IconUser : alphabetAvatar[`${firstName.toLowerCase()[0]}`]}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
@@ -154,7 +149,7 @@ const ProfileSection = () => {
                                                 Good Morning,
                                             </Typography>
                                             <Typography component="span" variant="h4">
-                                                {userInfo.firstName} {userInfo.lastName}!
+                                                {firstName} {lastName}!
                                             </Typography>
                                         </Stack>
                                         <Divider />
@@ -181,6 +176,11 @@ const ProfileSection = () => {
             </Popper>
         </>
     );
+};
+
+ProfileSection.propTypes = {
+    firstName: PropTypes.string,
+    lastName: PropTypes.string
 };
 
 export default ProfileSection;

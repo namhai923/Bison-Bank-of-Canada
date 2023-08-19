@@ -5,13 +5,11 @@ const asyncHandler = require("express-async-handler");
 const {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
-  CACHE_EXPIRED_IN_SECONDS,
   ACCESS_TOKEN_EXPIRED,
   REFRESH_TOKEN_EXPIRED,
 } = require("../config/vars.config");
 const User = require("../models/user.model");
 const Credential = require("../models/credential.model");
-const { cache, setCacheExpire } = require("../cache");
 
 const checkParams = (obj, params) => {
   return params.every((param) => Object.keys(obj).includes(param));
@@ -49,7 +47,7 @@ const refresh = (req, res) => {
       if (!userInfo) {
         return res.status(401).json({ message: "You are not authenticated." });
       }
-      const newAccessToken = generateAccessToken(user);
+      const newAccessToken = generateAccessToken(user.userName);
 
       return res.status(200).json({ accessToken: newAccessToken });
     })
@@ -115,18 +113,6 @@ const login = asyncHandler(async (req, res) => {
     return res.status(401).json({ message: "Wrong Password" });
   }
 
-  let userInfo;
-  if (cache.has(userName)) {
-    userInfo = cache.get(userName);
-  } else {
-    // If not found in cache then go to database to search
-    userInfo = await User.findOne({ userName });
-
-    // Set cache and set it to expired in 300 seconds
-    cache.set(userName, userInfo);
-    setCacheExpire(userName, CACHE_EXPIRED_IN_SECONDS);
-  }
-
   let accessToken = generateAccessToken(userName);
   let refreshToken = generateRefreshToken(userName);
 
@@ -138,7 +124,7 @@ const login = asyncHandler(async (req, res) => {
       sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
-    .json({ userInfo, accessToken });
+    .json({ accessToken });
 });
 
 const logout = (req, res) => {

@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Register from '../views/authentication/auth-template/Register';
 import { Provider } from 'react-redux';
-import store from '../store';
+import store from '../app';
 import { BrowserRouter } from 'react-router-dom';
-import config from '../config';
+import config from '../assets/data/config';
 import '@testing-library/jest-dom';
 import { vSchema } from '../views/authentication/auth-forms/RegisterForm';
 

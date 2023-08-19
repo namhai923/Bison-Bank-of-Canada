@@ -6,7 +6,7 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { InputLabel, useTheme } from '@mui/material';
 
-import { setFilter } from 'store/filterSlice';
+import { setFilter } from 'app/features/filter/filterSlice';
 
 const colourStyles = {
     control: (styles) => ({ ...styles, backgroundColor: 'white' }),

@@ -3,14 +3,27 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, FormHelperText, IconButton, InputAdornment, InputLabel, FormControl, OutlinedInput } from '@mui/material';
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    OutlinedInput
+} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 // project imports
-import AnimateButton from 'ui-component/extended/AnimateButton';
+import AnimateButton from 'components/extended/AnimateButton';
+
+import usePersistLogin from 'utils/usePersistLogin';
 
 const vSchema = Yup.object().shape({
     email: Yup.string().email('Must be a valid email').max(50).required('Email is required'),
@@ -23,6 +36,7 @@ const vSchema = Yup.object().shape({
 const LoginForm = (props) => {
     let { handleSubmit } = props;
     const theme = useTheme();
+    let [persistLogin, setPersistLogin] = usePersistLogin();
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => {
@@ -96,6 +110,17 @@ const LoginForm = (props) => {
                                 </Box>
                             )}
                         </FormControl>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={persistLogin}
+                                    onChange={() => setPersistLogin((prev) => !prev)}
+                                    name="checked"
+                                    color="primary"
+                                />
+                            }
+                            label="Remember me"
+                        />
                         <Box sx={{ mt: 2 }}>
                             <AnimateButton>
                                 <Button

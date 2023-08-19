@@ -23,7 +23,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project imports
-import AnimateButton from 'ui-component/extended/AnimateButton';
+import AnimateButton from 'components/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 const vSchema = Yup.object().shape({

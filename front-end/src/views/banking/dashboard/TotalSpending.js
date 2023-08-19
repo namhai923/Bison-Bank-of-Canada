@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -8,13 +9,13 @@ import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
 import Chart from 'react-apexcharts';
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
+import MainCard from 'components/cards/MainCard';
 import lineChartData from 'views/banking/dashboard/chart-data/lineChartData';
 import months from 'assets/data/months';
 
 // assets
 import { LocalMallOutlined, Payment } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { filterAmountByTime } from 'utils/timeUtils';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -64,8 +65,6 @@ let createChartData = (type, lineData) => {
     let compareDate = new Date();
 
     chartData.data = filterAmountByTime('year', compareDate, lineData);
-    chartData.min = Math.floor(Math.min(...chartData.data));
-    chartData.max = Math.ceil(Math.max(...chartData.data));
     if (type === 'month') {
         chartData.data = filterAmountByTime('month', compareDate, lineData);
         chartData.name = months[compareDate.getMonth()];
@@ -75,13 +74,13 @@ let createChartData = (type, lineData) => {
     return chartData;
 };
 
-const TotalSpending = () => {
+const TotalSpending = (props) => {
     const theme = useTheme();
-    let userInfo = useSelector((state) => state.user);
+    let { userName, expenseHistory, transferHistory } = props;
 
     let [chartData, setChartData] = useState(() => {
-        let sendTransfer = userInfo.transferHistory.filter((transfer) => transfer.sender === userInfo.userName);
-        let totalSpending = userInfo.expenseHistory.concat(sendTransfer);
+        let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
+        let totalSpending = expenseHistory.concat(sendTransfer);
         return createChartData('year', totalSpending);
     });
 
@@ -92,15 +91,15 @@ const TotalSpending = () => {
 
     useEffect(() => {
         let newChartData = {};
-        let sendTransfer = userInfo.transferHistory.filter((transfer) => transfer.sender === userInfo.userName);
-        let totalSpending = userInfo.expenseHistory.concat(sendTransfer);
+        let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
+        let totalSpending = expenseHistory.concat(sendTransfer);
         if (timeValue) {
             newChartData = createChartData('month', totalSpending);
         } else {
             newChartData = createChartData('year', totalSpending);
         }
         setChartData(newChartData);
-    }, [timeValue, userInfo]);
+    }, [timeValue, transferHistory, expenseHistory, userName]);
 
     return (
         <>
@@ -194,6 +193,12 @@ const TotalSpending = () => {
             </CardWrapper>
         </>
     );
+};
+
+TotalSpending.propTypes = {
+    userName: PropTypes.string,
+    transferHistory: PropTypes.arrayOf(PropTypes.object),
+    expenseHistory: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default TotalSpending;

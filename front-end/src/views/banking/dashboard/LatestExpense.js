@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
+import MainCard from 'components/cards/MainCard';
 import { sortByTime } from 'utils/timeUtils';
 
 // assets
@@ -42,24 +42,25 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL INCOME DARK CARD ||============================== //
 
-const LatestExpense = () => {
+const LatestExpense = (props) => {
     const theme = useTheme();
-    let userInfo = useSelector((state) => state.user);
+    let { expenseHistory } = props;
+
     let [latest, setLatest] = useState(() => {
         let latestExpense = 0;
-        if (userInfo.expenseHistory.length > 0) {
-            latestExpense = sortByTime(userInfo.expenseHistory)[userInfo.expenseHistory.length - 1].amount;
+        if (expenseHistory.length > 0) {
+            latestExpense = sortByTime(expenseHistory)[expenseHistory.length - 1].amount;
         }
         return latestExpense;
     });
 
     useEffect(() => {
         let latestExpense = 0;
-        if (userInfo.expenseHistory.length > 0) {
-            latestExpense = sortByTime(userInfo.expenseHistory)[userInfo.expenseHistory.length - 1].amount;
+        if (expenseHistory.length > 0) {
+            latestExpense = sortByTime(expenseHistory)[expenseHistory.length - 1].amount;
         }
         setLatest(latestExpense);
-    }, [userInfo]);
+    }, [expenseHistory]);
 
     return (
         <>
@@ -103,6 +104,10 @@ const LatestExpense = () => {
             </CardWrapper>
         </>
     );
+};
+
+LatestExpense.propTypes = {
+    expenseHistory: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default LatestExpense;

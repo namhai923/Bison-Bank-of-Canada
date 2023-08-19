@@ -1,12 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import jwtDecode from 'jwt-decode';
 
-import ListCard from 'ui-component/cards/ListCard';
+import Loader from 'components/Loader';
+import ListCard from 'components/cards/ListCard';
 import createData from 'utils/createData';
+import { useGetTransferQuery } from 'app/features/user/userApiSlice';
 
 const TransferHistory = () => {
-    let userInfo = useSelector((state) => state.user);
     let filterInfo = useSelector((state) => state.filter);
+    let token = useSelector((state) => state.auth.token);
+    let userName = jwtDecode(token).userName;
+
+    let {
+        data: transferHistory,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetTransferQuery(userName, {
+        pollingInterval: 15000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+        skip: !token
+    });
 
     let labels = ['Transfer Id', '', 'Receiver/Recipeint', 'Date', 'Amount', ''];
     let filterLabels = [
@@ -17,16 +34,16 @@ const TransferHistory = () => {
     let title = 'Transfer History';
 
     let [rows, setRows] = useState(() => {
-        let temp = userInfo.transferHistory;
+        let temp = transferHistory;
         let displayRows = temp.map((item) => {
-            let data = { email: userInfo.userName, date: item.date, sender: item.sender, receiver: item.receiver, amount: item.amount };
+            let data = { email: userName, date: item.date, sender: item.sender, receiver: item.receiver, amount: item.amount };
             return createData('transfer', data);
         });
         return displayRows;
     });
 
     useEffect(() => {
-        let temp = userInfo.transferHistory;
+        let temp = transferHistory;
         let displayRows = temp
             .filter((item) => {
                 return (
@@ -35,22 +52,30 @@ const TransferHistory = () => {
                 );
             })
             .map((item) => {
-                let data = { email: userInfo.userName, date: item.date, sender: item.sender, receiver: item.receiver, amount: item.amount };
+                let data = { email: userName, date: item.date, sender: item.sender, receiver: item.receiver, amount: item.amount };
                 return createData('transfer', data);
             });
         setRows(displayRows);
-    }, [filterInfo, userInfo]);
+    }, [filterInfo, transferHistory, userName]);
 
-    return (
-        <ListCard
-            labels={labels}
-            rows={rows}
-            emptyMessage={emptyMessage}
-            title={title}
-            filterData={userInfo.transferHistory}
-            filterLabels={filterLabels}
-        />
-    );
+    let content;
+    if (isLoading) content = <Loader></Loader>;
+
+    if (isError) {
+        content = <p className="errmsg">{error?.data?.message}</p>;
+    }
+    if (isSuccess)
+        content = (
+            <ListCard
+                labels={labels}
+                rows={rows}
+                emptyMessage={emptyMessage}
+                title={title}
+                filterData={transferHistory}
+                filterLabels={filterLabels}
+            />
+        );
+    return content;
 };
 
 export default TransferHistory;

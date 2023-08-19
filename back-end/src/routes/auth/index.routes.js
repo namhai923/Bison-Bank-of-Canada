@@ -6,12 +6,12 @@ const authController = require("../../controllers/auth");
 
 let router = express.Router();
 
-router.post("/refresh", authController.refresh);
+router.get("/refresh", authController.refresh);
 
 router.post("/register", authController.register);
 
 router.post("/login", loginLimiter, authController.login);
 
-router.post("/logout", authenticateJWT, authController.logout);
+router.get("/logout", authenticateJWT, authController.logout);
 
 module.exports = router;

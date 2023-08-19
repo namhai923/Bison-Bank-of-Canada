@@ -1,14 +1,17 @@
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
-// material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
+import jwtDecode from 'jwt-decode';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
-import { drawerWidth } from 'store/constant';
-import { setMenu } from '../../store/customizeSlice';
+import { drawerWidth } from 'assets/data/constant';
+import { setMenu } from 'app/features/customize/customizeSlice';
+
+import { userApiSlice } from 'app/features/user/userApiSlice';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -54,11 +57,10 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
     })
 }));
 
-// ==============================|| MAIN LAYOUT ||============================== //
-
 const MainLayout = () => {
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
+    let token = useSelector((state) => state.auth.token);
 
     // Handle left drawer
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
@@ -67,6 +69,17 @@ const MainLayout = () => {
         let action = setMenu(!leftDrawerOpened);
         dispatch(action);
     };
+
+    const effectRan = useRef(false);
+    useEffect(() => {
+        if (effectRan.current === true) {
+            dispatch(userApiSlice.util.prefetch('getUserInfo', jwtDecode(token).userName, { force: true }));
+            dispatch(userApiSlice.util.prefetch('getBalance', jwtDecode(token).userName, { force: true }));
+            dispatch(userApiSlice.util.prefetch('getExpense', jwtDecode(token).userName, { force: true }));
+            dispatch(userApiSlice.util.prefetch('getTransfer', jwtDecode(token).userName, { force: true }));
+        }
+        return () => (effectRan.current = true);
+    }, [token, dispatch]);
 
     return (
         <Box sx={{ display: 'flex' }}>

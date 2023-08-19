@@ -85,7 +85,7 @@ userSchema.set("toJSON", {
     }
     delete ret.__v;
     delete ret._id;
-    delete ret.id;
+    // delete ret.id;
     return ret;
   },
 });
@@ -97,7 +97,7 @@ expenseSchema.set("toJSON", {
       ret.amount = parseFloat(ret.amount);
     }
     delete ret._id;
-    delete ret.id;
+    // delete ret.id;
     return ret;
   },
 });
@@ -109,7 +109,7 @@ transferSchema.set("toJSON", {
       ret.amount = parseFloat(ret.amount);
     }
     delete ret._id;
-    delete ret.id;
+    // delete ret.id;
     return ret;
   },
 });
