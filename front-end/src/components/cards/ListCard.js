@@ -19,13 +19,13 @@ import {
     TableSortLabel
 } from '@mui/material';
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
-import SubCard from 'ui-component/cards/SubCard';
-import FilterModal from 'ui-component/filter/FilterModal';
+import MainCard from 'components/cards/MainCard';
+import SubCard from 'components/cards/SubCard';
+import FilterModal from 'components/filter/FilterModal';
 import months from 'assets/data/months';
 
 // assets
-import { gridSpacing } from 'store/constant';
+import { gridSpacing } from 'assets/data/constant';
 
 const visuallyHidden = {
     border: 0,

@@ -3,9 +3,9 @@ import { Grid } from '@mui/material';
 //project imports
 import Expense from './Expense';
 import Transfer from './Transfer';
-import SubCard from 'ui-component/cards/SubCard';
-import MainCard from 'ui-component/cards/MainCard';
-import { gridSpacing } from 'store/constant';
+import SubCard from 'components/cards/SubCard';
+import MainCard from 'components/cards/MainCard';
+import { gridSpacing } from 'assets/data/constant';
 
 let SpendMoney = () => (
     <MainCard title="Spend Money">

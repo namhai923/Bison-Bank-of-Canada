@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { useTheme } from '@mui/material/styles';
 import { Button, CardActions, FormHelperText, TextField, Grid, useMediaQuery } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
+import jwtDecode from 'jwt-decode';
 
-import bbcApi from 'api/bbcApi';
-import { addExpense } from 'store/userSlice';
+import { useAddExpenseMutation } from 'app/features/user/userApiSlice';
 
 const vSchema = Yup.object().shape({
     location: Yup.string()
@@ -25,27 +25,25 @@ let Expense = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
-    let dispatch = useDispatch();
-    let userInfo = useSelector((state) => state.user);
+    let token = useSelector((state) => state.auth.token);
+    let [addExpense] = useAddExpenseMutation({ skip: !token });
 
     let handleSubmit = async (values) => {
         toast.promise(
-            bbcApi
-                .expense({ userName: userInfo.userName, location: values.location, category: values.category, amount: values.amount })
-                .then((result) => {
-                    let action = addExpense(result);
-                    dispatch(action);
-                }),
+            addExpense({
+                userName: jwtDecode(token).userName,
+                expenseInfo: {
+                    location: values.location,
+                    category: values.category,
+                    amount: values.amount
+                }
+            }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',
-                success: 'Hooray 🎉🎉🎉',
+                success: 'Expense proceeded 🎉🎉🎉',
                 error: {
                     render({ data }) {
-                        if (data.name === 'AxiosError') {
-                            return data.response.data;
-                        } else {
-                            console.log(data);
-                        }
+                        return data.data.message;
                     }
                 }
             }

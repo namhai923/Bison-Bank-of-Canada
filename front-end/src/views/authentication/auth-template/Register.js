@@ -1,5 +1,4 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -9,41 +8,36 @@ import { toast } from 'react-toastify';
 // project imports
 import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
-import Logo from 'ui-component/Logo';
+import Logo from 'components/Logo';
 import RegisterForm from '../auth-forms/RegisterForm';
-import { setUser } from '../../../store/userSlice';
-import bbcApi from 'api/bbcApi';
+import { useRegisterMutation } from 'app/features/auth/authApiSlice';
 
 const Register = () => {
     const theme = useTheme();
     let navigate = useNavigate();
-    let dispatch = useDispatch();
-    let location = useLocation();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    const [register] = useRegisterMutation();
 
     let handleSubmit = async (values) => {
         toast.promise(
-            bbcApi
-                .createUser({ userName: values.email, firstName: values.fname, lastName: values.lname, accountBalance: values.balance })
-                .then((result) => {
-                    let action = setUser(result);
-                    dispatch(action);
-                    if (location.state?.from) {
-                        navigate(location.state.from);
-                    } else {
-                        navigate('/');
-                    }
-                }),
+            register({
+                userName: values.email,
+                password: values.password,
+                firstName: values.fname,
+                lastName: values.lname,
+                accountBalance: values.balance
+            }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',
-                success: 'Hooray 🎉🎉🎉',
+                success: {
+                    render() {
+                        navigate('/login');
+                        return 'Account created successfully 🎉🎉🎉';
+                    }
+                },
                 error: {
                     render({ data }) {
-                        if (data.name === 'AxiosError') {
-                            return data.response.data;
-                        } else {
-                            console.log(data);
-                        }
+                        return data.data.message;
                     }
                 }
             }

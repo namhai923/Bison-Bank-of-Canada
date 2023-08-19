@@ -1,12 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import jwtDecode from 'jwt-decode';
 
-import ListCard from 'ui-component/cards/ListCard';
+import Loader from 'components/Loader';
+import ListCard from 'components/cards/ListCard';
 import createData from 'utils/createData';
+import { useGetExpenseQuery } from 'app/features/user/userApiSlice';
 
 const ExpenseHistory = () => {
-    let userInfo = useSelector((state) => state.user);
     let filterInfo = useSelector((state) => state.filter);
+    let token = useSelector((state) => state.auth.token);
+
+    let {
+        data: expenseHistory,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetExpenseQuery(jwtDecode(token).userName, {
+        pollingInterval: 15000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+        skip: !token
+    });
 
     let labels = ['Expense Id', 'Merchant', 'Date', 'Category', 'Amount', ''];
     let filterLabels = [
@@ -17,7 +33,7 @@ const ExpenseHistory = () => {
     let title = 'Expense History';
 
     let [rows, setRows] = useState(() => {
-        let temp = userInfo.expenseHistory;
+        let temp = expenseHistory;
         let displayRows = temp.map((item) => {
             let data = { location: item.location, date: item.date, category: item.category, amount: item.amount };
             return createData('expense', data);
@@ -26,7 +42,7 @@ const ExpenseHistory = () => {
     });
 
     useEffect(() => {
-        let temp = userInfo.expenseHistory;
+        let temp = expenseHistory;
         let displayRows = temp
             .filter((item) => {
                 return (
@@ -39,18 +55,26 @@ const ExpenseHistory = () => {
                 return createData('expense', data);
             });
         setRows(displayRows);
-    }, [filterInfo, userInfo]);
+    }, [filterInfo, expenseHistory]);
 
-    return (
-        <ListCard
-            labels={labels}
-            rows={rows}
-            emptyMessage={emptyMessage}
-            title={title}
-            filterData={userInfo.expenseHistory}
-            filterLabels={filterLabels}
-        />
-    );
+    let content;
+    if (isLoading) content = <Loader></Loader>;
+
+    if (isError) {
+        content = <p className="errmsg">{error?.data?.message}</p>;
+    }
+    if (isSuccess)
+        content = (
+            <ListCard
+                labels={labels}
+                rows={rows}
+                emptyMessage={emptyMessage}
+                title={title}
+                filterData={expenseHistory}
+                filterLabels={filterLabels}
+            />
+        );
+    return content;
 };
 
 export default ExpenseHistory;
