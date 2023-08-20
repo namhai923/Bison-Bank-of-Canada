@@ -44,7 +44,7 @@ let PrivateRoute = ({ children }) => {
             content = <Navigate to="/login" replace state={{ from: location }} />;
         }
     } else if (isLoading) {
-        content = <Loader></Loader>;
+        content = <Loader />;
     } else if (isError) {
         console.log(error?.data?.message);
         content = <Navigate to="/login" replace state={{ from: location }} />;

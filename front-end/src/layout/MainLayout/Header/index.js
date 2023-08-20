@@ -7,6 +7,7 @@ import { IconMenu2 } from '@tabler/icons';
 import jwtDecode from 'jwt-decode';
 
 import Loader from 'components/Loader';
+import NotificationSection from './NotificationSection';
 import ProfileSection from './ProfileSection';
 import WelcomeSection from './WelcomeSection';
 import LogoSection from '../LogoSection';
@@ -32,7 +33,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
     });
 
     let content;
-    if (isLoading) content = <Loader></Loader>;
+    if (isLoading) content = <Loader />;
 
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>;
@@ -78,6 +79,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ flexGrow: 1 }} />
 
+                <NotificationSection />
                 <ProfileSection firstName={userInfo.firstName} lastName={userInfo.lastName} />
             </>
         );

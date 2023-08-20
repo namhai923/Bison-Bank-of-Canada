@@ -57,7 +57,7 @@ const Dashboard = () => {
     });
 
     let content;
-    if (isBalanceLoading || isExpenseLoading || isTransferLoading) content = <Loader></Loader>;
+    if (isBalanceLoading || isExpenseLoading || isTransferLoading) content = <Loader />;
 
     if (isBalanceError || isExpenseError || isTransferError) {
         content = (
@@ -72,7 +72,11 @@ const Dashboard = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item lg={4} md={6} sm={6} xs={12}>
-                            <AccountBalance accountBalance={accountBalance} />
+                            <AccountBalance
+                                accountBalance={accountBalance}
+                                expenseHistory={expenseHistory}
+                                transferHistory={transferHistory}
+                            />
                         </Grid>
                         <Grid item lg={4} md={6} sm={6} xs={12}>
                             <TotalSpending expenseHistory={expenseHistory} transferHistory={transferHistory} userName={userName} />

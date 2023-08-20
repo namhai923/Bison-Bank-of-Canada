@@ -53,7 +53,7 @@ const Profile = () => {
     };
 
     let content;
-    if (isLoading) content = <Loader></Loader>;
+    if (isLoading) content = <Loader />;
 
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>;
