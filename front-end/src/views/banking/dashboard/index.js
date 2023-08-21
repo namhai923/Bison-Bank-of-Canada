@@ -12,6 +12,7 @@ import LatestTransfer from './LatestTransfer';
 import { gridSpacing } from 'assets/data/constant';
 import SpendingBarChart from './SpendingBarChart';
 import { useGetBalanceQuery, useGetExpenseQuery, useGetTransferQuery } from 'app/features/user/userApiSlice';
+import config from 'assets/data/config';
 
 const Dashboard = () => {
     let token = useSelector((state) => state.auth.token);
@@ -24,7 +25,7 @@ const Dashboard = () => {
         isError: isBalanceError,
         error: balanceError
     } = useGetBalanceQuery(userName, {
-        pollingInterval: 15000,
+        pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         skip: !token
@@ -37,7 +38,7 @@ const Dashboard = () => {
         isError: isExpenseError,
         error: expenseError
     } = useGetExpenseQuery(userName, {
-        pollingInterval: 15000,
+        pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         skip: !token
@@ -50,7 +51,7 @@ const Dashboard = () => {
         isError: isTransferError,
         error: transferError
     } = useGetTransferQuery(userName, {
-        pollingInterval: 15000,
+        pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         skip: !token

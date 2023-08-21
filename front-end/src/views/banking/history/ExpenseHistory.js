@@ -6,6 +6,7 @@ import Loader from 'components/Loader';
 import ListCard from 'components/cards/ListCard';
 import createData from 'utils/createData';
 import { useGetExpenseQuery } from 'app/features/user/userApiSlice';
+import config from 'assets/data/config';
 
 const ExpenseHistory = () => {
     let filterInfo = useSelector((state) => state.filter);
@@ -18,7 +19,7 @@ const ExpenseHistory = () => {
         isError,
         error
     } = useGetExpenseQuery(jwtDecode(token).userName, {
-        pollingInterval: 15000,
+        pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         skip: !token

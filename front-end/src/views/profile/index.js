@@ -10,6 +10,7 @@ import MainCard from 'components/cards/MainCard';
 import AccountProfile from './AccountProfile';
 import ProFileForm from './ProfileForm';
 import { useGetUserInfoQuery, useUpdateUserInfoMutation } from 'app/features/user/userApiSlice';
+import config from 'assets/data/config';
 
 const Profile = () => {
     let token = useSelector((state) => state.auth.token);
@@ -21,7 +22,7 @@ const Profile = () => {
         isError,
         error
     } = useGetUserInfoQuery(jwtDecode(token).userName, {
-        pollingInterval: 15000,
+        pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         skip: !token

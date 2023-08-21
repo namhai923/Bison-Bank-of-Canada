@@ -6,6 +6,7 @@ import Loader from 'components/Loader';
 import ListCard from 'components/cards/ListCard';
 import createData from 'utils/createData';
 import { useGetTransferQuery } from 'app/features/user/userApiSlice';
+import config from 'assets/data/config';
 
 const TransferHistory = () => {
     let filterInfo = useSelector((state) => state.filter);
@@ -19,7 +20,7 @@ const TransferHistory = () => {
         isError,
         error
     } = useGetTransferQuery(userName, {
-        pollingInterval: 15000,
+        pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         skip: !token

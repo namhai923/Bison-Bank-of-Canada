@@ -3,18 +3,24 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/user.model");
 const { cache, setCacheExpire } = require("../cache");
 const { CACHE_EXPIRED_IN_SECONDS } = require("../config/vars.config");
-
-const checkParams = (obj, params) => {
-  return params.every((param) => Object.keys(obj).includes(param));
-};
+const {
+  validateUserName,
+  validateExpense,
+  validateTransfer,
+  validateProfile,
+} = require("../validators");
 
 const getInfo = asyncHandler(async (req, res) => {
-  if (!req.query.userName) {
-    return res.status(400).json({ message: "Missing require parameter." });
+  const { error, value } = validateUserName(req.query);
+
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: error.details });
   }
 
   // check if the username exist, then return user data
-  let userName = req.query.userName;
+  let userName = value.userName;
   if (userName === req.user.userName) {
     let userInfo;
     if (cache.has(userName)) {
@@ -37,12 +43,16 @@ const getInfo = asyncHandler(async (req, res) => {
 });
 
 const getBalance = asyncHandler(async (req, res) => {
-  if (!req.query.userName) {
-    return res.status(400).json({ message: "Missing require parameter." });
+  const { error, value } = validateUserName(req.query);
+
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: error.details });
   }
 
   // check if the username exist, then return user data
-  let userName = req.query.userName;
+  let userName = value.userName;
   if (userName === req.user.userName) {
     let userInfo;
     if (cache.has(userName)) {
@@ -65,12 +75,16 @@ const getBalance = asyncHandler(async (req, res) => {
 });
 
 const getExpense = asyncHandler(async (req, res) => {
-  if (!req.query.userName) {
-    return res.status(400).json({ message: "Missing require parameter." });
+  const { error, value } = validateUserName(req.query);
+
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: error.details });
   }
 
   // check if the username exist, then return user data
-  let userName = req.query.userName;
+  let userName = value.userName;
   if (userName === req.user.userName) {
     let userInfo;
     if (cache.has(userName)) {
@@ -93,12 +107,16 @@ const getExpense = asyncHandler(async (req, res) => {
 });
 
 const getTransfer = asyncHandler(async (req, res) => {
-  if (!req.query.userName) {
-    return res.status(400).json({ message: "Missing require parameter." });
+  const { error, value } = validateUserName(req.query);
+
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: error.details });
   }
 
   // check if the username exist, then return user data
-  let userName = req.query.userName;
+  let userName = value.userName;
   if (userName === req.user.userName) {
     let userInfo;
     if (cache.has(userName)) {
@@ -121,15 +139,24 @@ const getTransfer = asyncHandler(async (req, res) => {
 });
 
 const updateInfo = asyncHandler(async (req, res) => {
-  if (
-    !req.query.userName ||
-    !checkParams(req.body, ["firstName", "lastName", "dob", "phoneNumber"])
-  ) {
-    return res.status(400).json({ message: "Missing require parameter." });
+  const { error: queryError, value: queryValue } = validateUserName(req.query);
+
+  if (queryError) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: queryError.details });
   }
 
-  let { firstName, lastName, dob, phoneNumber } = req.body;
-  let userName = req.query.userName;
+  const { error: bodyError, value: bodyValue } = validateProfile(req.body);
+
+  if (bodyError) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: bodyError.details });
+  }
+
+  let { firstName, lastName, dob, phoneNumber } = bodyValue;
+  let userName = queryValue.userName;
   if (userName === req.user.userName) {
     let user = await User.findOne({ userName });
 
@@ -153,15 +180,24 @@ const updateInfo = asyncHandler(async (req, res) => {
 });
 
 const expense = asyncHandler(async (req, res) => {
-  if (
-    !req.query.userName ||
-    !checkParams(req.body, ["location", "category", "amount"])
-  ) {
-    return res.status(400).json({ message: "Missing require parameter." });
+  const { error: queryError, value: queryValue } = validateUserName(req.query);
+
+  if (queryError) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: queryError.details });
   }
 
-  let { location, category, amount } = req.body;
-  let userName = req.query.userName;
+  const { error: bodyError, value: bodyValue } = validateExpense(req.body);
+
+  if (bodyError) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: bodyError.details });
+  }
+
+  let { location, category, amount } = bodyValue;
+  let userName = queryValue.userName;
   if (userName === req.user.userName) {
     let errorMessage = "";
 
@@ -213,15 +249,24 @@ const expense = asyncHandler(async (req, res) => {
 });
 
 const transfer = asyncHandler(async (req, res) => {
-  if (
-    !req.query.userName ||
-    !checkParams(req.body, ["receiverName", "amount"])
-  ) {
-    return res.status(400).json({ message: "Missing require parameter." });
+  const { error: queryError, value: queryValue } = validateUserName(req.query);
+
+  if (queryError) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: queryError.details });
   }
 
-  let { receiverName, amount } = req.body;
-  let senderName = req.query.userName;
+  const { error: bodyError, value: bodyValue } = validateTransfer(req.body);
+
+  if (bodyError) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request.", details: bodyError.details });
+  }
+
+  let { receiverName, amount } = bodyValue;
+  let senderName = queryValue.userName;
   if (senderName === req.user.userName) {
     let errorMessage = "";
     if (senderName === receiverName) {

@@ -12,6 +12,7 @@ import ProfileSection from './ProfileSection';
 import WelcomeSection from './WelcomeSection';
 import LogoSection from '../LogoSection';
 import { useGetUserInfoQuery } from 'app/features/user/userApiSlice';
+import config from 'assets/data/config';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
@@ -26,7 +27,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
         isError,
         error
     } = useGetUserInfoQuery(jwtDecode(token).userName, {
-        pollingInterval: 15000,
+        pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         skip: !token

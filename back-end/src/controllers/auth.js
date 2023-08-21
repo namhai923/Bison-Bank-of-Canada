@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 
+const { validateRegister, validateLogin } = require("../validators");
+
 const {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
@@ -10,10 +12,6 @@ const {
 } = require("../config/vars.config");
 const User = require("../models/user.model");
 const Credential = require("../models/credential.model");
-
-const checkParams = (obj, params) => {
-  return params.every((param) => Object.keys(obj).includes(param));
-};
 
 const generateAccessToken = (userName) => {
   let accessToken = jwt.sign({ userName }, ACCESS_TOKEN_SECRET, {
@@ -55,21 +53,14 @@ const refresh = (req, res) => {
 };
 
 const register = asyncHandler(async (req, res) => {
-  if (
-    !checkParams(req.body, [
-      "userName",
-      "password",
-      "firstName",
-      "lastName",
-      "accountBalance",
-    ])
-  ) {
+  const { error, value } = validateRegister(req.body);
+  if (error) {
     return res
       .status(400)
-      .json({ message: "Missing require parameter in request body." });
+      .json({ message: "Invalid request.", details: error.details });
   }
 
-  let { userName, password, firstName, lastName, accountBalance } = req.body;
+  let { userName, password, firstName, lastName, accountBalance } = value;
   let userInfo = await Credential.findOne({ userName }).lean().exec();
 
   // check if the username exist, if not then add user
@@ -96,13 +87,14 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  if (!checkParams(req.body, ["userName", "password"])) {
+  const { error, value } = validateLogin(req.body);
+  if (error) {
     return res
       .status(400)
-      .json({ message: "Missing require parameter in request body." });
+      .json({ message: "Invalid request.", details: error.details });
   }
 
-  let { userName, password } = req.body;
+  let { userName, password } = value;
   let userCred = await Credential.findOne({ userName }).lean().exec();
 
   if (userCred === null) {
