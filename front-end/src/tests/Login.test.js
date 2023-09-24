@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Login from '../views/authentication/auth-template/Login';
+import Login from '../views/authentication/Login';
 import { Provider } from 'react-redux';
 import store from '../app';
 import { BrowserRouter } from 'react-router-dom';
 import config from '../assets/data/config';
 import '@testing-library/jest-dom';
-import { vSchema } from '../views/authentication/auth-forms/LoginForm';
+import { vSchema } from '../views/authentication/form/LoginForm';
 
 const customRender = (component) =>
     render(

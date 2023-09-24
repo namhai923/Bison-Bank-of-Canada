@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import {
     Avatar,
@@ -21,10 +20,8 @@ import {
     useMediaQuery
 } from '@mui/material';
 
-// third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
-// project imports
 import MainCard from 'components/cards/MainCard';
 import Transitions from 'components/extended/Transitions';
 import NotificationList from './NotificationList';

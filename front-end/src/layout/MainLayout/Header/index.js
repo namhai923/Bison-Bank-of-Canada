@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Box, ButtonBase } from '@mui/material';
 import { IconMenu2 } from '@tabler/icons';
-import jwtDecode from 'jwt-decode';
 
 import Loader from 'components/Loader';
 import NotificationSection from './NotificationSection';
@@ -18,7 +16,6 @@ import config from 'assets/data/config';
 
 const Header = ({ handleLeftDrawerToggle }) => {
     const theme = useTheme();
-    let token = useSelector((state) => state.auth.token);
 
     let {
         data: userInfo,
@@ -26,11 +23,10 @@ const Header = ({ handleLeftDrawerToggle }) => {
         isSuccess,
         isError,
         error
-    } = useGetUserInfoQuery(jwtDecode(token).userName, {
+    } = useGetUserInfoQuery('userInfo', {
         pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        skip: !token
+        refetchOnMountOrArgChange: true
     });
 
     let content;

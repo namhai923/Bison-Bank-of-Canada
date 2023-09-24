@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import jwtDecode from 'jwt-decode';
+
+import { useTheme } from '@mui/material/styles';
 
 import Loader from 'components/Loader';
-import ListCard from 'components/cards/ListCard';
+import HistoryCard from './HistoryCard';
 import createData from 'utils/createData';
 import { useGetExpenseQuery } from 'app/features/user/userApiSlice';
 import config from 'assets/data/config';
 
 const ExpenseHistory = () => {
-    let filterInfo = useSelector((state) => state.filter);
-    let token = useSelector((state) => state.auth.token);
+    let selectInfo = useSelector((state) => state.value);
+    let theme = useTheme();
 
     let {
         data: expenseHistory,
@@ -18,20 +19,20 @@ const ExpenseHistory = () => {
         isSuccess,
         isError,
         error
-    } = useGetExpenseQuery(jwtDecode(token).userName, {
+    } = useGetExpenseQuery('expenseHistory', {
         pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        skip: !token
+        refetchOnMountOrArgChange: true
     });
 
+    let title = 'Expense History';
     let labels = ['Expense Id', 'Merchant', 'Date', 'Category', 'Amount', ''];
     let filterLabels = [
-        { label: 'Location', color: '#6390F0' },
-        { label: 'Category', color: '#6F35FC' }
+        { label: 'Location', color: theme.palette.primary.main },
+        { label: 'Category', color: theme.palette.secondary.main }
     ];
     let emptyMessage = 'Your Expenses Will Appear Here! Make Your First Transaction In Order To Show Display It Here';
-    let title = 'Expense History';
+    let emptyFilterMessage = 'No Expense Match Your Filter';
 
     let [rows, setRows] = useState(() => {
         let temp = expenseHistory;
@@ -47,8 +48,8 @@ const ExpenseHistory = () => {
         let displayRows = temp
             .filter((item) => {
                 return (
-                    (filterInfo.location.length === 0 || filterInfo.location.includes(item.location)) &&
-                    (filterInfo.category.length === 0 || filterInfo.category.includes(item.category))
+                    (selectInfo.location.length === 0 || selectInfo.location.includes(item.location)) &&
+                    (selectInfo.category.length === 0 || selectInfo.category.includes(item.category))
                 );
             })
             .map((item) => {
@@ -56,7 +57,7 @@ const ExpenseHistory = () => {
                 return createData('expense', data);
             });
         setRows(displayRows);
-    }, [filterInfo, expenseHistory]);
+    }, [selectInfo, expenseHistory]);
 
     let content;
     if (isLoading) content = <Loader />;
@@ -66,13 +67,14 @@ const ExpenseHistory = () => {
     }
     if (isSuccess)
         content = (
-            <ListCard
+            <HistoryCard
+                title={title}
                 labels={labels}
                 rows={rows}
                 emptyMessage={emptyMessage}
-                title={title}
-                filterData={expenseHistory}
+                emptyFilterMessage={emptyFilterMessage}
                 filterLabels={filterLabels}
+                filterData={expenseHistory}
             />
         );
     return content;

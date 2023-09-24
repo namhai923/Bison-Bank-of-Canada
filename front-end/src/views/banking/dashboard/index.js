@@ -1,7 +1,5 @@
 // material-ui
 import { Grid } from '@mui/material';
-import { useSelector } from 'react-redux';
-import jwtDecode from 'jwt-decode';
 
 // project imports
 import Loader from 'components/Loader';
@@ -15,20 +13,16 @@ import { useGetBalanceQuery, useGetExpenseQuery, useGetTransferQuery } from 'app
 import config from 'assets/data/config';
 
 const Dashboard = () => {
-    let token = useSelector((state) => state.auth.token);
-    let userName = jwtDecode(token).userName;
-
     let {
         data: accountBalance,
         isLoading: isBalanceLoading,
         isSuccess: isBalanceSuccess,
         isError: isBalanceError,
         error: balanceError
-    } = useGetBalanceQuery(userName, {
+    } = useGetBalanceQuery('accountBalance', {
         pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        skip: !token
+        refetchOnMountOrArgChange: true
     });
 
     let {
@@ -37,11 +31,10 @@ const Dashboard = () => {
         isSuccess: isExpenseSuccess,
         isError: isExpenseError,
         error: expenseError
-    } = useGetExpenseQuery(userName, {
+    } = useGetExpenseQuery('expenseHistory', {
         pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        skip: !token
+        refetchOnMountOrArgChange: true
     });
 
     let {
@@ -50,11 +43,10 @@ const Dashboard = () => {
         isSuccess: isTransferSuccess,
         isError: isTransferError,
         error: transferError
-    } = useGetTransferQuery(userName, {
+    } = useGetTransferQuery('transferHistory', {
         pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        skip: !token
+        refetchOnMountOrArgChange: true
     });
 
     let content;
@@ -80,7 +72,7 @@ const Dashboard = () => {
                             />
                         </Grid>
                         <Grid item lg={4} md={6} sm={6} xs={12}>
-                            <TotalSpending expenseHistory={expenseHistory} transferHistory={transferHistory} userName={userName} />
+                            <TotalSpending expenseHistory={expenseHistory} transferHistory={transferHistory} />
                         </Grid>
                         <Grid item lg={4} md={12} sm={12} xs={12}>
                             <Grid container spacing={gridSpacing}>
@@ -88,7 +80,7 @@ const Dashboard = () => {
                                     <LatestExpense expenseHistory={expenseHistory} />
                                 </Grid>
                                 <Grid item sm={6} xs={12} md={6} lg={12}>
-                                    <LatestTransfer transferHistory={transferHistory} userName={userName} />
+                                    <LatestTransfer transferHistory={transferHistory} />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -97,7 +89,7 @@ const Dashboard = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} md={12}>
-                            <SpendingBarChart expenseHistory={expenseHistory} transferHistory={transferHistory} userName={userName} />
+                            <SpendingBarChart expenseHistory={expenseHistory} transferHistory={transferHistory} />
                         </Grid>
                     </Grid>
                 </Grid>

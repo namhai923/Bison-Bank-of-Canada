@@ -40,7 +40,7 @@ const expenseSchema = Joi.object({
 });
 
 const transferSchema = Joi.object({
-  receiverName: Joi.string().email().max(50).required(),
+  transferAccounts: Joi.array().items(Joi.string().email().max(50)).required(),
   amount: Joi.number().min(1).required(),
 });
 
@@ -57,6 +57,15 @@ const profileSchema = Joi.object({
   phoneNumber: phoneNumberJoi.string().phoneNumber().allow(""),
 });
 
+const removeContactsSchema = Joi.object({
+  removeContacts: Joi.array().items(Joi.string().email().max(50)).required(),
+});
+
+const sendMessageSchema = Joi.object({
+  userName: Joi.string().email().max(50).required(),
+  message: Joi.string(),
+});
+
 module.exports = {
   validateUserName: validator(userNameSchema),
   validateRegister: validator(registerSchema),
@@ -64,4 +73,6 @@ module.exports = {
   validateExpense: validator(expenseSchema),
   validateTransfer: validator(transferSchema),
   validateProfile: validator(profileSchema),
+  validateRemoveContacts: validator(removeContactsSchema),
+  validateSendMessage: validator(sendMessageSchema),
 };

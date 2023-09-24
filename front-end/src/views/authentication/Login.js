@@ -6,9 +6,9 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import { toast } from 'react-toastify';
 
 // project imports
-import AuthWrapper from '../AuthWrapper';
-import AuthCardWrapper from '../AuthCardWrapper';
-import LoginForm from '../auth-forms/LoginForm';
+import AuthWrapper from './wrapper/AuthWrapper';
+import AuthCardWrapper from './wrapper/AuthCardWrapper';
+import LoginForm from './form/LoginForm';
 import Logo from 'components/Logo';
 import { useLoginMutation } from 'app/features/auth/authApiSlice';
 

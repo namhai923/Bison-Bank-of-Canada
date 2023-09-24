@@ -1,8 +1,5 @@
-import { useSelector } from 'react-redux';
-
 import { Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { toast } from 'react-toastify';
-import jwtDecode from 'jwt-decode';
 
 // project imports
 import Loader from 'components/Loader';
@@ -13,33 +10,27 @@ import { useGetUserInfoQuery, useUpdateUserInfoMutation } from 'app/features/use
 import config from 'assets/data/config';
 
 const Profile = () => {
-    let token = useSelector((state) => state.auth.token);
-
     let {
         data: userInfo,
         isLoading,
         isSuccess,
         isError,
         error
-    } = useGetUserInfoQuery(jwtDecode(token).userName, {
+    } = useGetUserInfoQuery('userInfo', {
         pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        skip: !token
+        refetchOnMountOrArgChange: true
     });
 
-    const [updateUserInfo] = useUpdateUserInfoMutation({ skip: !token });
+    const [updateUserInfo] = useUpdateUserInfoMutation();
 
     let handleSubmit = async (values) => {
         toast.promise(
             updateUserInfo({
-                userName: jwtDecode(token).userName,
-                updateInfo: {
-                    firstName: values.fname,
-                    lastName: values.lname,
-                    dob: values.dob ?? '',
-                    phoneNumber: values.phone
-                }
+                firstName: values.fname,
+                lastName: values.lname,
+                dob: values.dob ?? '',
+                phoneNumber: values.phone
             }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',

@@ -4,7 +4,6 @@ import { Outlet } from 'react-router-dom';
 
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
-import jwtDecode from 'jwt-decode';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -60,7 +59,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 const MainLayout = () => {
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
-    let token = useSelector((state) => state.auth.token);
 
     // Handle left drawer
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
@@ -73,13 +71,15 @@ const MainLayout = () => {
     const effectRan = useRef(false);
     useEffect(() => {
         if (effectRan.current === true) {
-            dispatch(userApiSlice.util.prefetch('getUserInfo', jwtDecode(token).userName, { force: true }));
-            dispatch(userApiSlice.util.prefetch('getBalance', jwtDecode(token).userName, { force: true }));
-            dispatch(userApiSlice.util.prefetch('getExpense', jwtDecode(token).userName, { force: true }));
-            dispatch(userApiSlice.util.prefetch('getTransfer', jwtDecode(token).userName, { force: true }));
+            dispatch(userApiSlice.util.prefetch('getUserInfo', 'userInfo', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getBalance', 'accountBalance', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getExpense', 'expenseHistory', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getTransfer', 'transferHistory', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getContacts', 'contacts', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getConversationsInfo', 'conversationsInfo', { force: true }));
         }
         return () => (effectRan.current = true);
-    }, [token, dispatch]);
+    }, [dispatch]);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -104,7 +104,7 @@ const MainLayout = () => {
             <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
 
             {/* main content */}
-            <Main theme={theme} open={leftDrawerOpened}>
+            <Main theme={theme} open={leftDrawerOpened} height="100%">
                 <Outlet />
             </Main>
         </Box>

@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import jwtDecode from 'jwt-decode';
 
+import { useTheme } from '@mui/material/styles';
+
 import Loader from 'components/Loader';
-import ListCard from 'components/cards/ListCard';
+import HistoryCard from './HistoryCard';
 import createData from 'utils/createData';
 import { useGetTransferQuery } from 'app/features/user/userApiSlice';
 import config from 'assets/data/config';
 
 const TransferHistory = () => {
-    let filterInfo = useSelector((state) => state.filter);
+    let theme = useTheme();
+
     let token = useSelector((state) => state.auth.token);
     let userName = jwtDecode(token).userName;
 
@@ -19,20 +22,13 @@ const TransferHistory = () => {
         isSuccess,
         isError,
         error
-    } = useGetTransferQuery(userName, {
+    } = useGetTransferQuery('transferHistory', {
         pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        skip: !token
+        refetchOnMountOrArgChange: true
     });
 
-    let labels = ['Transfer Id', '', 'Receiver/Recipeint', 'Date', 'Amount', ''];
-    let filterLabels = [
-        { label: 'Sender', color: '#1e88e5' },
-        { label: 'Receiver', color: '#5e35b1' }
-    ];
-    let emptyMessage = 'You have not made or recieved any transfer so far. Send money to your friends to get started!';
-    let title = 'Transfer History';
+    let selectInfo = useSelector((state) => state.value);
 
     let [rows, setRows] = useState(() => {
         let temp = transferHistory;
@@ -48,16 +44,22 @@ const TransferHistory = () => {
         let displayRows = temp
             .filter((item) => {
                 return (
-                    (filterInfo.sender.length === 0 || filterInfo.sender.includes(item.sender)) &&
-                    (filterInfo.receiver.length === 0 || filterInfo.receiver.includes(item.receiver))
+                    (selectInfo.sender.length === 0 || selectInfo.sender.includes(item.sender)) &&
+                    (selectInfo.receiver.length === 0 || selectInfo.receiver.includes(item.receiver))
                 );
             })
             .map((item) => {
-                let data = { email: userName, date: item.date, sender: item.sender, receiver: item.receiver, amount: item.amount };
+                let data = {
+                    email: userName,
+                    date: item.date,
+                    sender: item.sender,
+                    receiver: item.receiver,
+                    amount: item.amount
+                };
                 return createData('transfer', data);
             });
         setRows(displayRows);
-    }, [filterInfo, transferHistory, userName]);
+    }, [selectInfo, transferHistory, userName]);
 
     let content;
     if (isLoading) content = <Loader />;
@@ -65,17 +67,28 @@ const TransferHistory = () => {
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>;
     }
-    if (isSuccess)
+    if (isSuccess) {
+        let title = 'Transfer History';
+        let labels = ['Transfer Id', '', 'Receiver/Recipeint', 'Date', 'Amount', ''];
+        let filterLabels = [
+            { label: 'Sender', color: theme.palette.primary.main },
+            { label: 'Receiver', color: theme.palette.secondary.main }
+        ];
+        let emptyMessage = 'You have not made or recieved any transfer so far. Send money to your friends to get started!';
+        let emptyFilterMessage = 'No Transfer Match Your Filter';
+
         content = (
-            <ListCard
+            <HistoryCard
+                title={title}
                 labels={labels}
                 rows={rows}
                 emptyMessage={emptyMessage}
-                title={title}
-                filterData={transferHistory}
+                emptyFilterMessage={emptyFilterMessage}
                 filterLabels={filterLabels}
+                filterData={transferHistory}
             />
         );
+    }
     return content;
 };
 
