@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
+import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import jwtDecode from 'jwt-decode';
 
 // project imports
 import MainCard from 'components/cards/MainCard';
 import { sortByTime } from 'utils/timeUtils';
-
-// assets
-import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -42,7 +42,10 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const LatestTransfer = (props) => {
     const theme = useTheme();
-    let { userName, transferHistory } = props;
+    let { transferHistory } = props;
+
+    let token = useSelector((state) => state.auth.token);
+    let userName = jwtDecode(token).userName;
 
     let [latest, setLatest] = useState(() => {
         let latestTransfer = 0;
@@ -109,7 +112,6 @@ const LatestTransfer = (props) => {
 };
 
 LatestTransfer.propTypes = {
-    userName: PropTypes.string,
     transferHistory: PropTypes.arrayOf(PropTypes.object)
 };
 

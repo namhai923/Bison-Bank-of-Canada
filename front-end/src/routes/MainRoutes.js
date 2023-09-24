@@ -11,6 +11,8 @@ const Profile = Loadable(lazy(() => import('views/profile')));
 const ExpenseHistory = Loadable(lazy(() => import('views/banking/history/ExpenseHistory')));
 const TransferHistory = Loadable(lazy(() => import('views/banking/history/TransferHistory')));
 const SpendMoney = Loadable(lazy(() => import('views/banking/spend-money')));
+const Contacts = Loadable(lazy(() => import('views/social/contacts')));
+const Messenger = Loadable(lazy(() => import('views/social/messenger')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -23,11 +25,11 @@ const MainRoutes = {
     ),
     children: [
         {
-            path: '/',
+            path: '',
             element: <Dashboard />
         },
         {
-            path: '/profile',
+            path: 'profile',
             element: <Profile />
         },
         {
@@ -46,6 +48,14 @@ const MainRoutes = {
                     element: <TransferHistory />
                 }
             ]
+        },
+        {
+            path: 'contacts',
+            element: <Contacts />
+        },
+        {
+            path: 'messenger',
+            element: <Messenger />
         }
     ]
 };

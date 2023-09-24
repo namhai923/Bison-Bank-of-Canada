@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import config from '../../../assets/data/config';
+import config from 'assets/data/config';
 
 let initialState = {
     isOpen: [], // for active default menu

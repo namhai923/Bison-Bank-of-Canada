@@ -6,10 +6,10 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import { toast } from 'react-toastify';
 
 // project imports
-import AuthWrapper from '../AuthWrapper';
-import AuthCardWrapper from '../AuthCardWrapper';
+import AuthWrapper from './wrapper/AuthWrapper';
+import AuthCardWrapper from './wrapper/AuthCardWrapper';
 import Logo from 'components/Logo';
-import RegisterForm from '../auth-forms/RegisterForm';
+import RegisterForm from './form/RegisterForm';
 import { useRegisterMutation } from 'app/features/auth/authApiSlice';
 
 const Register = () => {

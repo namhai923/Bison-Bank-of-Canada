@@ -2,24 +2,23 @@ import { KeyboardArrowUpOutlined, KeyboardArrowDownOutlined } from '@mui/icons-m
 
 export default function createData(type, data) {
     let color;
-    let background;
     let icon;
 
     let { date, amount } = data;
 
     if (amount <= 10) {
-        (color = '#fff'), (background = '#4caf50');
+        color = 'success';
     } else if (amount >= 50) {
-        (color = '#fff'), (background = '#f44336');
+        color = 'error';
     } else {
-        (color = '#fff'), (background = '#ffc107');
+        color = 'warning';
     }
 
     if (type === 'expense') {
         let { location, category } = data;
 
         icon = KeyboardArrowDownOutlined;
-        return { data: { merchant: location, date, category, amount }, display: { color, background, icon } };
+        return { data: { merchant: location, date, category, amount }, display: { color, icon } };
     } else {
         let senderOrReceiver;
         let otherPerson;
@@ -37,6 +36,6 @@ export default function createData(type, data) {
             senderOrReceiver = 'Unknown';
             otherPerson = 'Unknown';
         }
-        return { data: { senderOrReceiver, otherPerson, date, amount }, display: { color, background, icon } };
+        return { data: { senderOrReceiver, otherPerson, date, amount }, display: { color, icon } };
     }
 }

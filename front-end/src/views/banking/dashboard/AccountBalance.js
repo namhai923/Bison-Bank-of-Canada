@@ -50,7 +50,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 const AccountBalance = (props) => {
-    let { accountBalance } = props;
+    let { accountBalance, expenseHistory, transferHistory } = props;
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -115,7 +115,7 @@ const AccountBalance = (props) => {
                                             horizontal: 'right'
                                         }}
                                     >
-                                        <CopyToClipboard text={localStorage.userInfo}>
+                                        <CopyToClipboard text={JSON.stringify({ accountBalance, expenseHistory, transferHistory })}>
                                             <MenuItem onClick={handleClose}>
                                                 <FileCopyTwoTone sx={{ mr: 1.75 }} /> Copy Data
                                             </MenuItem>
@@ -164,7 +164,9 @@ const AccountBalance = (props) => {
 };
 
 AccountBalance.propTypes = {
-    accountBalance: PropTypes.number
+    accountBalance: PropTypes.number,
+    transferHistory: PropTypes.arrayOf(PropTypes.object),
+    expenseHistory: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default AccountBalance;

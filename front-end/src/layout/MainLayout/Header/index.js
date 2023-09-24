@@ -1,22 +1,21 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Box, ButtonBase } from '@mui/material';
 import { IconMenu2 } from '@tabler/icons';
-import jwtDecode from 'jwt-decode';
 
 import Loader from 'components/Loader';
+import NotificationSection from './NotificationSection';
 import ProfileSection from './ProfileSection';
 import WelcomeSection from './WelcomeSection';
 import LogoSection from '../LogoSection';
 import { useGetUserInfoQuery } from 'app/features/user/userApiSlice';
+import config from 'assets/data/config';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
 const Header = ({ handleLeftDrawerToggle }) => {
     const theme = useTheme();
-    let token = useSelector((state) => state.auth.token);
 
     let {
         data: userInfo,
@@ -24,15 +23,14 @@ const Header = ({ handleLeftDrawerToggle }) => {
         isSuccess,
         isError,
         error
-    } = useGetUserInfoQuery(jwtDecode(token).userName, {
-        pollingInterval: 15000,
+    } = useGetUserInfoQuery('userInfo', {
+        pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        skip: !token
+        refetchOnMountOrArgChange: true
     });
 
     let content;
-    if (isLoading) content = <Loader></Loader>;
+    if (isLoading) content = <Loader />;
 
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>;
@@ -78,6 +76,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ flexGrow: 1 }} />
 
+                <NotificationSection />
                 <ProfileSection firstName={userInfo.firstName} lastName={userInfo.lastName} />
             </>
         );

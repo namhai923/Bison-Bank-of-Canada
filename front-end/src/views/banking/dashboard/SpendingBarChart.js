@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Typography } from '@mui/material';
-
-// third-party
 import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
+import jwtDecode from 'jwt-decode';
 
 // project imports
 import MainCard from 'components/cards/MainCard';
@@ -44,9 +43,12 @@ let createChartData = (expense, transfer) => {
 };
 
 const SpendingBarChart = (props) => {
-    let { userName, expenseHistory, transferHistory } = props;
+    let { expenseHistory, transferHistory } = props;
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
+
+    let token = useSelector((state) => state.auth.token);
+    let userName = jwtDecode(token).userName;
 
     let [chartData, setChartData] = useState(() => {
         let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
@@ -127,7 +129,6 @@ const SpendingBarChart = (props) => {
 };
 
 SpendingBarChart.propTypes = {
-    userName: PropTypes.string,
     transferHistory: PropTypes.arrayOf(PropTypes.object),
     expenseHistory: PropTypes.arrayOf(PropTypes.object)
 };

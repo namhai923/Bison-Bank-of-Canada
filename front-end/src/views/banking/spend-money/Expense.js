@@ -1,11 +1,8 @@
-import { useSelector } from 'react-redux';
-
 import { useTheme } from '@mui/material/styles';
 import { Button, CardActions, FormHelperText, TextField, Grid, useMediaQuery } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
-import jwtDecode from 'jwt-decode';
 
 import { useAddExpenseMutation } from 'app/features/user/userApiSlice';
 
@@ -25,18 +22,14 @@ let Expense = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
-    let token = useSelector((state) => state.auth.token);
-    let [addExpense] = useAddExpenseMutation({ skip: !token });
+    let [addExpense] = useAddExpenseMutation();
 
     let handleSubmit = async (values) => {
         toast.promise(
             addExpense({
-                userName: jwtDecode(token).userName,
-                expenseInfo: {
-                    location: values.location,
-                    category: values.category,
-                    amount: values.amount
-                }
+                location: values.location,
+                category: values.category,
+                amount: values.amount
             }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',
@@ -66,7 +59,7 @@ let Expense = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="Location"
+                                placeholder="Location"
                                 name="location"
                                 onChange={handleChange}
                                 type="text"
@@ -78,7 +71,7 @@ let Expense = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="Category"
+                                placeholder="Category"
                                 name="category"
                                 onChange={handleChange}
                                 type="text"
@@ -90,7 +83,7 @@ let Expense = () => {
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
-                                label="Amount"
+                                placeholder="Amount"
                                 type="number"
                                 value={values.amount}
                                 name="amount"

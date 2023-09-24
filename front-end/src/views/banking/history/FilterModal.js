@@ -5,7 +5,7 @@ import { Chip, Modal, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { IconFilter } from '@tabler/icons';
 
-import FilterForm from 'components/filter/FilterForm';
+import FilterForm from 'views/banking/history/FilterForm';
 
 const style = {
     position: 'absolute',

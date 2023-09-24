@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // third party
 import { Form, FastField, Formik } from 'formik';
 // project imports
-import CustomSelect from '../extended/CustomSelect';
+import CustomSelect from 'components/custom-select/CustomSelect';
 
 const FilterForm = (props) => {
     let { filterLabels, filterData } = props;
@@ -24,10 +24,13 @@ const FilterForm = (props) => {
                                 return (
                                     <FastField
                                         name={item.label.toLowerCase()}
+                                        placeholder={`--Filter by ${item.label.toLowerCase()}`}
                                         component={CustomSelect}
                                         data={filterData}
+                                        optionValue={item.label.toLowerCase()}
                                         color={item.color}
                                         label={item.label}
+                                        creatable={false}
                                     />
                                 );
                             })}

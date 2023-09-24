@@ -27,17 +27,9 @@ const vSchema = Yup.object().shape({
     lname: Yup.string()
         .max(50, 'Cannot have more than 50 characters')
         .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
-        .required('Last Name is required')
+        .required('Last Name is required'),
+    dob: Yup.date().nullable().max(new Date(), 'Invalid date')
 });
-
-function validDate(value) {
-    let error;
-    let date = new Date(value);
-    if (value && !(date instanceof Date && !isNaN(date.valueOf()))) {
-        error = 'Invalid date';
-    }
-    return error;
-}
 
 function validPhone(value) {
     let error;
@@ -93,7 +85,7 @@ let ProfileForm = (props) => {
                                         {touched.lname && errors.lname && <FormHelperText error>{errors.lname}</FormHelperText>}
                                     </Grid>
                                     <Grid xs={12} md={6}>
-                                        <FastField name="dob" component={CustomDatePicker} label="Date of Birth" validate={validDate} />
+                                        <FastField name="dob" component={CustomDatePicker} label="Date of Birth" />
                                         {errors.dob && touched.dob && <FormHelperText error>{errors.dob}</FormHelperText>}
                                     </Grid>
                                     <Grid xs={12} md={6}>

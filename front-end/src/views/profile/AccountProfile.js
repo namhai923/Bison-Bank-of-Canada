@@ -5,7 +5,7 @@ import { IconUser } from '@tabler/icons';
 
 import SubCard from 'components/cards/SubCard';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
-import months from 'assets/data/months';
+import { months } from 'assets/data/timeDisplay';
 
 let AccountProfile = (props) => {
     let { firstName, lastName, dob, phoneNumber } = props;

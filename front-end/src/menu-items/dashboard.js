@@ -1,35 +1,32 @@
 // assets
 import { IconDashboard, IconWallet, IconHistory } from '@tabler/icons';
 
-// constant
-const icons = { IconDashboard, IconWallet, IconHistory };
-
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
-const banking = {
-    id: 'baking',
-    title: 'Banking',
+const dashboard = {
+    id: 'dashboard',
+    title: 'Dashboard',
     type: 'group',
     children: [
         {
-            id: 'dashboard',
-            title: 'Dashboard',
+            id: 'analytics',
+            title: 'Analytics',
             type: 'item',
             url: '/',
-            icon: icons.IconDashboard
+            icon: IconDashboard
         },
         {
             id: 'spend',
             title: 'Spend money',
             type: 'item',
             url: '/spend',
-            icon: icons.IconWallet
+            icon: IconWallet
         },
         {
             id: 'history',
             title: 'History',
             type: 'collapse',
-            icon: icons.IconHistory,
+            icon: IconHistory,
             children: [
                 {
                     id: 'expense',
@@ -48,4 +45,4 @@ const banking = {
     ]
 };
 
-export default banking;
+export default dashboard;

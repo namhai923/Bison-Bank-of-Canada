@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-// material-ui
 import { useTheme, styled } from '@mui/material/styles';
 import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
-
-// third-party
 import Chart from 'react-apexcharts';
+import jwtDecode from 'jwt-decode';
 
 // project imports
 import MainCard from 'components/cards/MainCard';
 import lineChartData from 'views/banking/dashboard/chart-data/lineChartData';
-import months from 'assets/data/months';
+import { months } from 'assets/data/timeDisplay';
 
 // assets
 import { LocalMallOutlined, Payment } from '@mui/icons-material';
@@ -76,7 +75,10 @@ let createChartData = (type, lineData) => {
 
 const TotalSpending = (props) => {
     const theme = useTheme();
-    let { userName, expenseHistory, transferHistory } = props;
+    let { expenseHistory, transferHistory } = props;
+
+    let token = useSelector((state) => state.auth.token);
+    let userName = jwtDecode(token).userName;
 
     let [chartData, setChartData] = useState(() => {
         let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
@@ -196,7 +198,6 @@ const TotalSpending = (props) => {
 };
 
 TotalSpending.propTypes = {
-    userName: PropTypes.string,
     transferHistory: PropTypes.arrayOf(PropTypes.object),
     expenseHistory: PropTypes.arrayOf(PropTypes.object)
 };

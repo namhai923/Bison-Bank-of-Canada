@@ -12,7 +12,7 @@ import store from './app/store';
 
 // style + assets
 import 'assets/scss/style.scss';
-import config from './assets/data/config';
+import config from 'assets/data/config';
 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
