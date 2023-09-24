@@ -1,7 +1,8 @@
-import banking from './banking';
+import dashboard from './dashboard';
+import social from './social';
 
 const menuItems = {
-    items: [banking]
+    items: [dashboard, social]
 };
 
 export default menuItems;

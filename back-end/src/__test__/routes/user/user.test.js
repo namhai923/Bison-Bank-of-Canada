@@ -252,7 +252,9 @@ describe("Testing User index", () => {
       .get("/user/" + userName)
       .send();
     //We have done a test with transfer before
-    let currentBalance = (originalBalance*100 - expenseAmount*100 - transferAmount*100) / 100;
+    let currentBalance =
+      (originalBalance * 100 - expenseAmount * 100 - transferAmount * 100) /
+      100;
     expect(user.body.accountBalance).toBe(currentBalance);
   });
 
@@ -282,9 +284,7 @@ describe("Testing User index", () => {
         phoneNumber: phoneNumber,
       });
     expect(res.statusCode).toBe(404);
-    expect(res.text).toEqual(
-      expect.stringContaining("User Not Found.")
-    );
+    expect(res.text).toEqual(expect.stringContaining("User Not Found."));
   });
 
   it("/Post update user profile", async () => {

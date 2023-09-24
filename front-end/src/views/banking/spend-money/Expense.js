@@ -1,13 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
-
 import { useTheme } from '@mui/material/styles';
 import { Button, CardActions, FormHelperText, TextField, Grid, useMediaQuery } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
 
-import bbcApi from 'api/bbcApi';
-import { addExpense } from 'store/userSlice';
+import { useAddExpenseMutation } from 'app/features/user/userApiSlice';
 
 const vSchema = Yup.object().shape({
     location: Yup.string()
@@ -25,27 +22,21 @@ let Expense = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
-    let dispatch = useDispatch();
-    let userInfo = useSelector((state) => state.user);
+    let [addExpense] = useAddExpenseMutation();
 
     let handleSubmit = async (values) => {
         toast.promise(
-            bbcApi
-                .expense({ userName: userInfo.userName, location: values.location, category: values.category, amount: values.amount })
-                .then((result) => {
-                    let action = addExpense(result);
-                    dispatch(action);
-                }),
+            addExpense({
+                location: values.location,
+                category: values.category,
+                amount: values.amount
+            }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',
-                success: 'Hooray 🎉🎉🎉',
+                success: 'Expense proceeded 🎉🎉🎉',
                 error: {
                     render({ data }) {
-                        if (data.name === 'AxiosError') {
-                            return data.response.data;
-                        } else {
-                            console.log(data);
-                        }
+                        return data.data.message;
                     }
                 }
             }
@@ -68,7 +59,7 @@ let Expense = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="Location"
+                                placeholder="Location"
                                 name="location"
                                 onChange={handleChange}
                                 type="text"
@@ -80,7 +71,7 @@ let Expense = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="Category"
+                                placeholder="Category"
                                 name="category"
                                 onChange={handleChange}
                                 type="text"
@@ -92,7 +83,7 @@ let Expense = () => {
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
-                                label="Amount"
+                                placeholder="Amount"
                                 type="number"
                                 value={values.amount}
                                 name="amount"

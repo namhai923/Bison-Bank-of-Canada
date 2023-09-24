@@ -10,7 +10,7 @@ import { BrowserView, MobileView } from 'react-device-detect';
 
 // project imports
 import MenuList from './MenuList';
-import { drawerWidth } from 'store/constant';
+import { drawerWidth } from 'assets/data/constant';
 import LogoSection from '../LogoSection';
 
 // ==============================|| SIDEBAR DRAWER ||============================== //
@@ -30,7 +30,6 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                 <PerfectScrollbar
                     component="div"
                     style={{
-                        height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
                         paddingLeft: '16px',
                         paddingRight: '16px'
                     }}

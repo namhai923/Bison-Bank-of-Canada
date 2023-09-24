@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -10,7 +10,7 @@ import { MoreHoriz, AccountBalanceWallet, FileCopyTwoTone } from '@mui/icons-mat
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
+import MainCard from 'components/cards/MainCard';
 import EarningIcon from 'assets/images/earning.svg';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -49,8 +49,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 
-const AccountBalance = () => {
-    let accountBalance = useSelector((state) => state.user.accountBalance);
+const AccountBalance = (props) => {
+    let { accountBalance, expenseHistory, transferHistory } = props;
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -115,7 +115,7 @@ const AccountBalance = () => {
                                             horizontal: 'right'
                                         }}
                                     >
-                                        <CopyToClipboard text={localStorage.userInfo}>
+                                        <CopyToClipboard text={JSON.stringify({ accountBalance, expenseHistory, transferHistory })}>
                                             <MenuItem onClick={handleClose}>
                                                 <FileCopyTwoTone sx={{ mr: 1.75 }} /> Copy Data
                                             </MenuItem>
@@ -161,6 +161,12 @@ const AccountBalance = () => {
             </CardWrapper>
         </>
     );
+};
+
+AccountBalance.propTypes = {
+    accountBalance: PropTypes.number,
+    transferHistory: PropTypes.arrayOf(PropTypes.object),
+    expenseHistory: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default AccountBalance;

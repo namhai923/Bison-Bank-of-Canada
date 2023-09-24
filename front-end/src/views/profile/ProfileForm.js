@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import {
     FormHelperText,
@@ -13,14 +13,11 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik, Form, FastField } from 'formik';
-import { toast } from 'react-toastify';
 import { matchIsValidTel } from 'mui-tel-input';
 
-import SubCard from 'ui-component/cards/SubCard';
-import bbcApi from 'api/bbcApi';
-import { setUser } from 'store/userSlice';
-import CustomDatePicker from 'ui-component/extended/CustomDatePicker';
-import CustomTelInput from 'ui-component/extended/CustomTelInput';
+import SubCard from 'components/cards/SubCard';
+import CustomDatePicker from 'components/extended/CustomDatePicker';
+import CustomTelInput from 'components/extended/CustomTelInput';
 
 const vSchema = Yup.object().shape({
     fname: Yup.string()
@@ -30,17 +27,9 @@ const vSchema = Yup.object().shape({
     lname: Yup.string()
         .max(50, 'Cannot have more than 50 characters')
         .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
-        .required('Last Name is required')
+        .required('Last Name is required'),
+    dob: Yup.date().nullable().max(new Date(), 'Invalid date')
 });
-
-function validDate(value) {
-    let error;
-    let date = new Date(value);
-    if (value && !(date instanceof Date && !isNaN(date.valueOf()))) {
-        error = 'Invalid date';
-    }
-    return error;
-}
 
 function validPhone(value) {
     let error;
@@ -50,50 +39,17 @@ function validPhone(value) {
     return error;
 }
 
-let ProfileForm = () => {
-    let dispatch = useDispatch();
-    let userInfo = useSelector((state) => state.user);
-
-    let handleSubmit = async (values) => {
-        console.log(values);
-
-        toast.promise(
-            bbcApi
-                .updateUser({
-                    userName: userInfo.userName,
-                    firstName: values.fname,
-                    lastName: values.lname,
-                    dob: values.dob ?? '',
-                    phoneNumber: values.phone
-                })
-                .then((result) => {
-                    let action = setUser(result);
-                    dispatch(action);
-                }),
-            {
-                pending: 'Hold on a sec ⌛',
-                success: 'Profile updated 🎉🎉🎉',
-                error: {
-                    render({ data }) {
-                        if (data.name === 'AxiosError') {
-                            return data.response.data;
-                        } else {
-                            console.log(data);
-                        }
-                    }
-                }
-            }
-        );
-    };
+let ProfileForm = (props) => {
+    let { firstName, lastName, dob, phoneNumber, handleSubmit } = props;
 
     return (
         <SubCard>
             <Formik
                 initialValues={{
-                    fname: userInfo.firstName,
-                    lname: userInfo.lastName,
-                    dob: userInfo.dob,
-                    phone: userInfo.phoneNumber || ''
+                    fname: firstName,
+                    lname: lastName,
+                    dob: dob,
+                    phone: phoneNumber || ''
                 }}
                 validationSchema={vSchema}
                 onSubmit={(values) => handleSubmit(values)}
@@ -129,7 +85,7 @@ let ProfileForm = () => {
                                         {touched.lname && errors.lname && <FormHelperText error>{errors.lname}</FormHelperText>}
                                     </Grid>
                                     <Grid xs={12} md={6}>
-                                        <FastField name="dob" component={CustomDatePicker} label="Date of Birth" validate={validDate} />
+                                        <FastField name="dob" component={CustomDatePicker} label="Date of Birth" />
                                         {errors.dob && touched.dob && <FormHelperText error>{errors.dob}</FormHelperText>}
                                     </Grid>
                                     <Grid xs={12} md={6}>
@@ -150,6 +106,14 @@ let ProfileForm = () => {
             </Formik>
         </SubCard>
     );
+};
+
+ProfileForm.propTypes = {
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    dob: PropTypes.string,
+    phoneNumber: PropTypes.string,
+    handleSubmit: PropTypes.func
 };
 
 export default ProfileForm;

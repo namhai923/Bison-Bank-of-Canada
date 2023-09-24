@@ -1,14 +1,16 @@
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
-// material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
-import { drawerWidth } from 'store/constant';
-import { setMenu } from '../../store/customizeSlice';
+import { drawerWidth } from 'assets/data/constant';
+import { setMenu } from 'app/features/customize/customizeSlice';
+
+import { userApiSlice } from 'app/features/user/userApiSlice';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -54,8 +56,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
     })
 }));
 
-// ==============================|| MAIN LAYOUT ||============================== //
-
 const MainLayout = () => {
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
@@ -67,6 +67,19 @@ const MainLayout = () => {
         let action = setMenu(!leftDrawerOpened);
         dispatch(action);
     };
+
+    const effectRan = useRef(false);
+    useEffect(() => {
+        if (effectRan.current === true) {
+            dispatch(userApiSlice.util.prefetch('getUserInfo', 'userInfo', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getBalance', 'accountBalance', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getExpense', 'expenseHistory', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getTransfer', 'transferHistory', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getContacts', 'contacts', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getConversationsInfo', 'conversationsInfo', { force: true }));
+        }
+        return () => (effectRan.current = true);
+    }, [dispatch]);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -91,7 +104,7 @@ const MainLayout = () => {
             <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
 
             {/* main content */}
-            <Main theme={theme} open={leftDrawerOpened}>
+            <Main theme={theme} open={leftDrawerOpened} height="100%">
                 <Outlet />
             </Main>
         </Box>

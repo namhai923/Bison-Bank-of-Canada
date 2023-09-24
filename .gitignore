@@ -2,6 +2,9 @@
 **/node_modules
 **/yarn.lock
 
+#developing
+**/logs
+
 # dependencies
 /.pnp
 **/.pnp.js

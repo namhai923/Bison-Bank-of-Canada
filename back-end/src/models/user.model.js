@@ -40,6 +40,46 @@ let transferSchema = new mongoose.Schema({
   },
 });
 
+let message = new mongoose.Schema(
+  {
+    message: {
+      type: String,
+      required: true,
+    },
+    sending: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+let conversation = new mongoose.Schema({
+  userName: {
+    type: String,
+    required: true,
+  },
+  latestMessage: {
+    type: message,
+  },
+  unRead: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
+  messages: {
+    type: [message],
+    default: [],
+  },
+});
+
+let contactSchema = new mongoose.Schema({
+  userName: {
+    type: String,
+    required: true,
+  },
+});
+
 let userSchema = new mongoose.Schema(
   {
     userName: {
@@ -73,6 +113,19 @@ let userSchema = new mongoose.Schema(
       type: [transferSchema],
       default: [],
     },
+    contacts: {
+      type: [contactSchema],
+      default: [],
+    },
+    conversationHistory: {
+      type: [conversation],
+      default: [],
+    },
+    active: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
   },
   { collection: "Users" }
 );
@@ -85,7 +138,6 @@ userSchema.set("toJSON", {
     }
     delete ret.__v;
     delete ret._id;
-    delete ret.id;
     return ret;
   },
 });
@@ -97,7 +149,6 @@ expenseSchema.set("toJSON", {
       ret.amount = parseFloat(ret.amount);
     }
     delete ret._id;
-    delete ret.id;
     return ret;
   },
 });
@@ -109,7 +160,14 @@ transferSchema.set("toJSON", {
       ret.amount = parseFloat(ret.amount);
     }
     delete ret._id;
-    delete ret.id;
+    return ret;
+  },
+});
+
+contactSchema.set("toJSON", {
+  getters: true,
+  transform: (doc, ret) => {
+    delete ret._id;
     return ret;
   },
 });

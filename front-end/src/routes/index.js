@@ -5,7 +5,7 @@ import MainRoutes from './MainRoutes';
 import AuthenticationRoutes from './AuthenticationRoutes';
 import NotFoundRoute from './NotFoundRoute';
 
-export default function ThemeRoutes() {
+export default function Routes() {
     return useRoutes([
         MainRoutes,
         AuthenticationRoutes,

@@ -21,8 +21,7 @@ let lineChartData = (chartData) => {
                 width: 3
             },
             yaxis: {
-                min: chartData.min,
-                max: chartData.max
+                forceNiceScale: true
             },
             tooltip: {
                 theme: 'dark',

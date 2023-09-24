@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Typography } from '@mui/material';
-
-// third-party
 import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
+import jwtDecode from 'jwt-decode';
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
-import { gridSpacing } from 'store/constant';
+import MainCard from 'components/cards/MainCard';
+import { gridSpacing } from 'assets/data/constant';
 import barChartData from './chart-data/barChartData';
 import { filterAmountByTime } from 'utils/timeUtils';
 
@@ -42,13 +42,17 @@ let createChartData = (expense, transfer) => {
     return chartData;
 };
 
-const SpendingBarChart = () => {
+const SpendingBarChart = (props) => {
+    let { expenseHistory, transferHistory } = props;
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
-    let userInfo = useSelector((state) => state.user);
+
+    let token = useSelector((state) => state.auth.token);
+    let userName = jwtDecode(token).userName;
+
     let [chartData, setChartData] = useState(() => {
-        let sendTransfer = userInfo.transferHistory.filter((transfer) => transfer.sender === userInfo.userName);
-        return createChartData(userInfo.expenseHistory, sendTransfer);
+        let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
+        return createChartData(expenseHistory, sendTransfer);
     });
 
     const { navType } = customization;
@@ -62,8 +66,8 @@ const SpendingBarChart = () => {
 
     useEffect(() => {
         let newData = {};
-        let sendTransfer = userInfo.transferHistory.filter((transfer) => transfer.sender === userInfo.userName);
-        newData = createChartData(userInfo.expenseHistory, sendTransfer);
+        let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
+        newData = createChartData(expenseHistory, sendTransfer);
         setChartData(newData);
         const newChartData = {
             ...barChartData(newData).options,
@@ -95,7 +99,7 @@ const SpendingBarChart = () => {
             }
         };
         ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
-    }, [navType, primaryDark, secondaryMain, primary, darkLight, grey200, grey500, userInfo]);
+    }, [navType, primaryDark, secondaryMain, primary, darkLight, grey200, grey500, userName, transferHistory, expenseHistory]);
 
     return (
         <>
@@ -122,6 +126,11 @@ const SpendingBarChart = () => {
             </MainCard>
         </>
     );
+};
+
+SpendingBarChart.propTypes = {
+    transferHistory: PropTypes.arrayOf(PropTypes.object),
+    expenseHistory: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default SpendingBarChart;
