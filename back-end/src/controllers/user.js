@@ -5,8 +5,10 @@ const { cache, setCacheExpire } = require("../cache");
 const { CACHE_EXPIRED_IN_SECONDS } = require("../config/vars.config");
 const {
   validateUserName,
-  validateExpense,
-  validateTransfer,
+  // validateExpense,
+  // validateTransfer,
+  validateFavor,
+  validateDebt,
   validateProfile,
   validateRemoveContacts,
   validateSendMessage,
@@ -35,28 +37,44 @@ const getInfo = asyncHandler(async (req, res) => {
   return res.status(200).json({ firstName, lastName, dob, phoneNumber });
 });
 
-const getBalance = asyncHandler(async (req, res) => {
+// const getBalance = asyncHandler(async (req, res) => {
+//   let userName = req.user.userName;
+//   let userInfo = await getUser(userName);
+
+//   let { accountBalance } = userInfo.toJSON();
+//   return res.status(200).json(accountBalance);
+// });
+
+const getFavorSummary = asyncHandler(async (req, res) => {
   let userName = req.user.userName;
   let userInfo = await getUser(userName);
 
-  let { accountBalance } = userInfo.toJSON();
-  return res.status(200).json(accountBalance);
+  let { favorSummary } = userInfo.toJSON();
+  return res.status(200).json(favorSummary);
 });
 
-const getExpense = asyncHandler(async (req, res) => {
+const getDebtSummary = asyncHandler(async (req, res) => {
   let userName = req.user.userName;
   let userInfo = await getUser(userName);
 
-  let { expenseHistory } = userInfo.toJSON();
-  return res.status(200).json(expenseHistory);
+  let { debtSummary } = userInfo.toJSON();
+  return res.status(200).json(debtSummary);
 });
 
-const getTransfer = asyncHandler(async (req, res) => {
+const getFavorHistory = asyncHandler(async (req, res) => {
   let userName = req.user.userName;
   let userInfo = await getUser(userName);
 
-  let { transferHistory } = userInfo.toJSON();
-  return res.status(200).json(transferHistory);
+  let { favorHistory } = userInfo.toJSON();
+  return res.status(200).json(favorHistory);
+});
+
+const getDebtHistory = asyncHandler(async (req, res) => {
+  let userName = req.user.userName;
+  let userInfo = await getUser(userName);
+
+  let { debtHistory } = userInfo.toJSON();
+  return res.status(200).json(debtHistory);
 });
 
 const getContacts = asyncHandler(async (req, res) => {
@@ -146,112 +164,124 @@ const updateInfo = asyncHandler(async (req, res) => {
   return res.status(200).json("Information updated!");
 });
 
-const expense = asyncHandler(async (req, res) => {
-  const { error, value } = validateExpense(req.body);
+// const expense = asyncHandler(async (req, res) => {
+//   const { error, value } = validateExpense(req.body);
 
-  if (error) {
-    return res
-      .status(400)
-      .json({ message: "Invalid request.", details: error.details });
-  }
+//   if (error) {
+//     return res
+//       .status(400)
+//       .json({ message: "Invalid request.", details: error.details });
+//   }
 
-  let { location, category, amount } = value;
-  let userName = req.user.userName;
+//   let { location, category, amount } = value;
+//   let userName = req.user.userName;
 
-  let user = await User.findOne({ userName });
-  if (user.accountBalance >= amount) {
-    user.accountBalance =
-      Math.round(parseFloat(user.accountBalance * 100) - amount * 100) / 100;
+//   let user = await User.findOne({ userName });
+//   if (user.accountBalance >= amount) {
+//     user.accountBalance =
+//       Math.round(parseFloat(user.accountBalance * 100) - amount * 100) / 100;
 
-    let newExpense = {
-      location,
-      category,
-      amount,
-      date: Date.now(),
-    };
+//     let newExpense = {
+//       location,
+//       category,
+//       amount,
+//       date: Date.now(),
+//     };
 
-    user.expenseHistory.push(newExpense);
+//     user.expenseHistory.push(newExpense);
 
-    await user.save();
+//     await user.save();
 
-    //Update cache`
-    if (cache.has(userName)) {
-      cache.set(userName, user);
-    }
-    return res.status(200).json("Expense successfully!");
-  } else {
-    return res.status(400).json({ message: "Account balance not enough." });
-  }
-});
+//     //Update cache`
+//     if (cache.has(userName)) {
+//       cache.set(userName, user);
+//     }
+//     return res.status(200).json("Expense successfully!");
+//   } else {
+//     return res.status(400).json({ message: "Account balance not enough." });
+//   }
+// });
 
-const transfer = asyncHandler(async (req, res) => {
-  const { error, value } = validateTransfer(req.body);
+// const transfer = asyncHandler(async (req, res) => {
+//   const { error, value } = validateTransfer(req.body);
 
-  if (error) {
-    return res
-      .status(400)
-      .json({ message: "Invalid request.", details: error.details });
-  }
+//   if (error) {
+//     return res
+//       .status(400)
+//       .json({ message: "Invalid request.", details: error.details });
+//   }
 
-  let { transferAccounts, amount } = value;
-  let senderName = req.user.userName;
-  let errorMessage = "";
-  let receivers = [];
+//   let { transferAccounts, amount } = value;
+//   let senderName = req.user.userName;
+//   let errorMessage = "";
+//   let receivers = [];
 
-  let sender = await User.findOne({ userName: senderName });
-  let totalAmount = amount * transferAccounts.length;
+//   let sender = await User.findOne({ userName: senderName });
+//   let totalAmount = amount * transferAccounts.length;
 
-  if (sender.accountBalance >= totalAmount) {
-    sender.accountBalance =
-      Math.round(parseFloat(sender.accountBalance * 100) - totalAmount * 100) /
-      100;
-  } else {
-    return res.status(400).json({ message: "Account balance not enough!" });
-  }
+//   if (sender.accountBalance >= totalAmount) {
+//     sender.accountBalance =
+//       Math.round(parseFloat(sender.accountBalance * 100) - totalAmount * 100) /
+//       100;
+//   } else {
+//     return res.status(400).json({ message: "Account balance not enough!" });
+//   }
 
-  for (let receiverName of transferAccounts) {
-    if (receiverName === senderName) {
-      errorMessage = "Cannot transfer to yourself!";
-      break;
-    } else {
-      let receiver = await User.findOne({ userName: receiverName });
-      if (receiver === null) {
-        errorMessage = `${receiverName} does not exist!`;
-        break;
-      } else {
-        let newTransfer = {
-          sender: senderName,
-          receiver: receiverName,
-          date: Date.now(),
-          amount: amount,
-        };
-        receiver.accountBalance =
-          Math.round(parseFloat(receiver.accountBalance * 100) + amount * 100) /
-          100;
+//   for (let receiverName of transferAccounts) {
+//     if (receiverName === senderName) {
+//       errorMessage = "Cannot transfer to yourself!";
+//       break;
+//     } else {
+//       let receiver = await User.findOne({ userName: receiverName });
+//       if (receiver === null) {
+//         errorMessage = `${receiverName} does not exist!`;
+//         break;
+//       } else {
+//         let newTransfer = {
+//           sender: senderName,
+//           receiver: receiverName,
+//           date: Date.now(),
+//           amount: amount,
+//         };
+//         receiver.accountBalance =
+//           Math.round(parseFloat(receiver.accountBalance * 100) + amount * 100) /
+//           100;
 
-        sender.transferHistory.push(newTransfer);
-        receiver.transferHistory.push(newTransfer);
-        receivers.push(receiver);
-      }
-    }
-  }
+//         sender.transferHistory.push(newTransfer);
+//         receiver.transferHistory.push(newTransfer);
+//         receivers.push(receiver);
+//       }
+//     }
+//   }
 
-  if (errorMessage === "") {
-    for (let receiver of receivers) {
-      await receiver.save();
-      if (cache.has(receiver.userName)) {
-        cache.set(receiver.userName, receiver);
-      }
-    }
-    await sender.save();
-    if (cache.has(senderName)) {
-      cache.set(senderName, sender);
-    }
-    return res.status(200).json("Transfer successfully!");
-  } else {
-    return res.status(400).json({ message: errorMessage });
-  }
-});
+//   if (errorMessage === "") {
+//     for (let receiver of receivers) {
+//       await receiver.save();
+//       if (cache.has(receiver.userName)) {
+//         cache.set(receiver.userName, receiver);
+//       }
+//     }
+//     await sender.save();
+//     if (cache.has(senderName)) {
+//       cache.set(senderName, sender);
+//     }
+//     return res.status(200).json("Transfer successfully!");
+//   } else {
+//     return res.status(400).json({ message: errorMessage });
+//   }
+// });
+
+const makeFavor = asyncHandler(async (req, res) => {});
+
+const payDebt = asyncHandler(async (req, res) => {});
+
+const acceptFavor = asyncHandler(async (req, res) => {});
+
+const acceptDebt = asyncHandler(async (req, res) => {});
+
+const declineFavor = asyncHandler(async (req, res) => {});
+
+const declineDebt = asyncHandler(async (req, res) => {});
 
 const addContact = asyncHandler(async (req, res) => {
   const { error, value } = validateUserName(req.body);
@@ -462,15 +492,25 @@ const deleteConversation = asyncHandler(async (req, res) => {
 
 module.exports = {
   getInfo,
-  getBalance,
-  getExpense,
-  getTransfer,
+  // getBalance,
+  getFavorSummary,
+  getDebtSummary,
+  // getExpense,
+  // getTransfer,
+  getFavorHistory,
+  getDebtHistory,
   getContacts,
   getConversationsInfo,
   getConversation,
   updateInfo,
-  expense,
-  transfer,
+  // expense,
+  // transfer,
+  makeFavor,
+  payDebt,
+  acceptFavor,
+  acceptDebt,
+  declineFavor,
+  declineDebt,
   addContact,
   removeContacts,
   sendMessage,

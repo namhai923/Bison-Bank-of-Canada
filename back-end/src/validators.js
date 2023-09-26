@@ -27,21 +27,33 @@ const loginSchema = Joi.object({
   password: Joi.string().min(8).max(50).required(),
 });
 
-const expenseSchema = Joi.object({
-  location: Joi.string()
-    .max(50)
-    .pattern(new RegExp(/^[aA-zZs]+$/))
-    .required(),
-  category: Joi.string()
-    .max(50)
-    .pattern(new RegExp(/^[aA-zZs]+$/))
-    .required(),
+// const expenseSchema = Joi.object({
+//   location: Joi.string()
+//     .max(50)
+//     .pattern(new RegExp(/^[aA-zZs]+$/))
+//     .required(),
+//   category: Joi.string()
+//     .max(50)
+//     .pattern(new RegExp(/^[aA-zZs]+$/))
+//     .required(),
+//   amount: Joi.number().min(1).required(),
+// });
+
+// const transferSchema = Joi.object({
+//   transferAccounts: Joi.array().items(Joi.string().email().max(50)).required(),
+//   amount: Joi.number().min(1).required(),
+// });
+
+const favorSchema = Joi.object({
+  favorAccounts: Joi.array().items(Joi.string().email().max(50)).required(),
   amount: Joi.number().min(1).required(),
+  description: Joi.string(),
 });
 
-const transferSchema = Joi.object({
-  transferAccounts: Joi.array().items(Joi.string().email().max(50)).required(),
+const debtSchema = Joi.object({
+  debtAccounts: Joi.array().items(Joi.string().email().max(50)).required(),
   amount: Joi.number().min(1).required(),
+  description: Joi.string(),
 });
 
 const profileSchema = Joi.object({
@@ -70,8 +82,10 @@ module.exports = {
   validateUserName: validator(userNameSchema),
   validateRegister: validator(registerSchema),
   validateLogin: validator(loginSchema),
-  validateExpense: validator(expenseSchema),
-  validateTransfer: validator(transferSchema),
+  // validateExpense: validator(expenseSchema),
+  // validateTransfer: validator(transferSchema),
+  validateFavor: validator(favorSchema),
+  validateDebt: validator(debtSchema),
   validateProfile: validator(profileSchema),
   validateRemoveContacts: validator(removeContactsSchema),
   validateSendMessage: validator(sendMessageSchema),

@@ -9,11 +9,19 @@ router.use(authenticateJWT);
 
 router.get("/getInfo", userController.getInfo);
 
-router.get("/getBalance", userController.getBalance);
+// router.get("/getBalance", userController.getBalance);
 
-router.get("/getExpense", userController.getExpense);
+router.get("/getFavorSummary", userController.getFavorSummary);
 
-router.get("/getTransfer", userController.getTransfer);
+router.get("/getDebtSummary", userController.getDebtSummary);
+
+// router.get("/getExpense", userController.getExpense);
+
+// router.get("/getTransfer", userController.getTransfer);
+
+router.get("/getFavorHistory", userController.getFavorHistory);
+
+router.get("/getDebtHistory", userController.getDebtHistory);
 
 router.get("/getContacts", userController.getContacts);
 
@@ -23,9 +31,21 @@ router.get("/getConversation", userController.getConversation);
 
 router.post("/updateInfo", userController.updateInfo);
 
-router.post("/expense", userController.expense);
+// router.post("/expense", userController.expense);
 
-router.post("/transfer", userController.transfer);
+// router.post("/transfer", userController.transfer);
+
+router.post("/makeFavor", userController.makeFavor);
+
+router.post("/payDebt", userController.payDebt);
+
+router.post("/acceptFavor", userController.acceptFavor);
+
+router.post("/acceptDebt", userController.acceptDebt);
+
+router.post("/declineFavor", userController.declineFavor);
+
+router.post("/declineDebt", userController.declineDebt);
 
 router.post("/addContact", userController.addContact);
 
