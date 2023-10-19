@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useTheme } from '@mui/material/styles';
 import { ButtonBase, FormControl, FormHelperText, InputAdornment } from '@mui/material';
-import { IconUser, IconPlus } from '@tabler/icons';
+import { IconUser, IconPlus } from '@tabler/icons-react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { AvatarStyle, OutlineInputStyle } from 'components/styled-input';

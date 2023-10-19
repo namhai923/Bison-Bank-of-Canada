@@ -5,7 +5,7 @@ import config from 'assets/data/config';
 
 let initialState = {
     isOpen: [], // for active default menu
-    defaultId: 'dashboard',
+    defaultId: 'overview',
     fontFamily: config.fontFamily,
     borderRadius: config.borderRadius,
     opened: true

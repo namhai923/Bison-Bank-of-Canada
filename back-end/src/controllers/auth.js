@@ -60,7 +60,7 @@ const register = asyncHandler(async (req, res) => {
       .json({ message: "Invalid request.", details: error.details });
   }
 
-  let { userName, password, firstName, lastName, accountBalance } = value;
+  let { userName, password, firstName, lastName } = value;
   let userInfo = await Credential.findOne({ userName }).lean().exec();
 
   // check if the username exist, if not then add user
@@ -71,7 +71,6 @@ const register = asyncHandler(async (req, res) => {
       userName: userName,
       firstName: firstName,
       lastName: lastName,
-      accountBalance: accountBalance ?? 0,
     });
 
     let hashedPassword = await bcrypt.hash(password, 13);

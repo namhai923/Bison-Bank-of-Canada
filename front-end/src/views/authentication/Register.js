@@ -24,8 +24,7 @@ const Register = () => {
                 userName: values.email,
                 password: values.password,
                 firstName: values.fname,
-                lastName: values.lname,
-                accountBalance: values.balance
+                lastName: values.lname
             }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',

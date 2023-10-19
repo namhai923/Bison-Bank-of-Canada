@@ -17,8 +17,6 @@ let PrivateRoute = ({ children }) => {
 
     useEffect(() => {
         if (effectRan.current === true) {
-            // React 18 Strict Mode
-
             const verifyRefreshToken = async () => {
                 try {
                     console.log('verifying refresh token');
@@ -32,8 +30,6 @@ let PrivateRoute = ({ children }) => {
             if (!token && persistLogin) verifyRefreshToken();
         }
         return () => (effectRan.current = true);
-
-        // eslint-disable-next-line
     }, []);
 
     let content;

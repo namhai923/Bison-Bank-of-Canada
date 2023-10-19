@@ -1,10 +1,7 @@
 import { apiSlice } from 'app/api/apiSlice';
 import getSocket from 'app/getSocket';
 import store from 'app/store';
-
-const conversationsSort = function (a, b) {
-    return new Date(b.latestMessage.updatedAt) - new Date(a.latestMessage.updatedAt);
-};
+import jwtDecode from 'jwt-decode';
 
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -14,29 +11,65 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: [{ type: 'User', id: 'userInfo' }]
         }),
-        getBalance: builder.query({
+        getFavorSummary: builder.query({
             query: () => ({
-                url: '/user/getBalance'
+                url: '/user/getFavorSummary'
             }),
-            providesTags: [{ type: 'User', id: 'accountBalance' }]
+            providesTags: [{ type: 'User', id: 'favorSummary' }]
         }),
-        getExpense: builder.query({
+        getDebtSummary: builder.query({
             query: () => ({
-                url: '/user/getExpense'
+                url: '/user/getDebtSummary'
             }),
-            providesTags: [{ type: 'User', id: 'expenseHistory' }]
+            providesTags: [{ type: 'User', id: 'debtSummary' }]
         }),
-        getTransfer: builder.query({
+        getFavorHistory: builder.query({
             query: () => ({
-                url: '/user/getTransfer'
+                url: '/user/getFavorHistory'
             }),
-            providesTags: [{ type: 'User', id: 'transferHistory' }]
+            transformResponse: (response) => response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+            providesTags: [{ type: 'User', id: 'favorHistory' }]
+        }),
+        getDebtHistory: builder.query({
+            query: () => ({
+                url: '/user/getDebtHistory'
+            }),
+            transformResponse: (response) => response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+            providesTags: [{ type: 'User', id: 'debtHistory' }]
+        }),
+        getRepayHistory: builder.query({
+            query: () => ({
+                url: '/user/getRepayHistory'
+            }),
+            transformResponse: (response) => response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+            providesTags: [{ type: 'User', id: 'repayHistory' }]
+        }),
+        getPendingFavor: builder.query({
+            query: () => ({
+                url: '/user/getPendingFavor'
+            }),
+            transformResponse: (response) => response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+            providesTags: [{ type: 'User', id: 'pendingFavor' }]
+        }),
+        getPendingRepay: builder.query({
+            query: () => ({
+                url: '/user/getPendingRepay'
+            }),
+            transformResponse: (response) => response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+            providesTags: [{ type: 'User', id: 'pendingRepay' }]
         }),
         getContacts: builder.query({
             query: () => ({
                 url: '/user/getContacts'
             }),
             providesTags: [{ type: 'User', id: 'contacts' }]
+        }),
+        getNotificationList: builder.query({
+            query: () => ({
+                url: '/user/getNotificationList'
+            }),
+            transformResponse: (response) => response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+            providesTags: [{ type: 'User', id: 'notificationList' }]
         }),
         getConversationsInfo: builder.query({
             query: () => ({
@@ -45,12 +78,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
             transformResponse: (response) => {
                 let { currentConversation } = store.getState().value;
                 if (currentConversation) {
-                    let findConversation = response.find((conversation) => conversation.userName === currentConversation.userName);
+                    let findConversation = response.find((conversation) => conversation.userName === currentConversation);
                     if (findConversation) {
                         findConversation.unRead = 0;
                     }
                 }
-                return response.sort(conversationsSort);
+                return response.sort((a, b) => new Date(b.latestMessage.updatedAt) - new Date(a.latestMessage.updatedAt));
             },
             async onCacheEntryAdded(arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }) {
                 try {
@@ -67,7 +100,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                                 findConversation.unRead += 1;
                                 findConversation.latestMessage = messageInfo.latestMessage;
                                 if (currentConversation) {
-                                    if (currentConversation.userName === findConversation.userName) {
+                                    if (currentConversation === findConversation.userName) {
                                         findConversation.unRead = 0;
                                         socket.emit('message:read', messageInfo.sender);
                                     }
@@ -75,7 +108,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                             } else {
                                 draft.push({ userName: messageInfo.sender, latestMessage: messageInfo.latestMessage, unRead: 1 });
                             }
-                            draft.sort(conversationsSort);
+                            draft.sort((a, b) => new Date(b.latestMessage.updatedAt) - new Date(a.latestMessage.updatedAt));
                         });
                     });
 
@@ -105,7 +138,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                         updateCachedData((draft) => {
                             let { currentConversation } = getState().value;
                             if (currentConversation) {
-                                if (currentConversation.userName === messageInfo.sender) {
+                                if (currentConversation === messageInfo.sender) {
                                     draft.push(messageInfo.latestMessage);
                                 }
                             }
@@ -120,6 +153,22 @@ export const userApiSlice = apiSlice.injectEndpoints({
             },
             providesTags: (result, error, arg) => [{ type: 'User', id: `${arg} conversation` }]
         }),
+        searchUser: builder.mutation({
+            query: (searchQuery) => {
+                return {
+                    url: '/user/searchUser',
+                    method: 'GET',
+                    params: {
+                        searchQuery
+                    }
+                };
+            },
+            transformResponse: (response) => {
+                let { token } = store.getState().auth;
+                let { userName } = jwtDecode(token);
+                return response.filter((user) => user.userName !== userName).sort((a, b) => a.userName.localeCompare(b.userName));
+            }
+        }),
         updateUserInfo: builder.mutation({
             query: (updateInfo) => {
                 return {
@@ -130,26 +179,43 @@ export const userApiSlice = apiSlice.injectEndpoints({
             },
             invalidatesTags: [{ type: 'User', id: 'userInfo' }]
         }),
-        addExpense: builder.mutation({
-            query: (expenseInfo) => ({
-                url: '/user/expense',
+        makeFavorRequest: builder.mutation({
+            query: (makeFavorRequestInfo) => ({
+                url: '/user/makeFavorRequest',
                 method: 'POST',
-                body: expenseInfo
+                body: makeFavorRequestInfo
+            }),
+            invalidatesTags: [{ type: 'User', id: 'favorHistory' }]
+        }),
+        makeRepayRequest: builder.mutation({
+            query: (makeRepayRequestInfo) => ({
+                url: '/user/makeRepayRequest',
+                method: 'POST',
+                body: makeRepayRequestInfo
+            }),
+            invalidatesTags: [{ type: 'User', id: 'repayHistory' }]
+        }),
+        responseFavor: builder.mutation({
+            query: (responseFavorInfo) => ({
+                url: '/user/responseFavor',
+                method: 'POST',
+                body: responseFavorInfo
             }),
             invalidatesTags: [
-                { type: 'User', id: 'expenseHistory' },
-                { type: 'User', id: 'accountBalance' }
+                { type: 'User', id: 'debtHistory' },
+                { type: 'User', id: 'debtSummary' },
+                { type: 'User', id: 'pendingFavor' }
             ]
         }),
-        addTransfer: builder.mutation({
-            query: (transferInfo) => ({
-                url: '/user/transfer',
+        responseRepay: builder.mutation({
+            query: (responseRepayInfo) => ({
+                url: '/user/responseRepay',
                 method: 'POST',
-                body: transferInfo
+                body: responseRepayInfo
             }),
             invalidatesTags: [
-                { type: 'User', id: 'transferHistory' },
-                { type: 'User', id: 'accountBalance' }
+                { type: 'User', id: 'repayHistory' },
+                { type: 'User', id: 'pendingRepay' }
             ]
         }),
         addContact: builder.mutation({
@@ -200,23 +266,53 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 { type: 'User', id: 'conversationsInfo' },
                 { type: 'User', id: `${arg.userName} conversation` }
             ]
+        }),
+        deleteNotification: builder.mutation({
+            query: (notificationId) => ({
+                url: '/user/deleteNotification',
+                method: 'POST',
+                params: {
+                    id: notificationId
+                }
+            }),
+            invalidatesTags: [{ type: 'User', id: 'notificationList' }]
+        }),
+        markReadNotification: builder.mutation({
+            query: (notificationId) => ({
+                url: '/user/markReadNotification',
+                method: 'POST',
+                params: {
+                    id: notificationId
+                }
+            }),
+            invalidatesTags: [{ type: 'User', id: 'notificationList' }]
         })
     })
 });
 
 export const {
     useGetUserInfoQuery,
-    useGetBalanceQuery,
-    useGetExpenseQuery,
-    useGetTransferQuery,
+    useGetFavorSummaryQuery,
+    useGetDebtSummaryQuery,
+    useGetFavorHistoryQuery,
+    useGetDebtHistoryQuery,
+    useGetRepayHistoryQuery,
+    useGetPendingFavorQuery,
+    useGetPendingRepayQuery,
     useGetContactsQuery,
+    useGetNotificationListQuery,
     useGetConversationsInfoQuery,
     useGetConversationQuery,
+    useSearchUserMutation,
     useUpdateUserInfoMutation,
-    useAddExpenseMutation,
-    useAddTransferMutation,
+    useMakeFavorRequestMutation,
+    useMakeRepayRequestMutation,
+    useResponseFavorMutation,
+    useResponseRepayMutation,
     useAddContactMutation,
     useRemoveContactMutation,
     useSendMessageMutation,
-    useDeleteConversationMutation
+    useDeleteConversationMutation,
+    useDeleteNotificationMutation,
+    useMarkReadNotificationMutation
 } = userApiSlice;

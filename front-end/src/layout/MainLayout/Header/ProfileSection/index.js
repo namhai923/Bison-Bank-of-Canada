@@ -19,7 +19,7 @@ import {
     Stack,
     Typography
 } from '@mui/material';
-import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
+import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
 
 // project imports
 import MainCard from 'components/cards/MainCard';
@@ -154,20 +154,21 @@ const ProfileSection = (props) => {
                                         </Stack>
                                         <Divider />
                                     </Box>
+                                    <Box sx={{ p: 2 }}>
+                                        <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={profileClick}>
+                                            <ListItemIcon>
+                                                <IconUser stroke={1.5} size="1.3rem" />
+                                            </ListItemIcon>
+                                            <ListItemText primary={<Typography variant="body2">User Profile</Typography>} />
+                                        </ListItemButton>
 
-                                    <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={profileClick}>
-                                        <ListItemIcon>
-                                            <IconUser stroke={1.5} size="1.3rem" />
-                                        </ListItemIcon>
-                                        <ListItemText primary={<Typography variant="body2">User Profile</Typography>} />
-                                    </ListItemButton>
-
-                                    <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={handleLogout}>
-                                        <ListItemIcon>
-                                            <IconLogout stroke={1.5} size="1.3rem" />
-                                        </ListItemIcon>
-                                        <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
-                                    </ListItemButton>
+                                        <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={handleLogout}>
+                                            <ListItemIcon>
+                                                <IconLogout stroke={1.5} size="1.3rem" />
+                                            </ListItemIcon>
+                                            <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
+                                        </ListItemButton>
+                                    </Box>
                                 </MainCard>
                             </ClickAwayListener>
                         </Paper>

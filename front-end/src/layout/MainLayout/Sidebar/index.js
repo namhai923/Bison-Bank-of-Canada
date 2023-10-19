@@ -13,8 +13,6 @@ import MenuList from './MenuList';
 import { drawerWidth } from 'assets/data/constant';
 import LogoSection from '../LogoSection';
 
-// ==============================|| SIDEBAR DRAWER ||============================== //
-
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
     const theme = useTheme();
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));

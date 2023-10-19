@@ -39,12 +39,7 @@ const vSchema = Yup.object().shape({
     lname: Yup.string()
         .max(50, 'Cannot have more than 50 characters')
         .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field ')
-        .required('Last Name is required'),
-    balance: Yup.number()
-        .min(0, "Can't be negative")
-        .max(100000, 'Too much, less than $100,000 please')
-        .integer('Should be an integer')
-        .required('Account balance is required')
+        .required('Last Name is required')
 });
 
 const RegisterForm = (props) => {
@@ -76,8 +71,7 @@ const RegisterForm = (props) => {
                     email: '',
                     password: '',
                     fname: '',
-                    lname: '',
-                    balance: ''
+                    lname: ''
                 }}
                 validationSchema={vSchema}
                 onSubmit={(values) => handleSubmit(values)}
@@ -197,25 +191,6 @@ const RegisterForm = (props) => {
                                 </Box>
                             </FormControl>
                         )}
-
-                        <FormControl fullWidth error={Boolean(touched.balance && errors.balance)}>
-                            <InputLabel htmlFor="balance-register">Account Balance</InputLabel>
-                            <OutlinedInput
-                                id="balance-register"
-                                type="number"
-                                value={values.balance}
-                                name="balance"
-                                onChange={handleChange}
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                label="account balance"
-                            />
-                            {touched.balance && errors.balance && <FormHelperText error>{errors.balance}</FormHelperText>}
-                            {errors.submit && (
-                                <Box sx={{ mt: 3 }}>
-                                    <FormHelperText error>{errors.submit}</FormHelperText>
-                                </Box>
-                            )}
-                        </FormControl>
 
                         <Box sx={{ mt: 2 }}>
                             <AnimateButton>

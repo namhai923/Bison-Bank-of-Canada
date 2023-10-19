@@ -66,12 +66,12 @@ let barChartData = (chartData) => {
         },
         series: [
             {
-                name: 'Expense',
-                data: chartData.expense
+                name: 'Favor',
+                data: chartData.favor
             },
             {
-                name: 'Transfer',
-                data: chartData.transfer
+                name: 'Debt',
+                data: chartData.debt
             }
         ]
     };

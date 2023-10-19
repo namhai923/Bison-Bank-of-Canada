@@ -1,44 +1,7 @@
 const mongoose = require("mongoose");
+const uuid = require("uuid");
 
 const Decimal128 = mongoose.Decimal128;
-
-// let expenseSchema = new mongoose.Schema({
-//   location: {
-//     type: String,
-//     required: true,
-//   },
-//   date: {
-//     type: Date,
-//     default: Date.now(),
-//   },
-//   category: {
-//     type: String,
-//     required: true,
-//   },
-//   amount: {
-//     type: Decimal128,
-//     required: true,
-//   },
-// });
-
-// let transferSchema = new mongoose.Schema({
-//   sender: {
-//     type: String,
-//     required: true,
-//   },
-//   receiver: {
-//     type: String,
-//     required: true,
-//   },
-//   date: {
-//     type: Date,
-//     default: Date.now(),
-//   },
-//   amount: {
-//     type: Decimal128,
-//     required: true,
-//   },
-// });
 
 let summaryElementSchema = new mongoose.Schema({
   userName: {
@@ -54,16 +17,20 @@ let summaryElementSchema = new mongoose.Schema({
 let summarySchema = new mongoose.Schema({
   total: {
     type: Decimal128,
-    default: 0,
+    required: true,
   },
   summary: {
     type: [summaryElementSchema],
-    default: [],
+    required: true,
   },
 });
 
 let favorSchema = new mongoose.Schema(
   {
+    favorId: {
+      type: String,
+      required: true,
+    },
     userName: {
       type: String,
       required: true,
@@ -74,13 +41,21 @@ let favorSchema = new mongoose.Schema(
     },
     description: {
       type: String,
+      maxlength: 100,
+    },
+    accepted: {
+      type: Boolean,
     },
   },
   { timestamps: true }
 );
 
-let debtSchema = new mongoose.Schema(
+let repaySchema = new mongoose.Schema(
   {
+    repayId: {
+      type: String,
+      required: true,
+    },
     userName: {
       type: String,
       required: true,
@@ -91,6 +66,14 @@ let debtSchema = new mongoose.Schema(
     },
     description: {
       type: String,
+      maxlength: 100,
+    },
+    accepted: {
+      type: Boolean,
+    },
+    send: {
+      type: Boolean,
+      required: true,
     },
   },
   { timestamps: true }
@@ -136,6 +119,29 @@ let contactSchema = new mongoose.Schema({
   },
 });
 
+let notificationSchema = new mongoose.Schema(
+  {
+    notificationId: {
+      type: String,
+      default: uuid.v4,
+    },
+    userName: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+    read: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
+
 let userSchema = new mongoose.Schema(
   {
     userName: {
@@ -157,30 +163,20 @@ let userSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
     },
-    // accountBalance: {
-    //   type: Decimal128,
-    //   default: 0,
-    // },
-    // expenseHistory: {
-    //   type: [expenseSchema],
-    //   default: [],
-    // },
-    // transferHistory: {
-    //   type: [transferSchema],
-    //   default: [],
-    // },
     favorSummary: {
       type: summarySchema,
+      default: { total: 0, summary: [] },
     },
     debtSummary: {
       type: summarySchema,
+      default: { total: 0, summary: [] },
     },
-    pendingFavors: {
+    pendingFavor: {
       type: [favorSchema],
       default: [],
     },
-    pendingDebts: {
-      type: [debtSchema],
+    pendingRepay: {
+      type: [repaySchema],
       default: [],
     },
     favorHistory: {
@@ -188,7 +184,11 @@ let userSchema = new mongoose.Schema(
       default: [],
     },
     debtHistory: {
-      type: [debtSchema],
+      type: [favorSchema],
+      default: [],
+    },
+    repayHistory: {
+      type: [repaySchema],
       default: [],
     },
     contacts: {
@@ -199,43 +199,13 @@ let userSchema = new mongoose.Schema(
       type: [conversation],
       default: [],
     },
-    active: {
-      type: Boolean,
-      default: false,
+    notificationList: {
+      type: [notificationSchema],
+      default: [],
     },
   },
   { collection: "Users" }
 );
-
-// userSchema.set("toJSON", {
-//   getters: true,
-//   transform: (doc, ret) => {
-//     if (ret.accountBalance) {
-//       ret.accountBalance = parseFloat(ret.accountBalance);
-//     }
-//     return ret;
-//   },
-// });
-
-// expenseSchema.set("toJSON", {
-//   getters: true,
-//   transform: (doc, ret) => {
-//     if (ret.amount) {
-//       ret.amount = parseFloat(ret.amount);
-//     }
-//     return ret;
-//   },
-// });
-
-// transferSchema.set("toJSON", {
-//   getters: true,
-//   transform: (doc, ret) => {
-//     if (ret.amount) {
-//       ret.amount = parseFloat(ret.amount);
-//     }
-//     return ret;
-//   },
-// });
 
 favorSchema.set("toJSON", {
   getters: true,
@@ -243,16 +213,18 @@ favorSchema.set("toJSON", {
     if (ret.amount) {
       ret.amount = parseFloat(ret.amount);
     }
+    delete ret._id;
     return ret;
   },
 });
 
-debtSchema.set("toJSON", {
+repaySchema.set("toJSON", {
   getters: true,
   transform: (doc, ret) => {
     if (ret.amount) {
       ret.amount = parseFloat(ret.amount);
     }
+    delete ret._id;
     return ret;
   },
 });
@@ -263,6 +235,7 @@ summaryElementSchema.set("toJSON", {
     if (ret.amount) {
       ret.amount = parseFloat(ret.amount);
     }
+    delete ret._id;
     return ret;
   },
 });
@@ -273,6 +246,7 @@ summarySchema.set("toJSON", {
     if (ret.total) {
       ret.total = parseFloat(ret.total);
     }
+    delete ret._id;
     return ret;
   },
 });

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { Stack, Box, Typography } from '@mui/material';
-import { useTheme, alpha } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 
 import { displayTime } from 'utils/timeUtils';
 
@@ -28,14 +28,14 @@ const TextMsg = (props) => {
                 px={1.5}
                 py={1.5}
                 sx={{
-                    backgroundColor: messageProps.sending ? theme.palette.primary.main : alpha(theme.palette.grey[100], 1),
+                    backgroundColor: messageProps.sending ? theme.palette.primary[200] : theme.palette.secondary.light,
                     borderRadius: 1.5,
                     whiteSpace: 'pre-wrap',
                     wordWrap: 'break-word',
                     maxWidth: '50%'
                 }}
             >
-                <Typography variant="body2" color={messageProps.sending ? '#fff' : theme.palette.text}>
+                <Typography variant="body2" color={theme.palette.text}>
                     {messageProps.message}
                 </Typography>
             </Box>
