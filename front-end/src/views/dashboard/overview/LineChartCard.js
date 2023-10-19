@@ -1,24 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { useTheme, styled } from '@mui/material/styles';
-import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
+import { IconArrowRight } from '@tabler/icons-react';
 import Chart from 'react-apexcharts';
-import jwtDecode from 'jwt-decode';
 
-// project imports
 import MainCard from 'components/cards/MainCard';
-import lineChartData from 'views/banking/dashboard/chart-data/lineChartData';
+import lineChartData from 'components/chart/lineChartData';
 import { months } from 'assets/data/timeDisplay';
-
-// assets
-import { LocalMallOutlined, Payment } from '@mui/icons-material';
-// import { useSelector } from 'react-redux';
 import { filterAmountByTime } from 'utils/timeUtils';
+import { fCurrency } from 'utils/formatNumber';
 
-const CardWrapper = styled(MainCard)(({ theme }) => ({
-    backgroundColor: theme.palette.primary.dark,
+const CardWrapper = styled(MainCard)(({ theme, color }) => ({
+    backgroundColor: theme.palette[color].dark,
     color: '#fff',
     overflow: 'hidden',
     position: 'relative',
@@ -31,7 +26,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
         position: 'absolute',
         width: 210,
         height: 210,
-        background: theme.palette.primary[800],
+        background: theme.palette[color][800],
         borderRadius: '50%',
         zIndex: 1,
         top: -85,
@@ -47,7 +42,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
         zIndex: 1,
         width: 210,
         height: 210,
-        background: theme.palette.primary[800],
+        background: theme.palette[color][800],
         borderRadius: '50%',
         top: -125,
         right: -15,
@@ -63,28 +58,21 @@ let createChartData = (type, lineData) => {
     let chartData = {};
     let compareDate = new Date();
 
-    chartData.data = filterAmountByTime('year', compareDate, lineData);
     if (type === 'month') {
-        chartData.data = filterAmountByTime('month', compareDate, lineData);
+        chartData.data = filterAmountByTime('month', compareDate, lineData).reverse();
         chartData.name = months[compareDate.getMonth()];
     } else {
+        chartData.data = filterAmountByTime('year', compareDate, lineData).reverse();
         chartData.name = compareDate.getFullYear();
     }
     return chartData;
 };
 
-const TotalSpending = (props) => {
+const LineChartCard = (props) => {
     const theme = useTheme();
-    let { expenseHistory, transferHistory } = props;
+    let { data, color, label } = props;
 
-    let token = useSelector((state) => state.auth.token);
-    let userName = jwtDecode(token).userName;
-
-    let [chartData, setChartData] = useState(() => {
-        let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
-        let totalSpending = expenseHistory.concat(sendTransfer);
-        return createChartData('year', totalSpending);
-    });
+    let [chartData, setChartData] = useState(createChartData('year', data));
 
     const [timeValue, setTimeValue] = useState(false);
     const handleChangeTime = (event, newValue) => {
@@ -93,36 +81,29 @@ const TotalSpending = (props) => {
 
     useEffect(() => {
         let newChartData = {};
-        let sendTransfer = transferHistory.filter((transfer) => transfer.sender === userName);
-        let totalSpending = expenseHistory.concat(sendTransfer);
         if (timeValue) {
-            newChartData = createChartData('month', totalSpending);
+            newChartData = createChartData('month', data);
         } else {
-            newChartData = createChartData('year', totalSpending);
+            newChartData = createChartData('year', data);
         }
         setChartData(newChartData);
-    }, [timeValue, transferHistory, expenseHistory, userName]);
+    }, [timeValue, data]);
 
     return (
         <>
-            <CardWrapper border={false} content={false}>
+            <CardWrapper border={false} content={false} color={color}>
                 <Box sx={{ p: 2.25 }}>
                     <Grid container direction="column">
                         <Grid item>
                             <Grid container justifyContent="space-between">
                                 <Grid item>
-                                    <Avatar
-                                        variant="rounded"
-                                        sx={{
-                                            ...theme.typography.commonAvatar,
-                                            ...theme.typography.largeAvatar,
-                                            backgroundColor: theme.palette.primary[800],
-                                            color: '#fff',
-                                            mt: 1
-                                        }}
+                                    <Button
+                                        variant="text"
+                                        sx={{ color: 'inherit', '&:hover': { backgroundColor: `${theme.palette[color].main}` } }}
+                                        endIcon={<IconArrowRight />}
                                     >
-                                        <LocalMallOutlined fontSize="inherit" />
-                                    </Avatar>
+                                        details
+                                    </Button>
                                 </Grid>
                                 <Grid item>
                                     <Button
@@ -130,6 +111,7 @@ const TotalSpending = (props) => {
                                         variant={timeValue ? 'contained' : 'text'}
                                         size="small"
                                         sx={{ color: 'inherit' }}
+                                        color={color}
                                         onClick={(e) => handleChangeTime(e, true)}
                                     >
                                         Month
@@ -139,6 +121,7 @@ const TotalSpending = (props) => {
                                         variant={!timeValue ? 'contained' : 'text'}
                                         size="small"
                                         sx={{ color: 'inherit' }}
+                                        color={color}
                                         onClick={(e) => handleChangeTime(e, false)}
                                     >
                                         Year
@@ -152,35 +135,24 @@ const TotalSpending = (props) => {
                                     <Grid container alignItems="center">
                                         <Grid item>
                                             <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                $
-                                                {chartData.data
-                                                    .reduce((total, current) => {
-                                                        return total + current;
-                                                    }, 0)
-                                                    .toFixed(2)}
+                                                {fCurrency(
+                                                    chartData.data
+                                                        .reduce((total, current) => {
+                                                            return total + current;
+                                                        }, 0)
+                                                        .toString()
+                                                )}
                                             </Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Avatar
-                                                sx={{
-                                                    ...theme.typography.smallAvatar,
-                                                    cursor: 'pointer',
-                                                    backgroundColor: theme.palette.primary[200],
-                                                    color: theme.palette.primary.dark
-                                                }}
-                                            >
-                                                <Payment fontSize="inherit" />
-                                            </Avatar>
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Typography
                                                 sx={{
                                                     fontSize: '1rem',
                                                     fontWeight: 500,
-                                                    color: theme.palette.primary[200]
+                                                    color: theme.palette[color][200]
                                                 }}
                                             >
-                                                Total Spending
+                                                {label}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -197,9 +169,10 @@ const TotalSpending = (props) => {
     );
 };
 
-TotalSpending.propTypes = {
-    transferHistory: PropTypes.arrayOf(PropTypes.object),
-    expenseHistory: PropTypes.arrayOf(PropTypes.object)
+LineChartCard.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.object),
+    color: PropTypes.string,
+    label: PropTypes.string
 };
 
-export default TotalSpending;
+export default LineChartCard;

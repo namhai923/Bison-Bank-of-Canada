@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { Toolbar, Tooltip, IconButton, Typography, Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import { IconTrash, IconCoins, IconListSearch } from '@tabler/icons';
+import { IconTrash, IconCoins, IconListSearch } from '@tabler/icons-react';
 
 import StyledInput from 'components/styled-input';
 
@@ -43,7 +43,7 @@ const ContactsListToolbar = (props) => {
                                 <IconCoins stroke={1.5} size="1.3rem" />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Remove">
+                        <Tooltip title="Remove contact">
                             <IconButton onClick={() => handleRemoveContacts(selected)}>
                                 <IconTrash stroke={1.5} size="1.3rem" color={theme.palette.error.dark} />
                             </IconButton>
@@ -51,7 +51,13 @@ const ContactsListToolbar = (props) => {
                     </Grid>
                 </>
             ) : (
-                <StyledInput value={filterName} onChange={onFilterName} StartIcon={IconListSearch} MobileIcon={IconListSearch} />
+                <StyledInput
+                    value={filterName}
+                    onChange={onFilterName}
+                    placeholder="Search contact"
+                    StartIcon={IconListSearch}
+                    MobileIcon={IconListSearch}
+                />
             )}
         </StyledRoot>
     );

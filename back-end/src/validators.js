@@ -8,6 +8,14 @@ const userNameSchema = Joi.object({
   userName: Joi.string().email().max(50).required(),
 });
 
+const UUIDSchema = Joi.object({
+  id: Joi.string()
+    .guid({
+      version: ["uuidv4"],
+    })
+    .required(),
+});
+
 const registerSchema = Joi.object({
   userName: Joi.string().email().max(50).required(),
   password: Joi.string().min(8).max(50).required(),
@@ -19,7 +27,6 @@ const registerSchema = Joi.object({
     .max(50)
     .pattern(new RegExp(/^[aA-zZs]+$/))
     .required(),
-  accountBalance: Joi.number().min(0).max(100000).integer().required(),
 });
 
 const loginSchema = Joi.object({
@@ -27,24 +34,30 @@ const loginSchema = Joi.object({
   password: Joi.string().min(8).max(50).required(),
 });
 
-const expenseSchema = Joi.object({
-  location: Joi.string()
-    .max(50)
-    .pattern(new RegExp(/^[aA-zZs]+$/))
-    .required(),
-  category: Joi.string()
-    .max(50)
-    .pattern(new RegExp(/^[aA-zZs]+$/))
-    .required(),
-  amount: Joi.number().min(1).required(),
+const searchUserSchema = Joi.object({
+  searchQuery: Joi.string().required(),
 });
 
-const transferSchema = Joi.object({
-  transferAccounts: Joi.array().items(Joi.string().email().max(50)).required(),
+const makeRequestSchema = Joi.object({
+  accounts: Joi.array()
+    .min(1)
+    .unique()
+    .items(Joi.string().email().max(50))
+    .required(),
   amount: Joi.number().min(1).required(),
+  description: Joi.string().max(100),
 });
 
-const profileSchema = Joi.object({
+const responseSchema = Joi.object({
+  accepted: Joi.boolean().required(),
+  id: Joi.string()
+    .guid({
+      version: ["uuidv4"],
+    })
+    .required(),
+});
+
+const updateInfoSchema = Joi.object({
   firstName: Joi.string()
     .max(50)
     .pattern(new RegExp(/^[aA-zZs]+$/))
@@ -58,7 +71,11 @@ const profileSchema = Joi.object({
 });
 
 const removeContactsSchema = Joi.object({
-  removeContacts: Joi.array().items(Joi.string().email().max(50)).required(),
+  removeContacts: Joi.array()
+    .min(1)
+    .unique()
+    .items(Joi.string().email().max(50))
+    .required(),
 });
 
 const sendMessageSchema = Joi.object({
@@ -68,11 +85,13 @@ const sendMessageSchema = Joi.object({
 
 module.exports = {
   validateUserName: validator(userNameSchema),
+  validateUUID: validator(UUIDSchema),
   validateRegister: validator(registerSchema),
   validateLogin: validator(loginSchema),
-  validateExpense: validator(expenseSchema),
-  validateTransfer: validator(transferSchema),
-  validateProfile: validator(profileSchema),
+  validateSearchUser: validator(searchUserSchema),
+  validateMakeRequest: validator(makeRequestSchema),
+  validateResponse: validator(responseSchema),
+  validateUpdateInfo: validator(updateInfoSchema),
   validateRemoveContacts: validator(removeContactsSchema),
   validateSendMessage: validator(sendMessageSchema),
 };

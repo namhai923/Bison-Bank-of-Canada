@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { Avatar, Box, CardContent, Typography } from '@mui/material';
-import { IconUser } from '@tabler/icons';
+import { IconUser } from '@tabler/icons-react';
 
 import SubCard from 'components/cards/SubCard';
 import alphabetAvatar from 'assets/images/alphabetAvatar';

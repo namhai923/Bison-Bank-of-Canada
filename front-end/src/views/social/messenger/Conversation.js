@@ -14,9 +14,9 @@ import { useGetConversationQuery } from 'app/features/user/userApiSlice';
 import config from 'assets/data/config';
 
 const Conversation = (props) => {
-    let { currentConversation } = props;
+    let { currentConversation, currentName, currentActive } = props;
 
-    let { data, isLoading, isSuccess, isError, error } = useGetConversationQuery(currentConversation.userName, {
+    let { data, isLoading, isSuccess, isError, error } = useGetConversationQuery(currentConversation, {
         pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
@@ -43,7 +43,7 @@ const Conversation = (props) => {
         content = (
             <Stack height={'80vh'} width={isMobile ? '100vw' : 'auto'}>
                 <Stack spacing={2}>
-                    <ConverationHeader currentConversation={currentConversation} />
+                    <ConverationHeader currentConversation={currentConversation} currentName={currentName} currentActive={currentActive} />
                     <Divider sx={{ my: 0 }} />
                 </Stack>
 
@@ -57,7 +57,7 @@ const Conversation = (props) => {
                     </Box>
                 </PerfectScrollbar>
 
-                <ConversationFooter userName={currentConversation.userName} />
+                <ConversationFooter currentConversation={currentConversation} />
             </Stack>
         );
     }
@@ -66,7 +66,9 @@ const Conversation = (props) => {
 };
 
 Conversation.propTypes = {
-    currentConversation: PropTypes.object
+    currentConversation: PropTypes.string,
+    currentName: PropTypes.string,
+    currentActive: PropTypes.bool
 };
 
 export default Conversation;

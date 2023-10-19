@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
-import { openMenu, setMenu } from '../../../../../app/features/customize/customizeSlice';
+import { openMenu, setMenu } from 'app/features/customize/customizeSlice';
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -62,8 +62,10 @@ const NavItem = ({ item, level }) => {
             .split('/')
             .findIndex((id) => id === item.id);
         if (currentIndex > -1) {
-            let action = openMenu({ id: item.id });
+            let action = openMenu(item.id);
             dispatch(action);
+        } else if (document.location.pathname.toString().split('/')[1] === '') {
+            dispatch(openMenu(customization.defaultId));
         }
 
         // eslint-disable-next-line

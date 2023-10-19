@@ -12,10 +12,10 @@ import { openMenu } from 'app/features/customize/customizeSlice';
 // ==============================|| MAIN LOGO ||============================== //
 
 const LogoSection = () => {
-    const defaultId = useSelector((state) => state.customization.defaultId);
+    const { defaultId } = useSelector((state) => state.customization);
     const dispatch = useDispatch();
     let handleClick = () => {
-        let action = openMenu({ id: defaultId });
+        let action = openMenu(defaultId);
         dispatch(action);
     };
     return (

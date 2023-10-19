@@ -1,12 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 let initialState = {
-    location: [],
-    category: [],
-    sender: [],
-    receiver: [],
+    favorHistoryUserName: [],
+    favorHistoryDateFrom: null,
+    favorHistoryDateTo: null,
+    favorHistoryAmountFrom: '',
+    favorHistoryAmountTo: '',
+    debtHistoryUserName: [],
+    debtHistoryDateFrom: null,
+    debtHistoryDateTo: null,
+    debtHistoryAmountFrom: '',
+    debtHistoryAmountTo: '',
+    repayHistoryUserName: [],
+    repayHistoryDateFrom: null,
+    repayHistoryDateTo: null,
+    repayHistoryAmountFrom: '',
+    repayHistoryAmountTo: '',
+    favorSummaryUserName: [],
+    favorSummaryAmountFrom: '',
+    favorSummaryAmountTo: '',
+    debtSummaryUserName: [],
+    debtSummaryAmountFrom: '',
+    debtSummaryAmountTo: '',
+    dob: null,
     emails: [],
-    currentConversation: null
+    currentConversation: null,
+    notification: 'all'
 };
 
 export let valueSlice = createSlice({

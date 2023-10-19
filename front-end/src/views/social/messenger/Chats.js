@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { IconButton, Typography, Stack, Paper } from '@mui/material';
-import { IconMessages } from '@tabler/icons';
+import { IconButton, Typography, Stack, Paper, Divider } from '@mui/material';
+import { IconMessages, IconMessageSearch } from '@tabler/icons-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { IconListSearch } from '@tabler/icons';
 
 import Loader from 'components/Loader';
 import ChatElement from './ChatElement';
 import StyledInput from 'components/styled-input';
-import { useGetConversationsInfoQuery, useGetContactsQuery } from 'app/features/user/userApiSlice';
+import { useGetConversationsInfoQuery } from 'app/features/user/userApiSlice';
 import config from 'assets/data/config';
 
 function applyFilter(array, query) {
@@ -22,7 +21,7 @@ function applyFilter(array, query) {
 }
 
 const Chats = (props) => {
-    let { currentConversation } = props;
+    let { currentConversation, currentName, currentActive, contacts } = props;
 
     let {
         data: conversationsInfo,
@@ -36,18 +35,6 @@ const Chats = (props) => {
         refetchOnMountOrArgChange: true
     });
 
-    let {
-        data: contacts,
-        isLoading: isContactsLoading,
-        isSuccess: isContactsSuccess,
-        isError: isContactsError,
-        error: contactsError
-    } = useGetContactsQuery('contacts', {
-        pollingInterval: config.pollingInterval,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true
-    });
-
     const [filterName, setFilterName] = useState('');
 
     const handleFilterByName = (event) => {
@@ -55,16 +42,12 @@ const Chats = (props) => {
     };
 
     let content;
-    if (isConversationsInfoLoading || isContactsLoading) content = <Loader />;
+    if (isConversationsInfoLoading) content = <Loader />;
 
-    if (isConversationsInfoError || isContactsError) {
-        content = (
-            <p className="errmsg">
-                {conversationsInfoError?.data?.message} {contactsError?.data?.message}
-            </p>
-        );
+    if (isConversationsInfoError) {
+        content = <p className="errmsg">{conversationsInfoError?.data?.message}</p>;
     }
-    if (isConversationsInfoSuccess && isContactsSuccess) {
+    if (isConversationsInfoSuccess) {
         conversationsInfo = conversationsInfo.map((conversationInfo) => {
             const { userName, latestMessage, unRead } = conversationInfo;
 
@@ -83,18 +66,21 @@ const Chats = (props) => {
             }
             return chatProps;
         });
-        if (
-            currentConversation &&
-            !conversationsInfo.find((conversationInfo) => conversationInfo.userName === currentConversation.userName)
-        ) {
-            conversationsInfo.unshift({ ...currentConversation, latestMessage: null, unRead: 0 });
+        if (currentConversation && !conversationsInfo.find((conversationInfo) => conversationInfo.userName === currentConversation)) {
+            conversationsInfo.unshift({
+                userName: currentConversation,
+                name: currentName,
+                active: currentActive,
+                latestMessage: null,
+                unRead: 0
+            });
         }
 
         const filteredConversations = applyFilter(conversationsInfo, filterName);
         const isNotFound = !filteredConversations.length && !!filterName;
 
         content = (
-            <Stack container spacing={2} sx={{ height: '80vh' }}>
+            <Stack spacing={2} sx={{ height: '80vh' }}>
                 <Stack alignItems={'center'} justifyContent="space-between" direction="row">
                     <Typography variant="h2">Chats</Typography>
 
@@ -107,8 +93,9 @@ const Chats = (props) => {
                 <StyledInput
                     value={filterName}
                     onChange={handleFilterByName}
-                    StartIcon={IconListSearch}
-                    MobileIcon={IconListSearch}
+                    placeholder="Search conversation"
+                    StartIcon={IconMessageSearch}
+                    MobileIcon={IconMessageSearch}
                 ></StyledInput>
 
                 {isNotFound && (
@@ -130,9 +117,14 @@ const Chats = (props) => {
                 )}
 
                 <PerfectScrollbar>
-                    <Stack spacing={0.5}>
+                    <Stack>
                         {filteredConversations.map((conversationInfo) => {
-                            return <ChatElement chatProps={conversationInfo} />;
+                            return (
+                                <>
+                                    <ChatElement chatProps={conversationInfo} />
+                                    <Divider></Divider>
+                                </>
+                            );
                         })}
                     </Stack>
                 </PerfectScrollbar>
@@ -144,7 +136,10 @@ const Chats = (props) => {
 };
 
 Chats.propTypes = {
-    currentConversation: PropTypes.object
+    currentConversation: PropTypes.string,
+    currentName: PropTypes.string,
+    currentActive: PropTypes.bool,
+    contacts: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default Chats;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import TransferHistory from '../views/banking/history/TransferHistory';
+import TransferHistory from '../views/dashboard/history/debt/DebtHistory';
 import { Provider } from 'react-redux';
 import store from '../app';
 import { BrowserRouter } from 'react-router-dom';

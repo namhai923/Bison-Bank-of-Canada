@@ -5,7 +5,7 @@ import { ButtonBase, IconButton, Stack, Popover } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
-import { IconMoodSmile, IconBrandTelegram } from '@tabler/icons';
+import { IconMoodSmile, IconBrandTelegram } from '@tabler/icons-react';
 
 import { AvatarStyle, OutlineInputStyle } from 'components/styled-input';
 import { useSendMessageMutation } from 'app/features/user/userApiSlice';

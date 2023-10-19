@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Chip, Modal, Box } from '@mui/material';
+import { Chip, Modal, Box, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { IconFilter } from '@tabler/icons';
+import { IconFilter } from '@tabler/icons-react';
 
-import FilterForm from 'views/banking/history/FilterForm';
+import FilterForm from 'views/dashboard/history/FilterForm';
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
     bgcolor: 'background.paper',
     borderRadius: '27px',
     boxShadow: 24,
@@ -21,7 +20,8 @@ const style = {
 
 let FilterModal = (props) => {
     const theme = useTheme();
-    let { filterLabels, filterData } = props;
+    let { title, data, filterData } = props;
+    const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -51,8 +51,9 @@ let FilterModal = (props) => {
                 color="primary"
             />
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-                <Box sx={style}>
-                    <FilterForm filterLabels={filterLabels} filterData={filterData} />
+                <Box sx={{ ...style, width: matchesXs ? '80%' : 400 }}>
+                    <Typography variant="h3">{title}</Typography>
+                    <FilterForm data={data} filterData={filterData} />
                 </Box>
             </Modal>
         </>
@@ -60,7 +61,8 @@ let FilterModal = (props) => {
 };
 
 FilterModal.propTypes = {
-    filterLabels: PropTypes.arrayOf(PropTypes.object),
+    title: PropTypes.string,
+    data: PropTypes.arrayOf(PropTypes.object),
     filterData: PropTypes.arrayOf(PropTypes.object)
 };
 

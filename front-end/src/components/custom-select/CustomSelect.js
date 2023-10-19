@@ -5,7 +5,6 @@ import chroma from 'chroma-js';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
-import { InputLabel, useTheme } from '@mui/material';
 
 import { setValue } from 'app/features/value/valueSlice';
 
@@ -63,8 +62,7 @@ let getOptions = (data, color) => {
 };
 
 let CustomSelect = (props) => {
-    let theme = useTheme();
-    let { label, field, data, form, optionValue, color, placeholder, creatable } = props;
+    let { field, data, form, optionValue, color, placeholder, creatable } = props;
     let { name } = field;
 
     let dispatch = useDispatch();
@@ -100,9 +98,6 @@ let CustomSelect = (props) => {
                 </>
             ) : (
                 <>
-                    <InputLabel focused sx={{ ...theme.typography.customInput }} htmlFor={name}>
-                        {label}
-                    </InputLabel>
                     <Select
                         {...props}
                         id={name}
@@ -126,7 +121,6 @@ let CustomSelect = (props) => {
 };
 
 CustomSelect.propTypes = {
-    label: PropTypes.string,
     field: PropTypes.object,
     data: PropTypes.arrayOf(PropTypes.object),
     form: PropTypes.object,
