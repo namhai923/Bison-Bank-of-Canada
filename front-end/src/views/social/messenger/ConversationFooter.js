@@ -8,7 +8,7 @@ import Picker from '@emoji-mart/react';
 import { IconMoodSmile, IconBrandTelegram } from '@tabler/icons-react';
 
 import { AvatarStyle, OutlineInputStyle } from 'components/styled-input';
-import { useSendMessageMutation } from 'app/features/user/userApiSlice';
+import { useSendMessageMutation } from 'app/features/messenger/messengerApiSlice';
 
 const ConversationFooter = (props) => {
     let { currentConversation } = props;

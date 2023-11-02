@@ -9,7 +9,7 @@ import { Formik, FastField } from 'formik';
 
 import Loader from 'components/loader/Loader';
 import CustomSelect from 'components/custom-select/CustomSelect';
-import { useGetContactsQuery } from 'app/features/user/userApiSlice';
+import { useGetContactsQuery } from 'app/features/contact/contactApiSlice';
 import config from 'assets/data/config';
 import NumericFormatCustom from 'utils/NumericFormatCustom';
 import { setRequestValue } from 'app/features/request/requestSlice';

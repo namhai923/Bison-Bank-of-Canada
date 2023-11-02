@@ -8,7 +8,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import Loader from 'components/loader/Loader';
 import ChatElement from './ChatElement';
 import StyledInput from 'components/styled-input';
-import { useGetConversationsInfoQuery } from 'app/features/user/userApiSlice';
+import { useGetConversationsInfoQuery } from 'app/features/messenger/messengerApiSlice';
 import config from 'assets/data/config';
 
 function applyFilter(array, query) {

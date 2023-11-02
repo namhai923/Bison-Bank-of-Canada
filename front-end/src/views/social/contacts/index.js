@@ -34,7 +34,7 @@ import ContactsListToolbar from './ContactsListToolbar';
 import AddContactForm from './AddContactForm';
 import Transitions from 'components/extended/Transitions';
 import UtilityBar from 'components/utility-bar/UtilityBar';
-import { useAddContactMutation, useGetContactsQuery, useRemoveContactMutation } from 'app/features/user/userApiSlice';
+import { useAddContactMutation, useGetContactsQuery, useRemoveContactMutation } from 'app/features/contact/contactApiSlice';
 import config from 'assets/data/config';
 import { gridSpacing } from 'assets/data/constant';
 

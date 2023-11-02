@@ -1,7 +1,7 @@
 const { FRONTEND_URL } = require("./config/vars.config");
 const socketJWT = require("./middleware/socketJWT");
 const messageService = require("./services/message.service");
-const connectedUsers = require("./connectedUsers");
+const { connectedUsers } = require("./utilities");
 
 const socket = (app) => {
   const io = require("socket.io")(app, {

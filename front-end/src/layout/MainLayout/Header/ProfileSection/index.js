@@ -142,11 +142,11 @@ const ProfileSection = (props) => {
                                     <Box sx={{ p: 2 }}>
                                         <Stack direction="row" spacing={0.5} alignItems="center">
                                             <Typography variant="h4" sx={{ fontWeight: 400 }}>
-                                                {6 < moment().hour() <= 12
+                                                {6 < moment().hour() && moment().hour() <= 12
                                                     ? 'Good Morning,'
-                                                    : 12 < moment().hour() <= 17
+                                                    : 12 < moment().hour() && moment().hour() <= 17
                                                     ? 'Good Afternoon,'
-                                                    : 17 < moment().hour() <= 21
+                                                    : 17 < moment().hour() && moment().hour() <= 21
                                                     ? 'Good Evening,'
                                                     : 'Good Night,'}
                                             </Typography>

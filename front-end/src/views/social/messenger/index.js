@@ -10,7 +10,7 @@ import ChatDrawer from './ChatDrawer';
 import { gridSpacing } from 'assets/data/constant';
 import SubCard from 'components/cards/SubCard';
 import noConversation from 'assets/images/bison.png';
-import { useGetContactsQuery } from 'app/features/user/userApiSlice';
+import { useGetContactsQuery } from 'app/features/contact/contactApiSlice';
 import config from 'assets/data/config';
 import { AvatarStyle } from 'components/styled-input';
 import { setChat } from 'app/features/customize/customizeSlice';

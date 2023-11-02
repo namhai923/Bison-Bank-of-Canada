@@ -8,12 +8,8 @@ import DebtHistory from './DebtHistory';
 import DebtSummary from './DebtSummary';
 import ResponseCard from 'components/cards/ResponseCard';
 import { gridSpacing } from 'assets/data/constant';
-import {
-    useGetDebtSummaryQuery,
-    useGetDebtHistoryQuery,
-    useGetPendingFavorQuery,
-    useResponseFavorMutation
-} from 'app/features/user/userApiSlice';
+import { useGetPendingFavorQuery, useResponseFavorMutation } from 'app/features/favor/favorApiSlice';
+import { useGetDebtSummaryQuery, useGetDebtHistoryQuery } from 'app/features/debt/debtApiSlice';
 import config from 'assets/data/config';
 
 const Debt = () => {

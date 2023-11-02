@@ -21,7 +21,7 @@ import { IconUser, IconTrash } from '@tabler/icons-react';
 import moment from 'moment/moment';
 
 import alphabetAvatar from 'assets/images/alphabetAvatar';
-import { useDeleteNotificationMutation } from 'app/features/user/userApiSlice';
+import { useDeleteNotificationMutation } from 'app/features/notification/notificationApiSlice';
 
 let notificationType = {
     'favor:request': { message: 'Send you a favor request', url: '/credit/debt' },

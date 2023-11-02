@@ -9,7 +9,7 @@ import Loader from 'components/loader/Loader';
 import ConverationHeader from './ConversationHeader';
 import ConversationFooter from './ConversationFooter';
 import { TextMsg } from './ConversationElement';
-import { useGetConversationQuery } from 'app/features/user/userApiSlice';
+import { useGetConversationQuery } from 'app/features/messenger/messengerApiSlice';
 import config from 'assets/data/config';
 
 const Conversation = (props) => {

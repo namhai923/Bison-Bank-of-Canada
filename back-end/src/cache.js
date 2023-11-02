@@ -8,7 +8,11 @@ function setCacheExpire(userName, timeInSeconds) {
       if (cache.delete(userName)) {
         console.log("Cache for " + userName + " expired and deleted.");
       } else {
-        console.log("Cache deletion failed for " + userName + " failed: it might be because user already signed out and cache was deleted already.");
+        console.log(
+          "Cache deletion failed for " +
+            userName +
+            " failed: it might be because user already signed out and cache was deleted already."
+        );
       }
     }, timeInSeconds * 1000);
     timeouts.push(id);
