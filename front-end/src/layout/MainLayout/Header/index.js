@@ -1,21 +1,22 @@
 import PropTypes from 'prop-types';
 
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Box, ButtonBase } from '@mui/material';
-import { IconMenu2 } from '@tabler/icons';
+import { Box, ButtonBase, useMediaQuery } from '@mui/material';
+import { IconMenu2 } from '@tabler/icons-react';
 
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import NotificationSection from './NotificationSection';
 import ProfileSection from './ProfileSection';
 import WelcomeSection from './WelcomeSection';
+import SearchUserSection from './SearchUserSection';
 import LogoSection from '../LogoSection';
 import { useGetUserInfoQuery } from 'app/features/user/userApiSlice';
 import config from 'assets/data/config';
-
-// ==============================|| MAIN NAVBAR / HEADER ||============================== //
+import { AvatarStyle } from 'components/styled-input';
 
 const Header = ({ handleLeftDrawerToggle }) => {
     const theme = useTheme();
+    const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 
     let {
         data: userInfo,
@@ -51,29 +52,14 @@ const Header = ({ handleLeftDrawerToggle }) => {
                         <LogoSection />
                     </Box>
                     <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
-                        <Avatar
-                            variant="rounded"
-                            sx={{
-                                ...theme.typography.commonAvatar,
-                                ...theme.typography.mediumAvatar,
-                                transition: 'all .2s ease-in-out',
-                                background: theme.palette.secondary.light,
-                                color: theme.palette.secondary.dark,
-                                '&:hover': {
-                                    background: theme.palette.secondary.dark,
-                                    color: theme.palette.secondary.light
-                                }
-                            }}
-                            onClick={handleLeftDrawerToggle}
-                            color="inherit"
-                        >
+                        <AvatarStyle variant="rounded" color={theme.palette.secondary} onClick={handleLeftDrawerToggle}>
                             <IconMenu2 stroke={1.5} size="1.3rem" />
-                        </Avatar>
+                        </AvatarStyle>
                     </ButtonBase>
                 </Box>
 
-                <WelcomeSection firstName={userInfo.firstName} />
-                <Box sx={{ flexGrow: 1 }} />
+                {!matchDownMd && <WelcomeSection firstName={userInfo.firstName} />}
+                <SearchUserSection></SearchUserSection>
                 <Box sx={{ flexGrow: 1 }} />
 
                 <NotificationSection />

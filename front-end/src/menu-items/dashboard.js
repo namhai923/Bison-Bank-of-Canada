@@ -1,5 +1,5 @@
 // assets
-import { IconDashboard, IconWallet, IconHistory } from '@tabler/icons';
+import { IconDashboard, IconStar, IconReceiptRefund } from '@tabler/icons-react';
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
@@ -9,38 +9,38 @@ const dashboard = {
     type: 'group',
     children: [
         {
-            id: 'analytics',
-            title: 'Analytics',
+            id: 'overview',
+            title: 'Overview',
             type: 'item',
             url: '/',
             icon: IconDashboard
         },
         {
-            id: 'spend',
-            title: 'Spend money',
-            type: 'item',
-            url: '/spend',
-            icon: IconWallet
-        },
-        {
-            id: 'history',
-            title: 'History',
+            id: 'credit',
+            title: 'Credit',
             type: 'collapse',
-            icon: IconHistory,
+            icon: IconStar,
             children: [
                 {
-                    id: 'expense',
-                    title: 'Expense',
+                    id: 'favor',
+                    title: 'Favor',
                     type: 'item',
-                    url: '/history/expense'
+                    url: '/credit/favor'
                 },
                 {
-                    id: 'transfer',
-                    title: 'Transfer',
+                    id: 'debt',
+                    title: 'Debt',
                     type: 'item',
-                    url: '/history/transfer'
+                    url: '/credit/debt'
                 }
             ]
+        },
+        {
+            id: 'repay',
+            title: 'Repay',
+            type: 'item',
+            url: '/repay',
+            icon: IconReceiptRefund
         }
     ]
 };

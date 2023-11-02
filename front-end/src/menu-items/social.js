@@ -1,5 +1,5 @@
 // assets
-import { IconUsers, IconMessage2 } from '@tabler/icons';
+import { IconUsers, IconMessages } from '@tabler/icons-react';
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
@@ -19,7 +19,7 @@ const social = {
             id: 'messenger',
             title: 'Messenger',
             type: 'item',
-            icon: IconMessage2,
+            icon: IconMessages,
             url: '/messenger'
         }
     ]

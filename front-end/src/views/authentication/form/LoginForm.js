@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import {
     Box,
@@ -16,13 +15,10 @@ import {
     OutlinedInput
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-
-// third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-// project imports
-import AnimateButton from 'components/extended/AnimateButton';
 
+import AnimateButton from 'components/extended/AnimateButton';
 import usePersistLogin from 'utils/usePersistLogin';
 
 const vSchema = Yup.object().shape({
@@ -92,7 +88,6 @@ const LoginForm = (props) => {
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
-                                            aria-label="toggle password visibility"
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
                                             edge="end"

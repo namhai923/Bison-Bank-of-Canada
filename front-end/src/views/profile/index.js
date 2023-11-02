@@ -1,8 +1,7 @@
 import { Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { toast } from 'react-toastify';
 
-// project imports
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import MainCard from 'components/cards/MainCard';
 import AccountProfile from './AccountProfile';
 import ProFileForm from './ProfileForm';

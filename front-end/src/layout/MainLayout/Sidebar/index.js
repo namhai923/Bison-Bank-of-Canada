@@ -13,8 +13,6 @@ import MenuList from './MenuList';
 import { drawerWidth } from 'assets/data/constant';
 import LogoSection from '../LogoSection';
 
-// ==============================|| SIDEBAR DRAWER ||============================== //
-
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
     const theme = useTheme();
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -48,7 +46,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
     const container = window !== undefined ? () => window.document.body : undefined;
 
     return (
-        <Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }} aria-label="mailbox folders">
+        <Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }}>
             <Drawer
                 container={container}
                 variant={matchUpMd ? 'persistent' : 'temporary'}

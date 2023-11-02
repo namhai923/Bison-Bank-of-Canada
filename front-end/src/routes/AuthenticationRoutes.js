@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
-import Loadable from 'components/Loadable';
+import Loadable from 'components/loader/Loadable';
 
 const Login = Loadable(lazy(() => import('views/authentication/Login')));
 const Register = Loadable(lazy(() => import('views/authentication/Register')));

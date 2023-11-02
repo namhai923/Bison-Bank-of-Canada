@@ -1,16 +1,14 @@
 import { lazy } from 'react';
 
-// project imports
 import MainLayout from 'layout/MainLayout';
-import Loadable from 'components/Loadable';
+import Loadable from 'components/loader/Loadable';
 import PrivateRoute from './PrivateRoute';
 
-// dashboard routing
-const Dashboard = Loadable(lazy(() => import('views/banking/dashboard')));
+const Overview = Loadable(lazy(() => import('views/dashboard/overview')));
 const Profile = Loadable(lazy(() => import('views/profile')));
-const ExpenseHistory = Loadable(lazy(() => import('views/banking/history/ExpenseHistory')));
-const TransferHistory = Loadable(lazy(() => import('views/banking/history/TransferHistory')));
-const SpendMoney = Loadable(lazy(() => import('views/banking/spend-money')));
+const Favor = Loadable(lazy(() => import('views/dashboard/credit/favor')));
+const Debt = Loadable(lazy(() => import('views/dashboard/credit/debt')));
+const Repay = Loadable(lazy(() => import('views/dashboard/repay')));
 const Contacts = Loadable(lazy(() => import('views/social/contacts')));
 const Messenger = Loadable(lazy(() => import('views/social/messenger')));
 
@@ -26,28 +24,28 @@ const MainRoutes = {
     children: [
         {
             path: '',
-            element: <Dashboard />
+            element: <Overview />
         },
         {
             path: 'profile',
             element: <Profile />
         },
         {
-            path: 'spend',
-            element: <SpendMoney />
-        },
-        {
-            path: 'history',
+            path: 'credit',
             children: [
                 {
-                    path: 'expense',
-                    element: <ExpenseHistory />
+                    path: 'favor',
+                    element: <Favor />
                 },
                 {
-                    path: 'transfer',
-                    element: <TransferHistory />
+                    path: 'debt',
+                    element: <Debt />
                 }
             ]
+        },
+        {
+            path: 'repay',
+            element: <Repay />
         },
         {
             path: 'contacts',

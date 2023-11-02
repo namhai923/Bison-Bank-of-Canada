@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 // project imports
 import AuthWrapper from './wrapper/AuthWrapper';
 import AuthCardWrapper from './wrapper/AuthCardWrapper';
-import Logo from 'components/Logo';
+import Logo from 'components/logo/Logo';
 import RegisterForm from './form/RegisterForm';
 import { useRegisterMutation } from 'app/features/auth/authApiSlice';
 
@@ -24,8 +24,7 @@ const Register = () => {
                 userName: values.email,
                 password: values.password,
                 firstName: values.fname,
-                lastName: values.lname,
-                accountBalance: values.balance
+                lastName: values.lname
             }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useTheme } from '@mui/material/styles';
 import { ButtonBase, FormControl, FormHelperText, InputAdornment } from '@mui/material';
-import { IconUser, IconPlus } from '@tabler/icons';
+import { IconUser, IconPlus } from '@tabler/icons-react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { AvatarStyle, OutlineInputStyle } from 'components/styled-input';
@@ -33,6 +33,7 @@ const AddContactForm = (props) => {
                                 type="email"
                                 placeholder="Email / Username"
                                 onChange={handleChange}
+                                autoComplete="off"
                                 name="email"
                                 startAdornment={
                                     <InputAdornment position="start">
@@ -48,8 +49,6 @@ const AddContactForm = (props) => {
                                         </ButtonBase>
                                     </InputAdornment>
                                 }
-                                aria-describedby="search-helper-text"
-                                inputProps={{ 'aria-label': 'weight' }}
                             />
                             {touched.email && errors.email && <FormHelperText error>{errors.email}</FormHelperText>}
                             {errors.submit && <FormHelperText error>{errors.submit}</FormHelperText>}

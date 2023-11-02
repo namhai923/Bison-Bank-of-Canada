@@ -9,10 +9,8 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { drawerWidth } from 'assets/data/constant';
 import { setMenu } from 'app/features/customize/customizeSlice';
-
 import { userApiSlice } from 'app/features/user/userApiSlice';
 
-// styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
     ...theme.typography.mainContent,
     ...(!open && {
@@ -28,14 +26,11 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
         },
         [theme.breakpoints.down('md')]: {
             marginLeft: '20px',
-            width: `calc(100% - ${drawerWidth}px)`,
-            padding: '16px'
+            width: `calc(100% - ${drawerWidth}px)`
         },
         [theme.breakpoints.down('sm')]: {
             marginLeft: '10px',
-            width: `calc(100% - ${drawerWidth}px)`,
-            padding: '16px',
-            marginRight: '10px'
+            width: `calc(100% - ${drawerWidth}px)`
         }
     }),
     ...(open && {
@@ -72,10 +67,15 @@ const MainLayout = () => {
     useEffect(() => {
         if (effectRan.current === true) {
             dispatch(userApiSlice.util.prefetch('getUserInfo', 'userInfo', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getBalance', 'accountBalance', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getExpense', 'expenseHistory', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getTransfer', 'transferHistory', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getFavorSummary', 'favorSummary', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getDebtSummary', 'debtSummary', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getFavorHistory', 'favorHistory', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getDebtHistory', 'debtHistory', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getRepayHistory', 'repayHistory', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getPendingFavor', 'pendingFavor', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getPendingRepay', 'pendingRepay', { force: true }));
             dispatch(userApiSlice.util.prefetch('getContacts', 'contacts', { force: true }));
+            dispatch(userApiSlice.util.prefetch('getNotificationList', 'notificationList', { force: true }));
             dispatch(userApiSlice.util.prefetch('getConversationsInfo', 'conversationsInfo', { force: true }));
         }
         return () => (effectRan.current = true);

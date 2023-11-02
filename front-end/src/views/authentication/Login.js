@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import AuthWrapper from './wrapper/AuthWrapper';
 import AuthCardWrapper from './wrapper/AuthCardWrapper';
 import LoginForm from './form/LoginForm';
-import Logo from 'components/Logo';
+import Logo from 'components/logo/Logo';
 import { useLoginMutation } from 'app/features/auth/authApiSlice';
 
 const Login = () => {

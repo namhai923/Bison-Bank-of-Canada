@@ -1,12 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 let initialState = {
-    location: [],
-    category: [],
-    sender: [],
-    receiver: [],
-    emails: [],
-    currentConversation: null
+    currentConversation: null,
+    notification: 'all'
 };
 
 export let valueSlice = createSlice({

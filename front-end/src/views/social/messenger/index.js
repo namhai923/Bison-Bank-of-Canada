@@ -1,40 +1,120 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { useTheme } from '@mui/material/styles';
-import { Stack, Typography, Grid } from '@mui/material';
+import { Box, ButtonBase, Stack, Typography, Grid, Paper, useMediaQuery } from '@mui/material';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
+import Loader from 'components/loader/Loader';
 import Conversation from './Conversation';
-import Chats from './Chats';
+import ChatDrawer from './ChatDrawer';
 import { gridSpacing } from 'assets/data/constant';
 import SubCard from 'components/cards/SubCard';
 import noConversation from 'assets/images/bison.png';
+import { useGetContactsQuery } from 'app/features/user/userApiSlice';
+import config from 'assets/data/config';
+import { AvatarStyle } from 'components/styled-input';
+import { setChat } from 'app/features/customize/customizeSlice';
 
 const Messeger = () => {
     const theme = useTheme();
+    let dispatch = useDispatch();
+    const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 
-    let { currentConversation } = useSelector((state) => state.value);
+    let currentConversation = useSelector((state) => state.value.currentConversation);
+    let chatOpened = useSelector((state) => state.customization.chatOpened);
 
-    return (
-        <Grid container spacing={gridSpacing}>
-            <Grid item lg={4} md={4} sm={12} xs={4}>
-                <SubCard sx={{ backgroundColor: theme.palette.background.paper }}>
-                    <Chats currentConversation={currentConversation} />
-                </SubCard>
+    const handleChatToggle = () => {
+        let action = setChat(!chatOpened);
+        dispatch(action);
+    };
+
+    let {
+        data: contacts,
+        isLoading: isContactsLoading,
+        isSuccess: isContactsSuccess,
+        isError: isContactsError,
+        error: contactsError
+    } = useGetContactsQuery('contacts', {
+        pollingInterval: config.pollingInterval,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    });
+
+    let content;
+    if (isContactsLoading) content = <Loader />;
+
+    if (isContactsError) {
+        content = <p className="errmsg">{contactsError?.data?.message}</p>;
+    }
+    if (isContactsSuccess) {
+        let currentName = currentConversation;
+        let currentActive;
+        if (currentConversation) {
+            for (let contact of contacts) {
+                if (contact.userName === currentConversation) {
+                    currentName = `${contact.firstName} ${contact.lastName}`;
+                    currentActive = contact.active;
+                }
+            }
+        }
+
+        content = (
+            <Grid container spacing={gridSpacing}>
+                <Grid item xs={12}>
+                    <Paper sx={{ p: 2 }}>
+                        <Typography variant="h3">Messenger</Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Box sx={{ display: 'flex' }}>
+                        <ChatDrawer
+                            contacts={contacts}
+                            currentConversation={currentConversation}
+                            currentName={currentName}
+                            currentActive={currentActive}
+                            chatOpened={!matchDownMd ? chatOpened : !chatOpened}
+                            chatToggle={handleChatToggle}
+                        />
+
+                        <SubCard sx={{ flexGrow: 1 }}>
+                            {currentConversation !== null ? (
+                                <Conversation
+                                    currentConversation={currentConversation}
+                                    currentName={currentName}
+                                    currentActive={currentActive}
+                                    handleChatToggle={handleChatToggle}
+                                    chatOpened={chatOpened}
+                                />
+                            ) : (
+                                <>
+                                    <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
+                                        <AvatarStyle variant="rounded" color={theme.palette.secondary} onClick={handleChatToggle}>
+                                            {chatOpened ? (
+                                                <IconChevronLeft stroke={1.5} size="1.3rem" />
+                                            ) : (
+                                                <IconChevronRight stroke={1.5} size="1.3rem" />
+                                            )}
+                                        </AvatarStyle>
+                                    </ButtonBase>
+
+                                    <Stack height="75vh" spacing={2} alignItems="center" justifyContent="center">
+                                        <img
+                                            src={noConversation}
+                                            alt="Bison Bank of Canada"
+                                            width={matchDownMd ? '100' : '300'}
+                                            height={matchDownMd ? '100' : '300'}
+                                        />
+                                        <Typography variant="subtitle2">Select a conversation or start a new one</Typography>
+                                    </Stack>
+                                </>
+                            )}
+                        </SubCard>
+                    </Box>
+                </Grid>
             </Grid>
-            <Grid item lg={8} md={8} sm={12} xs={8}>
-                <SubCard>
-                    {currentConversation !== null ? (
-                        <Conversation currentConversation={currentConversation} />
-                    ) : (
-                        <Stack height={'80vh'} spacing={2} alignItems="center" justifyContent={'center'}>
-                            <img src={noConversation} alt="Bison Bank of Canada" width="360" height="360" />
-                            <Typography variant="subtitle2">Select a conversation or start a new one</Typography>
-                        </Stack>
-                    )}
-                </SubCard>
-            </Grid>
-        </Grid>
-    );
+        );
+    }
+    return content;
 };
 
 export default Messeger;

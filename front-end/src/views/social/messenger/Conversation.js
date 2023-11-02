@@ -1,28 +1,28 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 
-import { Stack, Box, Divider } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Stack, Box, Divider, useMediaQuery } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import ConverationHeader from './ConversationHeader';
 import ConversationFooter from './ConversationFooter';
 import { TextMsg } from './ConversationElement';
-
-import useResponsive from 'utils/useResponsive';
 import { useGetConversationQuery } from 'app/features/user/userApiSlice';
 import config from 'assets/data/config';
 
 const Conversation = (props) => {
-    let { currentConversation } = props;
+    let { currentConversation, currentName, currentActive, handleChatToggle, chatOpened } = props;
+    let theme = useTheme();
 
-    let { data, isLoading, isSuccess, isError, error } = useGetConversationQuery(currentConversation.userName, {
+    let { data, isLoading, isSuccess, isError, error } = useGetConversationQuery(currentConversation, {
         pollingInterval: config.pollingInterval,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         skip: !currentConversation
     });
-    const isMobile = useResponsive('between', 'md', 'xs', 'sm');
+    const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 
     const [scrollEl, setScrollEl] = useState();
 
@@ -41,15 +41,21 @@ const Conversation = (props) => {
     }
     if (isSuccess) {
         content = (
-            <Stack height={'80vh'} width={isMobile ? '100vw' : 'auto'}>
+            <Stack height="75vh">
                 <Stack spacing={2}>
-                    <ConverationHeader currentConversation={currentConversation} />
+                    <ConverationHeader
+                        currentConversation={currentConversation}
+                        currentName={currentName}
+                        currentActive={currentActive}
+                        handleChatToggle={handleChatToggle}
+                        chatOpened={chatOpened}
+                    />
                     <Divider sx={{ my: 0 }} />
                 </Stack>
 
                 <PerfectScrollbar containerRef={setScrollEl}>
-                    <Box p={isMobile ? 1 : 3}>
-                        <Stack spacing={3}>
+                    <Box p={matchDownMd ? 1 : 3}>
+                        <Stack spacing={matchDownMd ? 1 : 3}>
                             {data.map((messageProps) => (
                                 <TextMsg messageProps={messageProps} />
                             ))}
@@ -57,7 +63,7 @@ const Conversation = (props) => {
                     </Box>
                 </PerfectScrollbar>
 
-                <ConversationFooter userName={currentConversation.userName} />
+                <ConversationFooter currentConversation={currentConversation} />
             </Stack>
         );
     }
@@ -66,7 +72,11 @@ const Conversation = (props) => {
 };
 
 Conversation.propTypes = {
-    currentConversation: PropTypes.object
+    currentConversation: PropTypes.string,
+    currentName: PropTypes.string,
+    currentActive: PropTypes.bool,
+    handleChatToggle: PropTypes.func,
+    chatOpened: PropTypes.bool
 };
 
 export default Conversation;
