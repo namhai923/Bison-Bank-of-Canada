@@ -12,7 +12,8 @@ import StyledInput from 'components/styled-input';
 import MainCard from 'components/cards/MainCard';
 import Loader from 'components/loader/Loader';
 import UtilityBar from 'components/utility-bar/UtilityBar';
-import { useSearchUserMutation, useAddContactMutation } from 'app/features/user/userApiSlice';
+import { useSearchUserMutation } from 'app/features/user/userApiSlice';
+import { useAddContactMutation } from 'app/features/contact/contactApiSlice';
 
 const SearchUserSection = () => {
     const theme = useTheme();

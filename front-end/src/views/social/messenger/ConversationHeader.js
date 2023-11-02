@@ -8,7 +8,7 @@ import { IconTrash, IconUser, IconChevronLeft, IconChevronRight } from '@tabler/
 import { AvatarStyle } from 'components/styled-input';
 import Label from 'components/label';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
-import { useDeleteConversationMutation } from 'app/features/user/userApiSlice';
+import { useDeleteConversationMutation } from 'app/features/messenger/messengerApiSlice';
 import { setValue } from 'app/features/value/valueSlice';
 
 const ConversationHeader = (props) => {

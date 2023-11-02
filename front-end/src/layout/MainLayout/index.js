@@ -10,6 +10,12 @@ import Sidebar from './Sidebar';
 import { drawerWidth } from 'assets/data/constant';
 import { setMenu } from 'app/features/customize/customizeSlice';
 import { userApiSlice } from 'app/features/user/userApiSlice';
+import { favorApiSlice } from 'app/features/favor/favorApiSlice';
+import { debtApiSlice } from 'app/features/debt/debtApiSlice';
+import { repayApiSlice } from 'app/features/repay/repayApiSlice';
+import { notificationApiSlice } from 'app/features/notification/notificationApiSlice';
+import { contactApiSlice } from 'app/features/contact/contactApiSlice';
+import { messengerApiSlice } from 'app/features/messenger/messengerApiSlice';
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
     ...theme.typography.mainContent,
@@ -67,16 +73,16 @@ const MainLayout = () => {
     useEffect(() => {
         if (effectRan.current === true) {
             dispatch(userApiSlice.util.prefetch('getUserInfo', 'userInfo', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getFavorSummary', 'favorSummary', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getDebtSummary', 'debtSummary', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getFavorHistory', 'favorHistory', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getDebtHistory', 'debtHistory', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getRepayHistory', 'repayHistory', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getPendingFavor', 'pendingFavor', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getPendingRepay', 'pendingRepay', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getContacts', 'contacts', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getNotificationList', 'notificationList', { force: true }));
-            dispatch(userApiSlice.util.prefetch('getConversationsInfo', 'conversationsInfo', { force: true }));
+            dispatch(favorApiSlice.util.prefetch('getFavorSummary', 'favorSummary', { force: true }));
+            dispatch(favorApiSlice.util.prefetch('getFavorHistory', 'favorHistory', { force: true }));
+            dispatch(favorApiSlice.util.prefetch('getPendingFavor', 'pendingFavor', { force: true }));
+            dispatch(debtApiSlice.util.prefetch('getDebtSummary', 'debtSummary', { force: true }));
+            dispatch(debtApiSlice.util.prefetch('getDebtHistory', 'debtHistory', { force: true }));
+            dispatch(repayApiSlice.util.prefetch('getRepayHistory', 'repayHistory', { force: true }));
+            dispatch(repayApiSlice.util.prefetch('getPendingRepay', 'pendingRepay', { force: true }));
+            dispatch(contactApiSlice.util.prefetch('getContacts', 'contacts', { force: true }));
+            dispatch(notificationApiSlice.util.prefetch('getNotificationList', 'notificationList', { force: true }));
+            dispatch(messengerApiSlice.util.prefetch('getConversationsInfo', 'conversationsInfo', { force: true }));
         }
         return () => (effectRan.current = true);
     }, [dispatch]);

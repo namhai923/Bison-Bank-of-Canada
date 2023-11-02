@@ -8,12 +8,8 @@ import LineChartCard from './LineChartCard';
 import PieChartCard from './PieChartCard';
 import { gridSpacing } from 'assets/data/constant';
 import BarChartCard from './BarChartCard';
-import {
-    useGetFavorSummaryQuery,
-    useGetDebtSummaryQuery,
-    useGetFavorHistoryQuery,
-    useGetDebtHistoryQuery
-} from 'app/features/user/userApiSlice';
+import { useGetFavorSummaryQuery, useGetFavorHistoryQuery } from 'app/features/favor/favorApiSlice';
+import { useGetDebtSummaryQuery, useGetDebtHistoryQuery } from 'app/features/debt/debtApiSlice';
 import config from 'assets/data/config';
 
 const Overview = () => {

@@ -1,4 +1,4 @@
-const connectedUsers = require("../connectedUsers");
+const { connectedUsers } = require("../utilities");
 const User = require("../models/user.model");
 const asyncHandler = require("express-async-handler");
 const { cache } = require("../cache");

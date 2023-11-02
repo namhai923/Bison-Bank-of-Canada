@@ -27,7 +27,7 @@ import Transitions from 'components/extended/Transitions';
 import NotificationList from './NotificationList';
 import { AvatarStyle } from 'components/styled-input';
 import { setValue } from 'app/features/value/valueSlice';
-import { useGetNotificationListQuery, useMarkReadNotificationMutation } from 'app/features/user/userApiSlice';
+import { useGetNotificationListQuery, useMarkReadNotificationMutation } from 'app/features/notification/notificationApiSlice';
 import config from 'assets/data/config';
 
 const status = [

@@ -12,7 +12,7 @@ import {
     useGetPendingRepayQuery,
     useMakeRepayRequestMutation,
     useResponseRepayMutation
-} from 'app/features/user/userApiSlice';
+} from 'app/features/repay/repayApiSlice';
 import config from 'assets/data/config';
 
 let Repay = () => {

@@ -6,7 +6,7 @@ import FavorHistory from './FavorHistory';
 import FavorSummary from './FavorSummary';
 import MakeRequestCard from 'components/cards/request-card/MakeRequestCard';
 import { gridSpacing } from 'assets/data/constant';
-import { useGetFavorSummaryQuery, useGetFavorHistoryQuery, useMakeFavorRequestMutation } from 'app/features/user/userApiSlice';
+import { useGetFavorSummaryQuery, useGetFavorHistoryQuery, useMakeFavorRequestMutation } from 'app/features/favor/favorApiSlice';
 import config from 'assets/data/config';
 
 const Favor = () => {
