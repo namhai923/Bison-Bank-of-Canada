@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Badge, Stack, Avatar, Typography, ListItemButton, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { shouldForwardProp } from '@mui/system';
+import moment from 'moment/moment';
 
 import alphabetAvatar from 'assets/images/alphabetAvatar';
 import { IconUser } from '@tabler/icons-react';
-import { displayTime } from 'utils/timeUtils';
 import { setValue } from 'app/features/value/valueSlice';
 
 const truncateText = (string, n) => {
@@ -86,8 +86,7 @@ const ChatElement = (props) => {
             }}
             selected={isSelected}
         >
-            <Grid container alignItems={'center'} justifyContent="space-between">
-                <Grid container></Grid>
+            <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>
                     <Stack direction="row" spacing={2}>
                         {active === null ? (
@@ -109,9 +108,20 @@ const ChatElement = (props) => {
                     </Stack>
                 </Grid>
                 <Grid item>
-                    <Stack spacing={1.5} alignItems={'center'}>
+                    <Stack spacing={1.5} alignItems="center">
                         <Typography sx={{ fontWeight: 600 }} variant="caption">
-                            {latestMessage && displayTime(new Date(latestMessage.updatedAt))}
+                            {latestMessage &&
+                                moment(latestMessage.updatedAt).calendar({
+                                    sameDay: 'LT',
+                                    lastWeek: 'ddd LT',
+                                    sameElse: function (now) {
+                                        if (this.isSame(now, 'year')) {
+                                            return 'MMM D, LT';
+                                        } else {
+                                            return 'DD/MM/Y';
+                                        }
+                                    }
+                                })}
                         </Typography>
                         <Badge className="unread-count" color="secondary" badgeContent={unRead} />
                     </Stack>

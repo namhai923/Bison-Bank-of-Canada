@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 
+import { useTheme } from '@mui/material/styles';
 import {
     FormHelperText,
-    Box,
     Button,
     CardActions,
     CardContent,
     CardHeader,
-    Divider,
     TextField,
+    useMediaQuery,
     Unstable_Grid2 as Grid
 } from '@mui/material';
 import * as Yup from 'yup';
@@ -16,8 +16,8 @@ import { Formik, Form, FastField } from 'formik';
 import { matchIsValidTel } from 'mui-tel-input';
 
 import SubCard from 'components/cards/SubCard';
-import CustomDatePicker from 'components/extended/CustomDatePicker';
-import CustomTelInput from 'components/extended/CustomTelInput';
+import CustomDatePicker from 'components/date-picker/CustomDatePicker';
+import CustomTelInput from 'components/tel-input/CustomTelInput';
 
 const vSchema = Yup.object().shape({
     fname: Yup.string()
@@ -41,6 +41,8 @@ function validPhone(value) {
 
 let ProfileForm = (props) => {
     let { firstName, lastName, dob, phoneNumber, handleSubmit } = props;
+    const theme = useTheme();
+    const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
         <SubCard>
@@ -57,45 +59,42 @@ let ProfileForm = (props) => {
                 {({ errors, handleChange, isSubmitting, touched, values }) => (
                     <Form>
                         <CardHeader subheader="The information can be edited" title="Profile" />
-                        <CardContent sx={{ pt: 0 }}>
-                            <Box sx={{ m: -1.5 }}>
-                                <Grid container spacing={3}>
-                                    <Grid xs={12} md={6}>
-                                        <TextField
-                                            fullWidth
-                                            label="First name"
-                                            name="fname"
-                                            type="text"
-                                            onChange={handleChange}
-                                            required
-                                            value={values.fname}
-                                        />
-                                        {touched.fname && errors.fname && <FormHelperText error>{errors.fname}</FormHelperText>}
-                                    </Grid>
-                                    <Grid xs={12} md={6}>
-                                        <TextField
-                                            fullWidth
-                                            label="Last name"
-                                            name="lname"
-                                            type="text"
-                                            onChange={handleChange}
-                                            required
-                                            value={values.lname}
-                                        />
-                                        {touched.lname && errors.lname && <FormHelperText error>{errors.lname}</FormHelperText>}
-                                    </Grid>
-                                    <Grid xs={12} md={6}>
-                                        <FastField name="dob" component={CustomDatePicker} label="Date of Birth" />
-                                        {errors.dob && touched.dob && <FormHelperText error>{errors.dob}</FormHelperText>}
-                                    </Grid>
-                                    <Grid xs={12} md={6}>
-                                        <FastField name="phone" component={CustomTelInput} label="Phone number" validate={validPhone} />
-                                        {errors.phone && touched.phone && <FormHelperText error>{errors.phone}</FormHelperText>}
-                                    </Grid>
+                        <CardContent sx={{ p: 0 }}>
+                            <Grid container spacing={matchDownSM ? 2 : 2}>
+                                <Grid xs={12} md={6}>
+                                    <TextField
+                                        fullWidth
+                                        label="First name"
+                                        name="fname"
+                                        type="text"
+                                        onChange={handleChange}
+                                        required
+                                        value={values.fname}
+                                    />
+                                    {touched.fname && errors.fname && <FormHelperText error>{errors.fname}</FormHelperText>}
                                 </Grid>
-                            </Box>
+                                <Grid xs={12} md={6}>
+                                    <TextField
+                                        fullWidth
+                                        label="Last name"
+                                        name="lname"
+                                        type="text"
+                                        onChange={handleChange}
+                                        required
+                                        value={values.lname}
+                                    />
+                                    {touched.lname && errors.lname && <FormHelperText error>{errors.lname}</FormHelperText>}
+                                </Grid>
+                                <Grid xs={12} md={6}>
+                                    <FastField name="dob" component={CustomDatePicker} label="Date of Birth" />
+                                    {errors.dob && touched.dob && <FormHelperText error>{errors.dob}</FormHelperText>}
+                                </Grid>
+                                <Grid xs={12} md={6}>
+                                    <FastField name="phone" component={CustomTelInput} label="Phone number" validate={validPhone} />
+                                    {errors.phone && touched.phone && <FormHelperText error>{errors.phone}</FormHelperText>}
+                                </Grid>
+                            </Grid>
                         </CardContent>
-                        <Divider />
                         <CardActions sx={{ justifyContent: 'flex-end' }}>
                             <Button disableElevation type="submit" disabled={isSubmitting} variant="contained">
                                 Save details

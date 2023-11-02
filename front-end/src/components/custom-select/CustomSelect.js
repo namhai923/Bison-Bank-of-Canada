@@ -1,12 +1,9 @@
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
 
 import chroma from 'chroma-js';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
-
-import { setValue } from 'app/features/value/valueSlice';
 
 const colourStyles = {
     control: (styles) => ({ ...styles, backgroundColor: 'white' }),
@@ -48,7 +45,8 @@ const colourStyles = {
             backgroundColor: data.color,
             color: 'white'
         }
-    })
+    }),
+    menuPortal: (base) => ({ ...base, zIndex: 9999 })
 };
 
 const animatedComponents = makeAnimated();
@@ -62,16 +60,12 @@ let getOptions = (data, color) => {
 };
 
 let CustomSelect = (props) => {
-    let { field, data, form, optionValue, color, placeholder, creatable } = props;
+    let { field, data, form, optionValue, defaultSelected, handleSelectChange, color, placeholder, creatable, selectRef } = props;
     let { name } = field;
-
-    let dispatch = useDispatch();
-    let selectInfo = useSelector((state) => state.value);
 
     let handleChange = (selectedOptions) => {
         let selected = selectedOptions.map((item) => item.value);
-        let action = setValue({ type: name, value: selected });
-        dispatch(action);
+        handleSelectChange(selected);
         form.setFieldValue(name, selected);
     };
 
@@ -89,11 +83,13 @@ let CustomSelect = (props) => {
                             data.map((item) => item[optionValue]),
                             color
                         )}
-                        defaultValue={getOptions(selectInfo[name], color)}
+                        ref={selectRef}
+                        defaultValue={getOptions(defaultSelected, color)}
                         components={animatedComponents}
                         closeMenuOnSelect={false}
                         placeholder={placeholder}
                         onChange={handleChange}
+                        menuPortalTarget={document.body}
                     />
                 </>
             ) : (
@@ -108,11 +104,13 @@ let CustomSelect = (props) => {
                             data.map((item) => item[optionValue]),
                             color
                         )}
-                        defaultValue={getOptions(selectInfo[name], color)}
+                        ref={selectRef}
+                        defaultValue={getOptions(defaultSelected, color)}
                         components={animatedComponents}
                         closeMenuOnSelect={false}
                         placeholder={placeholder}
                         onChange={handleChange}
+                        menuPortalTarget={document.body}
                     />
                 </>
             )}
@@ -125,9 +123,12 @@ CustomSelect.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     form: PropTypes.object,
     optionValue: PropTypes.string,
+    defaultSelected: PropTypes.arrayOf(PropTypes.string),
+    handleSelectChange: PropTypes.func,
     color: PropTypes.string,
     placeholder: PropTypes.string,
-    creatable: PropTypes.bool
+    creatable: PropTypes.bool,
+    selectRef: PropTypes.object
 };
 
 export default CustomSelect;

@@ -1,11 +1,11 @@
-import { Grid, Stack, Paper, Typography } from '@mui/material';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Grid, Paper, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import RepayHistory from './RepayHistory';
-import MakeRequestCard from '../MakeRequestCard';
-import ResponseCard from '../ResponseCard';
+import MakeRequestCard from 'components/cards/request-card/MakeRequestCard';
+import ResponseCard from 'components/cards/ResponseCard';
 import { gridSpacing } from 'assets/data/constant';
 import {
     useGetRepayHistoryQuery,
@@ -44,9 +44,9 @@ let Repay = () => {
     let handleMakeRequest = async (values) => {
         toast.promise(
             makeRepayRequest({
-                accounts: values.emails,
-                amount: values.amount,
-                description: values.description
+                accounts: values['repayRequestEmails'],
+                amount: values['repayRequestAmount'],
+                description: values['repayRequestDescription']
             }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',
@@ -97,20 +97,28 @@ let Repay = () => {
                         <Typography variant="h3">Repay</Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                    <MakeRequestCard title="Make Repay Request" handleSubmit={handleMakeRequest} />
+                {pendingRepay.length !== 0 && (
+                    <Grid item xs={12}>
+                        <MainCard title="Pending Favor Request">
+                            <PerfectScrollbar style={{ maxHeight: '50vh', overflowX: 'hidden' }}>
+                                <Grid container spacing={gridSpacing}>
+                                    {pendingRepay.map((repay) => {
+                                        return (
+                                            <Grid item xs={12} sm={6} md={4} lg={3}>
+                                                <ResponseCard id={repay.repayId} data={repay} handleSubmit={handleResponse} />
+                                            </Grid>
+                                        );
+                                    })}
+                                </Grid>
+                            </PerfectScrollbar>
+                        </MainCard>
+                    </Grid>
+                )}
+                <Grid item xs={12} sm={5}>
+                    <MakeRequestCard title="Make Repay Request" name="repayRequest" handleSubmit={handleMakeRequest} />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={7}>
                     <RepayHistory data={repayHistory} />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <PerfectScrollbar>
-                        <Stack>
-                            {pendingRepay.map((repay) => {
-                                return <ResponseCard id={repay.repayId} data={repay} handleSubmit={handleResponse}></ResponseCard>;
-                            })}
-                        </Stack>
-                    </PerfectScrollbar>
                 </Grid>
             </Grid>
         );

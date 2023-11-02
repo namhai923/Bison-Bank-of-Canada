@@ -1,6 +1,4 @@
 import { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import {
     Table,
@@ -15,33 +13,30 @@ import {
     TableBody,
     TableCell,
     Typography,
-    IconButton,
     TableContainer,
     TablePagination,
     Box,
     Grid,
-    Tooltip
+    useMediaQuery
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { toast } from 'react-toastify';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
-import { IconUser, IconTrash, IconMessageCircle, IconCoins } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import Label from 'components/label';
 import SubCard from 'components/cards/SubCard';
 import ContactsListHead from './ContactsListHead';
 import ContactsListToolbar from './ContactsListToolbar';
 import AddContactForm from './AddContactForm';
+import Transitions from 'components/extended/Transitions';
+import UtilityBar from 'components/utility-bar/UtilityBar';
 import { useAddContactMutation, useGetContactsQuery, useRemoveContactMutation } from 'app/features/user/userApiSlice';
 import config from 'assets/data/config';
 import { gridSpacing } from 'assets/data/constant';
-
-import Transitions from 'components/extended/Transitions';
-import { setValue } from 'app/features/value/valueSlice';
-import { openMenu } from 'app/features/customize/customizeSlice';
 
 const TABLE_HEAD = [
     { id: 'name', label: 'Name', alignRight: false },
@@ -79,6 +74,8 @@ function applySortFilter(array, comparator, query) {
 
 const Contacts = () => {
     let theme = useTheme();
+    const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
+
     let {
         data: contacts,
         isLoading,
@@ -168,20 +165,6 @@ const Contacts = () => {
         });
     };
 
-    let dispatch = useDispatch();
-    let navigate = useNavigate();
-    let handleMessage = (selectedUser) => {
-        dispatch(setValue({ type: 'currentConversation', value: selectedUser }));
-        dispatch(openMenu('messenger'));
-        navigate('/messenger');
-    };
-
-    let handleTransfer = (selectedContacts) => {
-        dispatch(setValue({ type: 'emails', value: selectedContacts }));
-        dispatch(openMenu('spend'));
-        navigate('/spend');
-    };
-
     let [removeContact] = useRemoveContactMutation();
     let handleRemoveContacts = async (removeContacts) => {
         toast.promise(removeContact({ removeContacts }).unwrap(), {
@@ -218,9 +201,9 @@ const Contacts = () => {
             <Grid container spacing={gridSpacing}>
                 <Grid item xs={12}>
                     <Paper>
-                        <Grid container alignItems={'center'} justifyContent={'space-between'} sx={{ p: 2 }}>
+                        <Grid container alignItems="center" justifyContent="space-between" sx={{ p: 2 }}>
                             <Grid item>
-                                <Typography align={'center'} variant="h3">
+                                <Typography align="center" variant="h3">
                                     Contacts
                                 </Typography>
                             </Grid>
@@ -244,7 +227,6 @@ const Contacts = () => {
                                     selected={selected}
                                     filterName={filterName}
                                     onFilterName={handleFilterByName}
-                                    handleTransfer={handleTransfer}
                                     handleRemoveContacts={handleRemoveContacts}
                                 />
                                 <SubCard>
@@ -308,31 +290,16 @@ const Contacts = () => {
                                                                         </Label>
                                                                     </TableCell>
 
-                                                                    <TableCell padding="none" align="right" width="20%">
-                                                                        {display === userName && (
-                                                                            <>
-                                                                                <Tooltip title="Message">
-                                                                                    <IconButton onClick={() => handleMessage(userName)}>
-                                                                                        <IconMessageCircle stroke={1.5} size="1.3rem" />
-                                                                                    </IconButton>
-                                                                                </Tooltip>
-                                                                                <Tooltip title="Transfer">
-                                                                                    <IconButton onClick={() => handleTransfer([userName])}>
-                                                                                        <IconCoins stroke={1.5} size="1.3rem" />
-                                                                                    </IconButton>
-                                                                                </Tooltip>
-                                                                                <Tooltip title="Remove contact">
-                                                                                    <IconButton
-                                                                                        onClick={() => handleRemoveContacts([userName])}
-                                                                                    >
-                                                                                        <IconTrash
-                                                                                            stroke={1.5}
-                                                                                            size="1.3rem"
-                                                                                            color={theme.palette.error.dark}
-                                                                                        />
-                                                                                    </IconButton>
-                                                                                </Tooltip>
-                                                                            </>
+                                                                    <TableCell padding="none" align="right" width="25%">
+                                                                        {(matchesXs || display === userName) && (
+                                                                            <UtilityBar
+                                                                                singleValue={userName}
+                                                                                multipleValues={[userName]}
+                                                                                sendMessage
+                                                                                favorRequest
+                                                                                repayRequest
+                                                                                handleRemoveContacts={handleRemoveContacts}
+                                                                            ></UtilityBar>
                                                                         )}
                                                                     </TableCell>
                                                                 </TableRow>

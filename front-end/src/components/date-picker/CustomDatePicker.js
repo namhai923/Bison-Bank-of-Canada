@@ -1,26 +1,24 @@
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { TextField } from '@mui/material';
 
-import { setValue } from 'app/features/value/valueSlice';
-
 let CustomDatePicker = (props) => {
-    let { label, field, form } = props;
+    let { label, field, form, handleDateChange } = props;
     let { name } = field;
-    let dispatch = useDispatch();
 
-    let handleChange = (value) => {
-        let action;
-        if (value === null) {
-            action = setValue({ type: name, value: value });
-        } else {
-            action = setValue({ type: name, value: value.toISOString() });
-        }
-        dispatch(action);
-        form.setFieldValue(name, value);
+    let handleChange = handleDateChange
+        ? (value) => {
+              handleDateChange(value);
+              form.setFieldValue(name, value);
+          }
+        : (value) => {
+              form.setFieldValue(name, value);
+          };
+
+    let handleKeyDown = (event) => {
+        event.preventDefault();
     };
 
     return (
@@ -31,7 +29,8 @@ let CustomDatePicker = (props) => {
                 label={label}
                 onChange={handleChange}
                 fullWidth
-                renderInput={(params) => <TextField {...params} fullWidth />}
+                disableFuture
+                renderInput={(params) => <TextField autoComplete="off" onKeyDown={handleKeyDown} {...params} fullWidth />}
             />
         </LocalizationProvider>
     );
@@ -40,7 +39,8 @@ let CustomDatePicker = (props) => {
 CustomDatePicker.propTypes = {
     label: PropTypes.string,
     field: PropTypes.object,
-    form: PropTypes.object
+    form: PropTypes.object,
+    handleDateChange: PropTypes.func
 };
 
 export default CustomDatePicker;

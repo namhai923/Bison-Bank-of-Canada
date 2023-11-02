@@ -1,7 +1,8 @@
+import jwtDecode from 'jwt-decode';
+
 import { apiSlice } from 'app/api/apiSlice';
 import getSocket from 'app/getSocket';
 import store from 'app/store';
-import jwtDecode from 'jwt-decode';
 
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({

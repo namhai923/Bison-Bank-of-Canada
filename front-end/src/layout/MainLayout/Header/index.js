@@ -4,7 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { Box, ButtonBase, useMediaQuery } from '@mui/material';
 import { IconMenu2 } from '@tabler/icons-react';
 
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import NotificationSection from './NotificationSection';
 import ProfileSection from './ProfileSection';
 import WelcomeSection from './WelcomeSection';

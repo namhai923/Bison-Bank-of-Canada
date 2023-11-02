@@ -9,10 +9,8 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { drawerWidth } from 'assets/data/constant';
 import { setMenu } from 'app/features/customize/customizeSlice';
-
 import { userApiSlice } from 'app/features/user/userApiSlice';
 
-// styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
     ...theme.typography.mainContent,
     ...(!open && {
@@ -28,14 +26,11 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
         },
         [theme.breakpoints.down('md')]: {
             marginLeft: '20px',
-            width: `calc(100% - ${drawerWidth}px)`,
-            padding: '16px'
+            width: `calc(100% - ${drawerWidth}px)`
         },
         [theme.breakpoints.down('sm')]: {
             marginLeft: '10px',
-            width: `calc(100% - ${drawerWidth}px)`,
-            padding: '16px',
-            marginRight: '10px'
+            width: `calc(100% - ${drawerWidth}px)`
         }
     }),
     ...(open && {

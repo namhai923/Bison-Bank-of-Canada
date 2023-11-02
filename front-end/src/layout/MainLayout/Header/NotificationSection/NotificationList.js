@@ -18,18 +18,18 @@ import {
     Typography
 } from '@mui/material';
 import { IconUser, IconTrash } from '@tabler/icons-react';
+import moment from 'moment/moment';
 
 import alphabetAvatar from 'assets/images/alphabetAvatar';
-import { displayTime } from 'utils/timeUtils';
 import { useDeleteNotificationMutation } from 'app/features/user/userApiSlice';
 
 let notificationType = {
-    'favor:request': { message: 'Send you a favor request', url: '/history/debt' },
-    'repay:request': { message: 'Send you a repay request', url: '/history/repay' },
-    'favor:accept': { message: 'Accept your favor request', url: '/history/favor' },
-    'repay:accept': { message: 'Accept your repay request', url: '/history/repay' },
-    'favor:decline': { message: 'Decline your favor request', url: '/history/favor' },
-    'repay:decline': { message: 'Decline your repay request', url: '/history/repay' },
+    'favor:request': { message: 'Send you a favor request', url: '/credit/debt' },
+    'repay:request': { message: 'Send you a repay request', url: '/repay' },
+    'favor:accept': { message: 'Accept your favor request', url: '/credit/favor' },
+    'repay:accept': { message: 'Accept your repay request', url: '/repay' },
+    'favor:decline': { message: 'Decline your favor request', url: '/credit/favor' },
+    'repay:decline': { message: 'Decline your repay request', url: '/repay' },
     'contact:add': { message: 'Add your account to their contact', url: '' }
 };
 
@@ -130,7 +130,13 @@ const NotificationList = (props) => {
                                             <Grid container justifyContent="flex-end">
                                                 <Grid item xs={12}>
                                                     <Tooltip title="Delete notification">
-                                                        <IconButton edge="end" onClick={() => handleDeleteNotification(notificationId)}>
+                                                        <IconButton
+                                                            edge="end"
+                                                            onClick={(event) => {
+                                                                event.stopPropagation();
+                                                                handleDeleteNotification(notificationId);
+                                                            }}
+                                                        >
                                                             <IconTrash stroke={1.5} size="1.3rem" color={theme.palette.error.dark} />
                                                         </IconButton>
                                                     </Tooltip>
@@ -143,9 +149,9 @@ const NotificationList = (props) => {
                                             <Typography variant="subtitle2">{notificationType[type].message}</Typography>
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <Grid container justifyContent={'space-between'}>
+                                            <Grid container justifyContent="space-between">
                                                 <Grid item>
-                                                    <Typography variant="caption">{displayTime(new Date(createdAt))}</Typography>
+                                                    <Typography variant="caption">{moment(createdAt).fromNow()}</Typography>
                                                 </Grid>
                                                 {!read && (
                                                     <Grid item>

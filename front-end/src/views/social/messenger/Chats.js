@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { IconButton, Typography, Stack, Paper, Divider } from '@mui/material';
+import { Typography, Stack, Paper, Divider } from '@mui/material';
 import { IconMessages, IconMessageSearch } from '@tabler/icons-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import ChatElement from './ChatElement';
 import StyledInput from 'components/styled-input';
 import { useGetConversationsInfoQuery } from 'app/features/user/userApiSlice';
@@ -80,14 +80,12 @@ const Chats = (props) => {
         const isNotFound = !filteredConversations.length && !!filterName;
 
         content = (
-            <Stack spacing={2} sx={{ height: '80vh' }}>
-                <Stack alignItems={'center'} justifyContent="space-between" direction="row">
+            <Stack spacing={2} sx={{ height: '75vh' }}>
+                <Stack alignItems="center" justifyContent="space-between" direction="row">
                     <Typography variant="h2">Chats</Typography>
 
-                    <Stack direction={'row'} alignItems="center" spacing={1}>
-                        <IconButton>
-                            <IconMessages />
-                        </IconButton>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                        <IconMessages />
                     </Stack>
                 </Stack>
                 <StyledInput
@@ -95,7 +93,6 @@ const Chats = (props) => {
                     onChange={handleFilterByName}
                     placeholder="Search conversation"
                     StartIcon={IconMessageSearch}
-                    MobileIcon={IconMessageSearch}
                 ></StyledInput>
 
                 {isNotFound && (

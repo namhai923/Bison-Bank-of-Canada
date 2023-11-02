@@ -33,6 +33,7 @@ const AddContactForm = (props) => {
                                 type="email"
                                 placeholder="Email / Username"
                                 onChange={handleChange}
+                                autoComplete="off"
                                 name="email"
                                 startAdornment={
                                     <InputAdornment position="start">
@@ -48,8 +49,6 @@ const AddContactForm = (props) => {
                                         </ButtonBase>
                                     </InputAdornment>
                                 }
-                                aria-describedby="search-helper-text"
-                                inputProps={{ 'aria-label': 'weight' }}
                             />
                             {touched.email && errors.email && <FormHelperText error>{errors.email}</FormHelperText>}
                             {errors.submit && <FormHelperText error>{errors.submit}</FormHelperText>}

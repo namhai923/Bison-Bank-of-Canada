@@ -21,7 +21,7 @@ import {
 import { IconBell } from '@tabler/icons-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import MainCard from 'components/cards/MainCard';
 import Transitions from 'components/extended/Transitions';
 import NotificationList from './NotificationList';
@@ -189,7 +189,9 @@ const NotificationSection = () => {
                                                                     return (
                                                                         <ListItemButton
                                                                             sx={{
-                                                                                borderRadius: `${customization.borderRadius}px`
+                                                                                borderRadius: `${customization.borderRadius}px`,
+                                                                                pt: 1,
+                                                                                pb: 1
                                                                             }}
                                                                             selected={selected}
                                                                             onClick={() => handleNotificationClick(option.value)}

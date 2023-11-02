@@ -1,14 +1,14 @@
 import { lazy } from 'react';
 
 import MainLayout from 'layout/MainLayout';
-import Loadable from 'components/Loadable';
+import Loadable from 'components/loader/Loadable';
 import PrivateRoute from './PrivateRoute';
 
 const Overview = Loadable(lazy(() => import('views/dashboard/overview')));
 const Profile = Loadable(lazy(() => import('views/profile')));
-const Favor = Loadable(lazy(() => import('views/dashboard/history/favor')));
-const Debt = Loadable(lazy(() => import('views/dashboard/history/debt')));
-const Repay = Loadable(lazy(() => import('views/dashboard/history/repay')));
+const Favor = Loadable(lazy(() => import('views/dashboard/credit/favor')));
+const Debt = Loadable(lazy(() => import('views/dashboard/credit/debt')));
+const Repay = Loadable(lazy(() => import('views/dashboard/repay')));
 const Contacts = Loadable(lazy(() => import('views/social/contacts')));
 const Messenger = Loadable(lazy(() => import('views/social/messenger')));
 
@@ -31,7 +31,7 @@ const MainRoutes = {
             element: <Profile />
         },
         {
-            path: 'history',
+            path: 'credit',
             children: [
                 {
                     path: 'favor',
@@ -40,12 +40,12 @@ const MainRoutes = {
                 {
                     path: 'debt',
                     element: <Debt />
-                },
-                {
-                    path: 'repay',
-                    element: <Repay />
                 }
             ]
+        },
+        {
+            path: 'repay',
+            element: <Repay />
         },
         {
             path: 'contacts',

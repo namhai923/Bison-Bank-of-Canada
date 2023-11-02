@@ -8,7 +8,8 @@ let initialState = {
     defaultId: 'overview',
     fontFamily: config.fontFamily,
     borderRadius: config.borderRadius,
-    opened: true
+    opened: true,
+    chatOpened: true
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
@@ -23,10 +24,13 @@ export let customizationSlice = createSlice({
         },
         setMenu: (state, action) => {
             return { ...state, opened: action.payload };
+        },
+        setChat: (state, action) => {
+            return { ...state, chatOpened: action.payload };
         }
     }
 });
 
 let { reducer, actions } = customizationSlice;
-export let { openMenu, setMenu } = actions;
+export let { openMenu, setMenu, setChat } = actions;
 export default reducer;

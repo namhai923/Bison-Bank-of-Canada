@@ -1,17 +1,15 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Typography } from '@mui/material';
 import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
 
-// project imports
 import MainCard from 'components/cards/MainCard';
 import { gridSpacing } from 'assets/data/constant';
 import barChartData from 'components/chart/barChartData';
-import { filterAmountByTime } from 'utils/timeUtils';
+import timeFilter from 'utils/timeFilter';
 
 let createChartData = (favor, debt) => {
     let chartData = {};
@@ -20,8 +18,8 @@ let createChartData = (favor, debt) => {
 
     for (let i = 0; i < 12; i++) {
         let firstDayOfMonth = new Date(new Date().getFullYear(), i, 1);
-        let monthlyFavor = filterAmountByTime('month', firstDayOfMonth, favor);
-        let monthlyDebt = filterAmountByTime('month', firstDayOfMonth, debt);
+        let monthlyFavor = timeFilter('month', firstDayOfMonth, favor);
+        let monthlyDebt = timeFilter('month', firstDayOfMonth, debt);
         chartData.favor.push(
             monthlyFavor
                 .reduce((total, current) => {

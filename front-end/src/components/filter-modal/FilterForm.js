@@ -7,17 +7,16 @@ import { Form, FastField, Formik } from 'formik';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Typography, TextField } from '@mui/material';
 
-import CustomDatePicker from 'components/extended/CustomDatePicker';
+import CustomDatePicker from 'components/date-picker/CustomDatePicker';
 import CustomSelect from 'components/custom-select/CustomSelect';
 import NumericFormatCustom from 'utils/NumericFormatCustom';
-import { setValue } from 'app/features/value/valueSlice';
+import { setFilter } from 'app/features/filter/filterSlice';
 
 const FilterForm = (props) => {
-    let { data, filterData } = props;
+    let { data, filterData, formikRef, selectRef } = props;
     let theme = useTheme();
     let dispatch = useDispatch();
-
-    let filterInfo = useSelector((state) => state.value);
+    let filterInfo = useSelector((state) => state.filter);
 
     let initialValues = {};
 
@@ -30,16 +29,37 @@ const FilterForm = (props) => {
         }
     });
 
+    let filterDateChange = (name) => {
+        let handleDateChange = (value) => {
+            let action;
+            if (value === null) {
+                action = setFilter({ type: name, value: value });
+            } else {
+                action = setFilter({ type: name, value: value.toISOString() });
+            }
+            dispatch(action);
+        };
+        return handleDateChange;
+    };
+
+    let filterSelectChange = (name) => {
+        let handleSelectChange = (selectedValues) => {
+            let action = setFilter({ type: name, value: selectedValues });
+            dispatch(action);
+        };
+        return handleSelectChange;
+    };
+
     return (
         <>
-            <Formik initialValues={initialValues}>
+            <Formik initialValues={initialValues} innerRef={formikRef}>
                 {({ values }) => {
                     return (
                         <Form>
                             <Grid container spacing={1}>
                                 {filterData.map((filter) => {
                                     let formInput;
-                                    if (filter.type === 'userName') {
+                                    if (filter.type === 'emails') {
                                         formInput = (
                                             <Grid item xs={12}>
                                                 <FastField
@@ -47,7 +67,10 @@ const FilterForm = (props) => {
                                                     placeholder={`--Filter by ${filter.label.toLowerCase()}`}
                                                     component={CustomSelect}
                                                     data={data}
-                                                    optionValue={'userName'}
+                                                    selectRef={selectRef}
+                                                    defaultSelected={filterInfo[filter.name]}
+                                                    handleSelectChange={filterSelectChange(filter.name)}
+                                                    optionValue="userName"
                                                     color={theme.palette.primary.main}
                                                 />
                                             </Grid>
@@ -57,7 +80,12 @@ const FilterForm = (props) => {
                                             <>
                                                 <Grid container alignItems="center" justifyContent="space-between">
                                                     <Grid item xs={5}>
-                                                        <FastField name={`${filter.name}From`} component={CustomDatePicker} />
+                                                        <FastField
+                                                            name={`${filter.name}From`}
+                                                            handleDateChange={filterDateChange(`${filter.name}From`)}
+                                                            label="From"
+                                                            component={CustomDatePicker}
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={2}>
                                                         <Typography align="center" variant="h3">
@@ -65,7 +93,12 @@ const FilterForm = (props) => {
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item xs={5}>
-                                                        <FastField name={`${filter.name}To`} component={CustomDatePicker} />
+                                                        <FastField
+                                                            name={`${filter.name}To`}
+                                                            handleDateChange={filterDateChange(`${filter.name}To`)}
+                                                            label="To"
+                                                            component={CustomDatePicker}
+                                                        />
                                                     </Grid>
                                                 </Grid>
                                             </>
@@ -76,7 +109,7 @@ const FilterForm = (props) => {
                                                 <Grid container alignItems="center" justifyContent="space-between">
                                                     <Grid item xs={5}>
                                                         <FastField>
-                                                            {() => (
+                                                            {({ form }) => (
                                                                 <TextField
                                                                     fullWidth
                                                                     placeholder="From"
@@ -85,11 +118,12 @@ const FilterForm = (props) => {
                                                                     autoComplete="off"
                                                                     required
                                                                     onChange={(event) => {
-                                                                        let action = setValue({
+                                                                        let action = setFilter({
                                                                             type: event.target.name,
                                                                             value: event.target.value
                                                                         });
                                                                         dispatch(action);
+                                                                        form.setFieldValue(`${filter.name}From`, event.target.value);
                                                                     }}
                                                                     InputProps={{
                                                                         inputComponent: NumericFormatCustom
@@ -105,7 +139,7 @@ const FilterForm = (props) => {
                                                     </Grid>
                                                     <Grid item xs={5}>
                                                         <FastField>
-                                                            {() => (
+                                                            {({ form }) => (
                                                                 <TextField
                                                                     fullWidth
                                                                     placeholder="To"
@@ -114,11 +148,12 @@ const FilterForm = (props) => {
                                                                     autoComplete="off"
                                                                     required
                                                                     onChange={(event) => {
-                                                                        let action = setValue({
+                                                                        let action = setFilter({
                                                                             type: event.target.name,
                                                                             value: event.target.value
                                                                         });
                                                                         dispatch(action);
+                                                                        form.setFieldValue(`${filter.name}To`, event.target.value);
                                                                     }}
                                                                     InputProps={{
                                                                         inputComponent: NumericFormatCustom
@@ -155,7 +190,9 @@ const FilterForm = (props) => {
 
 FilterForm.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
-    filterData: PropTypes.arrayOf(PropTypes.object)
+    filterData: PropTypes.arrayOf(PropTypes.object),
+    formikRef: PropTypes.object,
+    selectRef: PropTypes.object
 };
 
 export default FilterForm;

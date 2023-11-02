@@ -1,30 +1,18 @@
 import { useState, useRef } from 'react';
 
 import { useTheme } from '@mui/material/styles';
-import {
-    Box,
-    Paper,
-    Popper,
-    TableContainer,
-    Table,
-    TableBody,
-    TableRow,
-    TableCell,
-    Tooltip,
-    IconButton,
-    useMediaQuery,
-    Typography
-} from '@mui/material';
+import { Box, Paper, Popper, TableContainer, Table, TableBody, TableRow, TableCell, useMediaQuery, Typography } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { IconUserSearch } from '@tabler/icons-react';
+import { IconUserSearch, IconBackspaceFilled } from '@tabler/icons-react';
 import escapeStringRegexp from 'escape-string-regexp';
-import { IconBackspaceFilled, IconMessageCircle, IconCoins, IconPlus } from '@tabler/icons-react';
+import { toast } from 'react-toastify';
 
 import Transitions from 'components/extended/Transitions';
 import StyledInput from 'components/styled-input';
-import { useSearchUserMutation } from 'app/features/user/userApiSlice';
 import MainCard from 'components/cards/MainCard';
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
+import UtilityBar from 'components/utility-bar/UtilityBar';
+import { useSearchUserMutation, useAddContactMutation } from 'app/features/user/userApiSlice';
 
 const SearchUserSection = () => {
     const theme = useTheme();
@@ -51,6 +39,19 @@ const SearchUserSection = () => {
         setOpen(false);
     };
 
+    let [addContact] = useAddContactMutation();
+    let handleAddContact = async (userName) => {
+        toast.promise(addContact({ userName }).unwrap(), {
+            pending: 'Hold on a sec ⌛',
+            success: 'Contact added 🎉🎉🎉',
+            error: {
+                render({ data }) {
+                    return data.data.message;
+                }
+            }
+        });
+    };
+
     return (
         <>
             <Box
@@ -58,6 +59,7 @@ const SearchUserSection = () => {
                     ml: 2,
                     mr: 3,
                     [theme.breakpoints.down('md')]: {
+                        ml: 0,
                         mr: 2
                     }
                 }}
@@ -85,7 +87,7 @@ const SearchUserSection = () => {
                         {
                             name: 'offset',
                             options: {
-                                offset: [matchesXs ? 5 : 0, 20]
+                                offset: [matchesXs ? 100 : 0, matchesXs ? 30 : 10]
                             }
                         }
                     ]
@@ -116,28 +118,12 @@ const SearchUserSection = () => {
                                                                 <TableCell align="left">{userName}</TableCell>
 
                                                                 <TableCell padding="none" align="right" width="auto">
-                                                                    {display === userName && (
-                                                                        <>
-                                                                            <Tooltip title="Message">
-                                                                                <IconButton>
-                                                                                    <IconMessageCircle stroke={1.5} size="1.3rem" />
-                                                                                </IconButton>
-                                                                            </Tooltip>
-                                                                            <Tooltip title="Transfer">
-                                                                                <IconButton>
-                                                                                    <IconCoins stroke={1.5} size="1.3rem" />
-                                                                                </IconButton>
-                                                                            </Tooltip>
-                                                                            <Tooltip title="Add Contact">
-                                                                                <IconButton>
-                                                                                    <IconPlus
-                                                                                        stroke={1.5}
-                                                                                        size="1.3rem"
-                                                                                        color={theme.palette.secondary.dark}
-                                                                                    />
-                                                                                </IconButton>
-                                                                            </Tooltip>
-                                                                        </>
+                                                                    {(matchesXs || display === userName) && (
+                                                                        <UtilityBar
+                                                                            singleValue={userName}
+                                                                            sendMessage
+                                                                            handleAddContact={handleAddContact}
+                                                                        ></UtilityBar>
                                                                     )}
                                                                 </TableCell>
                                                             </TableRow>

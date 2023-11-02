@@ -45,7 +45,7 @@ const makeRequestSchema = Joi.object({
     .items(Joi.string().email().max(50))
     .required(),
   amount: Joi.number().min(1).required(),
-  description: Joi.string().max(100),
+  description: Joi.string().allow(null, "").max(100),
 });
 
 const responseSchema = Joi.object({

@@ -1,5 +1,5 @@
 // assets
-import { IconDashboard, IconHistory } from '@tabler/icons-react';
+import { IconDashboard, IconStar, IconReceiptRefund } from '@tabler/icons-react';
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
@@ -16,30 +16,31 @@ const dashboard = {
             icon: IconDashboard
         },
         {
-            id: 'history',
-            title: 'History',
+            id: 'credit',
+            title: 'Credit',
             type: 'collapse',
-            icon: IconHistory,
+            icon: IconStar,
             children: [
                 {
                     id: 'favor',
                     title: 'Favor',
                     type: 'item',
-                    url: '/history/favor'
+                    url: '/credit/favor'
                 },
                 {
                     id: 'debt',
                     title: 'Debt',
                     type: 'item',
-                    url: '/history/debt'
-                },
-                {
-                    id: 'repay',
-                    title: 'Repay',
-                    type: 'item',
-                    url: '/history/repay'
+                    url: '/credit/debt'
                 }
             ]
+        },
+        {
+            id: 'repay',
+            title: 'Repay',
+            type: 'item',
+            url: '/repay',
+            icon: IconReceiptRefund
         }
     ]
 };

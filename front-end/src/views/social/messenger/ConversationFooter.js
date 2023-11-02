@@ -11,7 +11,7 @@ import { AvatarStyle, OutlineInputStyle } from 'components/styled-input';
 import { useSendMessageMutation } from 'app/features/user/userApiSlice';
 
 const ConversationFooter = (props) => {
-    let { userName } = props;
+    let { currentConversation } = props;
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = useState(null);
     const [value, setValue] = useState('');
@@ -39,7 +39,7 @@ const ConversationFooter = (props) => {
     let [sendMessage] = useSendMessageMutation();
     let handleSendMessage = async () => {
         try {
-            await sendMessage({ userName, message: value });
+            await sendMessage({ userName: currentConversation, message: value });
             setValue('');
         } catch (err) {
             console.log(err);
@@ -47,7 +47,7 @@ const ConversationFooter = (props) => {
     };
 
     return (
-        <Stack direction="row" alignItems={'center'} spacing={1.5}>
+        <Stack direction="row" alignItems="center" spacing={1.5}>
             <IconButton onClick={handleClick}>
                 <IconMoodSmile />
             </IconButton>
@@ -80,6 +80,13 @@ const ConversationFooter = (props) => {
                 }}
                 multiline
                 placeholder="Write a message..."
+                onKeyDown={(event) => {
+                    if (event.code === 'Enter') {
+                        event.preventDefault();
+                        handleSendMessage(value);
+                        setValue('');
+                    }
+                }}
                 endAdornment={
                     <ButtonBase sx={{ borderRadius: '12px', marginRight: '10px' }} onClick={handleSendMessage}>
                         <AvatarStyle color={theme.palette.primary} variant="rounded">
@@ -93,7 +100,7 @@ const ConversationFooter = (props) => {
 };
 
 ConversationFooter.propTypes = {
-    userName: PropTypes.string
+    currentConversation: PropTypes.string
 };
 
 export default ConversationFooter;

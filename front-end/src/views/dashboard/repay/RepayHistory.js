@@ -1,19 +1,20 @@
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import TableCard from '../TableCard';
+import TableCard from 'components/cards/TableCard';
 import { numberInRange, dateInRange } from 'utils/inRangeFilter';
 
 const RepayHistory = (props) => {
     let { data } = props;
 
-    let repayHistoryUserName = useSelector((state) => state.value.repayHistoryUserName);
-    let repayHistoryDateFrom = useSelector((state) => state.value.repayHistoryDateFrom);
-    let repayHistoryDateTo = useSelector((state) => state.value.repayHistoryDateTo);
-    let repayHistoryAmountFrom = useSelector((state) => state.value.repayHistoryAmountFrom);
-    let repayHistoryAmountTo = useSelector((state) => state.value.repayHistoryAmountTo);
+    let repayHistoryEmails = useSelector((state) => state.filter.repayHistoryEmails);
+    let repayHistoryDateFrom = useSelector((state) => state.filter.repayHistoryDateFrom);
+    let repayHistoryDateTo = useSelector((state) => state.filter.repayHistoryDateTo);
+    let repayHistoryAmountFrom = useSelector((state) => state.filter.repayHistoryAmountFrom);
+    let repayHistoryAmountTo = useSelector((state) => state.filter.repayHistoryAmountTo);
 
     let headLabels = [
+        { id: 'send', label: 'Send/Receive', alignRight: false },
         { id: 'userName', label: 'Email/Username', alignRight: false },
         { id: 'createdAt', label: 'Date', alignRight: false },
         { id: 'amount', label: 'Amount', alignRight: false },
@@ -21,14 +22,14 @@ const RepayHistory = (props) => {
         { id: '' }
     ];
     let filterData = [
-        { label: 'Email/Username', name: 'repayHistoryUserName', type: 'userName' },
+        { label: 'Email/Username', name: 'repayHistoryEmails', type: 'emails' },
         { label: 'Date', name: 'repayHistoryDate', type: 'date' },
         { label: 'Amount', name: 'repayHistoryAmount', type: 'amount' }
     ];
 
     let displayData = data.filter((item) => {
         return (
-            (repayHistoryUserName.length === 0 || repayHistoryUserName.includes(item.userName)) &&
+            (repayHistoryEmails.length === 0 || repayHistoryEmails.includes(item.userName)) &&
             dateInRange(repayHistoryDateFrom, repayHistoryDateTo, item.createdAt) &&
             numberInRange(Number(repayHistoryAmountFrom), Number(repayHistoryAmountTo), item.amount)
         );
@@ -43,6 +44,7 @@ const RepayHistory = (props) => {
             filterData={filterData}
             emptyMessage="You have no repay record!"
             emptyFilterMessage="No repay match your filter!"
+            tableMinWidth={600}
         />
     );
 };

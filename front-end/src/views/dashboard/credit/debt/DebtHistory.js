@@ -1,17 +1,17 @@
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import TableCard from '../TableCard';
+import TableCard from 'components/cards/TableCard';
 import { numberInRange, dateInRange } from 'utils/inRangeFilter';
 
 const DebtHistory = (props) => {
     let { data } = props;
 
-    let debtHistoryUserName = useSelector((state) => state.value.debtHistoryUserName);
-    let debtHistoryDateFrom = useSelector((state) => state.value.debtHistoryDateFrom);
-    let debtHistoryDateTo = useSelector((state) => state.value.debtHistoryDateTo);
-    let debtHistoryAmountFrom = useSelector((state) => state.value.debtHistoryAmountFrom);
-    let debtHistoryAmountTo = useSelector((state) => state.value.debtHistoryAmountTo);
+    let debtHistoryEmails = useSelector((state) => state.filter.debtHistoryEmails);
+    let debtHistoryDateFrom = useSelector((state) => state.filter.debtHistoryDateFrom);
+    let debtHistoryDateTo = useSelector((state) => state.filter.debtHistoryDateTo);
+    let debtHistoryAmountFrom = useSelector((state) => state.filter.debtHistoryAmountFrom);
+    let debtHistoryAmountTo = useSelector((state) => state.filter.debtHistoryAmountTo);
 
     let headLabels = [
         { id: 'userName', label: 'Email/Username', alignRight: false },
@@ -20,14 +20,14 @@ const DebtHistory = (props) => {
         { id: '' }
     ];
     let filterData = [
-        { label: 'Email/Username', name: 'debtHistoryUserName', type: 'userName' },
+        { label: 'Email/Username', name: 'debtHistoryEmails', type: 'emails' },
         { label: 'Date', name: 'debtHistoryDate', type: 'date' },
         { label: 'Amount', name: 'debtHistoryAmount', type: 'amount' }
     ];
 
     let displayData = data.filter((item) => {
         return (
-            (debtHistoryUserName.length === 0 || debtHistoryUserName.includes(item.userName)) &&
+            (debtHistoryEmails.length === 0 || debtHistoryEmails.includes(item.userName)) &&
             dateInRange(debtHistoryDateFrom, debtHistoryDateTo, item.createdAt) &&
             numberInRange(Number(debtHistoryAmountFrom), Number(debtHistoryAmountTo), item.amount)
         );
@@ -42,6 +42,7 @@ const DebtHistory = (props) => {
             filterData={filterData}
             emptyMessage="You have no debt record!"
             emptyFilterMessage="No debt match your filter!"
+            tableMinWidth={500}
         />
     );
 };
