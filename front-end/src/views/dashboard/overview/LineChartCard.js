@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { useTheme, styled } from '@mui/material/styles';
@@ -8,9 +9,10 @@ import Chart from 'react-apexcharts';
 
 import MainCard from 'components/cards/MainCard';
 import lineChartData from 'components/chart/lineChartData';
-import { months } from 'assets/data/timeDisplay';
-import { filterAmountByTime } from 'utils/timeUtils';
+import timeFilter from 'utils/timeFilter';
 import { fCurrency } from 'utils/formatNumber';
+
+let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const CardWrapper = styled(MainCard)(({ theme, color }) => ({
     backgroundColor: theme.palette[color].dark,
@@ -59,10 +61,10 @@ let createChartData = (type, lineData) => {
     let compareDate = new Date();
 
     if (type === 'month') {
-        chartData.data = filterAmountByTime('month', compareDate, lineData).reverse();
+        chartData.data = timeFilter('month', compareDate, lineData).reverse();
         chartData.name = months[compareDate.getMonth()];
     } else {
-        chartData.data = filterAmountByTime('year', compareDate, lineData).reverse();
+        chartData.data = timeFilter('year', compareDate, lineData).reverse();
         chartData.name = compareDate.getFullYear();
     }
     return chartData;
@@ -70,7 +72,8 @@ let createChartData = (type, lineData) => {
 
 const LineChartCard = (props) => {
     const theme = useTheme();
-    let { data, color, label } = props;
+    let navigate = useNavigate();
+    let { data, color, label, route } = props;
 
     let [chartData, setChartData] = useState(createChartData('year', data));
 
@@ -101,6 +104,7 @@ const LineChartCard = (props) => {
                                         variant="text"
                                         sx={{ color: 'inherit', '&:hover': { backgroundColor: `${theme.palette[color].main}` } }}
                                         endIcon={<IconArrowRight />}
+                                        onClick={() => navigate(route)}
                                     >
                                         details
                                     </Button>
@@ -172,7 +176,8 @@ const LineChartCard = (props) => {
 LineChartCard.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     color: PropTypes.string,
-    label: PropTypes.string
+    label: PropTypes.string,
+    route: PropTypes.string
 };
 
 export default LineChartCard;

@@ -13,8 +13,7 @@ import { shouldForwardProp } from '@mui/system';
 const PopperStyle = styled(Popper, { shouldForwardProp })(() => ({
     zIndex: 1100,
     width: '99%',
-    top: '-55px !important',
-    padding: '0 3rem'
+    top: '-55px !important'
 }));
 
 export const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(({ theme }) => ({
@@ -30,7 +29,6 @@ export const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(({
     },
     [theme.breakpoints.down('md')]: {
         width: '100%',
-        marginLeft: 4,
         background: '#fff'
     }
 }));
@@ -81,8 +79,6 @@ const MobileInput = (props) => {
                     </Box>
                 </InputAdornment>
             }
-            aria-describedby="search-helper-text"
-            inputProps={{ 'aria-label': 'weight' }}
         />
     );
 };
@@ -153,7 +149,7 @@ const StyledInput = (props) => {
                     </PopupState>
                 </Box>
             )}
-            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Box sx={{ display: MobileIcon && { xs: 'none', md: 'block' } }}>
                 <OutlineInputStyle
                     id="input-search-header"
                     value={value}
@@ -176,8 +172,6 @@ const StyledInput = (props) => {
                             </ButtonBase>
                         )
                     }
-                    aria-describedby="search-helper-text"
-                    inputProps={{ 'aria-label': 'weight' }}
                 />
             </Box>
         </>

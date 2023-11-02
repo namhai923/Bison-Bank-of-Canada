@@ -3,7 +3,7 @@ import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // project imports
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import LineChartCard from './LineChartCard';
 import PieChartCard from './PieChartCard';
 import { gridSpacing } from 'assets/data/constant';
@@ -86,10 +86,15 @@ const Overview = () => {
                 <Grid item xs={12} sm={9}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} sm={6}>
-                            <LineChartCard data={favorHistory.filter((favor) => favor.accepted)} color="primary" label="Favor" />
+                            <LineChartCard
+                                data={favorHistory.filter((favor) => favor.accepted)}
+                                color="primary"
+                                label="Favor"
+                                route="/credit/favor"
+                            />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <LineChartCard data={debtHistory} color="secondary" label="Debt" />
+                            <LineChartCard data={debtHistory} color="secondary" label="Debt" route="/credit/debt" />
                         </Grid>
 
                         <Grid item xs={12}>

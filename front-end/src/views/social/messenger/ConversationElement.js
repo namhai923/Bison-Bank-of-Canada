@@ -3,8 +3,7 @@ import { useState } from 'react';
 
 import { Stack, Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-
-import { displayTime } from 'utils/timeUtils';
+import moment from 'moment/moment';
 
 const TextMsg = (props) => {
     let { messageProps } = props;
@@ -16,12 +15,22 @@ const TextMsg = (props) => {
             onMouseEnter={() => setTimeDisplay(messageProps._id)}
             onMouseLeave={() => setTimeDisplay(null)}
             direction="row"
-            alignItems={'center'}
+            alignItems="center"
             justifyContent={messageProps.sending ? 'end' : 'start'}
         >
             {messageProps.sending && messageProps._id === timeDisplay && (
                 <Typography sx={{ fontWeight: 600, paddingRight: '10px' }} variant="caption" color={theme.palette.grey[300]}>
-                    {displayTime(new Date(messageProps.createdAt), 'precise')}
+                    {moment(messageProps.createdAt).calendar({
+                        sameDay: 'LT',
+                        lastWeek: 'ddd LT',
+                        sameElse: function (now) {
+                            if (this.isSame(now, 'year')) {
+                                return 'MMM D, LT';
+                            } else {
+                                return 'DD/MM/Y';
+                            }
+                        }
+                    })}
                 </Typography>
             )}
             <Box
@@ -41,7 +50,17 @@ const TextMsg = (props) => {
             </Box>
             {!messageProps.sending && messageProps._id === timeDisplay && (
                 <Typography sx={{ fontWeight: 600, paddingLeft: '10px' }} variant="caption" color={theme.palette.grey[300]}>
-                    {displayTime(new Date(messageProps.createdAt), 'precise')}
+                    {moment(messageProps.createdAt).calendar({
+                        sameDay: 'LT',
+                        lastWeek: 'ddd LT',
+                        sameElse: function (now) {
+                            if (this.isSame(now, 'year')) {
+                                return 'MMM D, LT';
+                            } else {
+                                return 'DD/MM/Y';
+                            }
+                        }
+                    })}
                 </Typography>
             )}
         </Stack>

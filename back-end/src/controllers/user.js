@@ -241,23 +241,32 @@ const makeFavorRequest = asyncHandler(async (req, res) => {
         errorMessage = `${receiver} does not exist!`;
         break;
       } else {
-        let favorId = uuid.v4();
-        let favorInfo = {
-          favorId,
-          userName: account,
-          amount,
-          description,
-        };
-        userInfo.favorHistory.push(favorInfo);
+        if (
+          userInfo.debtSummary.summary.some(
+            (userSummary) => userSummary.userName === account
+          )
+        ) {
+          errorMessage = `Pay your debt with ${account} first`;
+          break;
+        } else {
+          let favorId = uuid.v4();
+          let favorInfo = {
+            favorId,
+            userName: account,
+            amount,
+            description,
+          };
+          userInfo.favorHistory.push(favorInfo);
 
-        favorInfo.userName = userName;
+          favorInfo.userName = userName;
 
-        receiver.pendingFavor.push(favorInfo);
-        receiver.notificationList.push({
-          userName,
-          type: "favor:request",
-        });
-        receivers.push(receiver);
+          receiver.pendingFavor.push(favorInfo);
+          receiver.notificationList.push({
+            userName,
+            type: "favor:request",
+          });
+          receivers.push(receiver);
+        }
       }
     }
   }

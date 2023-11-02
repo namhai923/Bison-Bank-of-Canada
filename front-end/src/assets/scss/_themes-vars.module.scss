@@ -2,9 +2,10 @@
 $paper: #ffffff;
 
 // primary
-$primaryLight: #eef2f6;
+$primaryLight: #e3f2fd;
 $primaryMain: #2196f3;
 $primaryDark: #1e88e5;
+$primary100: #eef2f6;
 $primary200: #90caf9;
 $primary800: #1565c0;
 
@@ -37,12 +38,12 @@ $warningMain: #ffe57f;
 $warningDark: #ffc107;
 
 // grey
-$grey50: #F8FAFC;
-$grey100: #EEF2F6;
-$grey200: #E3E8EF;
-$grey300: #CDD5DF;
+$grey50: #f8fafc;
+$grey100: #eef2f6;
+$grey200: #e3e8ef;
+$grey300: #cdd5df;
 $grey500: #697586;
-$grey600: #4B5565;
+$grey600: #4b5565;
 $grey700: #364152;
 $grey900: #121926;
 
@@ -84,6 +85,7 @@ $darkTextSecondary: #8492c4;
     // primary
     primaryLight: $primaryLight;
     primary200: $primary200;
+    primary100: $primary100;
     primaryMain: $primaryMain;
     primaryDark: $primaryDark;
     primary800: $primary800;

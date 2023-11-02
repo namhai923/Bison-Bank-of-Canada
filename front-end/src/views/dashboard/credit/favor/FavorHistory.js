@@ -1,17 +1,17 @@
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import TableCard from '../TableCard';
+import TableCard from 'components/cards/TableCard';
 import { numberInRange, dateInRange } from 'utils/inRangeFilter';
 
 const FavorHistory = (props) => {
     let { data } = props;
 
-    let favorHistoryUserName = useSelector((state) => state.value.favorHistoryUserName);
-    let favorHistoryDateFrom = useSelector((state) => state.value.favorHistoryDateFrom);
-    let favorHistoryDateTo = useSelector((state) => state.value.favorHistoryDateTo);
-    let favorHistoryAmountFrom = useSelector((state) => state.value.favorHistoryAmountFrom);
-    let favorHistoryAmountTo = useSelector((state) => state.value.favorHistoryAmountTo);
+    let favorHistoryEmails = useSelector((state) => state.filter.favorHistoryEmails);
+    let favorHistoryDateFrom = useSelector((state) => state.filter.favorHistoryDateFrom);
+    let favorHistoryDateTo = useSelector((state) => state.filter.favorHistoryDateTo);
+    let favorHistoryAmountFrom = useSelector((state) => state.filter.favorHistoryAmountFrom);
+    let favorHistoryAmountTo = useSelector((state) => state.filter.favorHistoryAmountTo);
 
     let headLabels = [
         { id: 'userName', label: 'Email/Username', alignRight: false },
@@ -22,14 +22,14 @@ const FavorHistory = (props) => {
     ];
 
     let filterData = [
-        { label: 'Email/Username', name: 'favorHistoryUserName', type: 'userName' },
+        { label: 'Email/Username', name: 'favorHistoryEmails', type: 'emails' },
         { label: 'Date', name: 'favorHistoryDate', type: 'date' },
         { label: 'Amount', name: 'favorHistoryAmount', type: 'amount' }
     ];
 
     let displayData = data.filter((item) => {
         return (
-            (favorHistoryUserName.length === 0 || favorHistoryUserName.includes(item.userName)) &&
+            (favorHistoryEmails.length === 0 || favorHistoryEmails.includes(item.userName)) &&
             dateInRange(favorHistoryDateFrom, favorHistoryDateTo, item.createdAt) &&
             numberInRange(Number(favorHistoryAmountFrom), Number(favorHistoryAmountTo), item.amount)
         );
@@ -44,6 +44,7 @@ const FavorHistory = (props) => {
             filterData={filterData}
             emptyMessage="You have no favor record!"
             emptyFilterMessage="No favor match your filter!"
+            tableMinWidth={500}
         />
     );
 };

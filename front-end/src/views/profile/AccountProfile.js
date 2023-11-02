@@ -2,15 +2,13 @@ import PropTypes from 'prop-types';
 
 import { Avatar, Box, CardContent, Typography } from '@mui/material';
 import { IconUser } from '@tabler/icons-react';
+import moment from 'moment/moment';
 
 import SubCard from 'components/cards/SubCard';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
-import { months } from 'assets/data/timeDisplay';
 
 let AccountProfile = (props) => {
     let { firstName, lastName, dob, phoneNumber } = props;
-
-    let birthDate = new Date(dob);
 
     return (
         <SubCard>
@@ -34,7 +32,7 @@ let AccountProfile = (props) => {
                         {firstName} {lastName}
                     </Typography>
                     <Typography color="text.secondary" variant="body2">
-                        {dob && `${months[`${birthDate.getMonth()}`]} ${birthDate.getDate()}, ${birthDate.getFullYear()}`}
+                        {dob && moment(dob).format('MMMM Do, Y')}
                     </Typography>
                     <Typography color="text.secondary" variant="body2">
                         {phoneNumber && `${phoneNumber}`}

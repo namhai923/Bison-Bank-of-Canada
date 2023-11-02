@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
 // project imports
-import Loadable from 'components/Loadable';
+import Loadable from 'components/loader/Loadable';
 
 const PageNotFound = Loadable(lazy(() => import('views/PageNotFound')));
 

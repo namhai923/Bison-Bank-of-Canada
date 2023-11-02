@@ -1,10 +1,10 @@
 import { Grid, Paper, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 
-import Loader from 'components/Loader';
+import Loader from 'components/loader/Loader';
 import FavorHistory from './FavorHistory';
 import FavorSummary from './FavorSummary';
-import MakeRequestCard from '../MakeRequestCard';
+import MakeRequestCard from 'components/cards/request-card/MakeRequestCard';
 import { gridSpacing } from 'assets/data/constant';
 import { useGetFavorSummaryQuery, useGetFavorHistoryQuery, useMakeFavorRequestMutation } from 'app/features/user/userApiSlice';
 import config from 'assets/data/config';
@@ -38,9 +38,9 @@ const Favor = () => {
     let handleSubmit = async (values) => {
         toast.promise(
             makeFavorRequest({
-                accounts: values.emails,
-                amount: values.amount,
-                description: values.description
+                accounts: values['favorRequestEmails'],
+                amount: values['favorRequestAmount'],
+                description: values['favorRequestDescription']
             }).unwrap(),
             {
                 pending: 'Hold on a sec ⌛',
@@ -73,17 +73,17 @@ const Favor = () => {
                         <Typography variant="h3">Favor</Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={5}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
-                            <MakeRequestCard title="Make Favor Request" handleSubmit={handleSubmit} />
+                            <MakeRequestCard title="Make Favor Request" name="favorRequest" handleSubmit={handleSubmit} />
                         </Grid>
                         <Grid item xs={12}>
                             <FavorSummary data={favorSummary} />
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={7}>
                     <FavorHistory data={favorHistory} />
                 </Grid>
             </Grid>

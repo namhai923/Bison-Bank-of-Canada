@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import {
     Avatar,
@@ -20,8 +19,8 @@ import {
     Typography
 } from '@mui/material';
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
+import moment from 'moment/moment';
 
-// project imports
 import MainCard from 'components/cards/MainCard';
 import Transitions from 'components/extended/Transitions';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
@@ -37,9 +36,6 @@ const ProfileSection = (props) => {
 
     let [logout] = useLogoutMutation();
 
-    /**
-     * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-     * */
     const anchorRef = useRef(null);
 
     const handleLogout = async (event) => {
@@ -146,7 +142,13 @@ const ProfileSection = (props) => {
                                     <Box sx={{ p: 2 }}>
                                         <Stack direction="row" spacing={0.5} alignItems="center">
                                             <Typography variant="h4" sx={{ fontWeight: 400 }}>
-                                                Good Morning,
+                                                {6 < moment().hour() <= 12
+                                                    ? 'Good Morning,'
+                                                    : 12 < moment().hour() <= 17
+                                                    ? 'Good Afternoon,'
+                                                    : 17 < moment().hour() <= 21
+                                                    ? 'Good Evening,'
+                                                    : 'Good Night,'}
                                             </Typography>
                                             <Typography component="span" variant="h4">
                                                 {firstName} {lastName}!
@@ -154,7 +156,7 @@ const ProfileSection = (props) => {
                                         </Stack>
                                         <Divider />
                                     </Box>
-                                    <Box sx={{ p: 2 }}>
+                                    <Box sx={{ p: 2, pt: 0 }}>
                                         <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={profileClick}>
                                             <ListItemIcon>
                                                 <IconUser stroke={1.5} size="1.3rem" />
