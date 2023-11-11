@@ -4,7 +4,6 @@ let barChartData = (chartData) => {
         type: 'bar',
         options: {
             chart: {
-                id: 'bar-chart',
                 stacked: true,
                 toolbar: {
                     show: true
@@ -13,6 +12,7 @@ let barChartData = (chartData) => {
                     enabled: true
                 }
             },
+            colors: ['#1e88e5', '#5e35b1'],
             responsive: [
                 {
                     breakpoint: 480,

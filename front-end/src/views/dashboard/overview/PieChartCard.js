@@ -54,7 +54,9 @@ const PieChartCard = (props) => {
     let { title, chartColors, chartData, color, totalLabel } = props;
     const theme = useTheme();
 
-    let displayData = chartData.summary
+    let displayData = [...chartData.summary];
+
+    displayData = displayData
         .sort((a, b) => b.amount - a.amount)
         .slice(0, 3)
         .map((account) => ({ label: account.userName, value: account.amount }));

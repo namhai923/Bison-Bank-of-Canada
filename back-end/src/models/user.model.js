@@ -119,6 +119,13 @@ let contactSchema = new mongoose.Schema({
   },
 });
 
+let pokeSchema = new mongoose.Schema({
+  pokemon: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Pokemon",
+  },
+});
+
 let notificationSchema = new mongoose.Schema(
   {
     notificationId: {
@@ -163,6 +170,10 @@ let userSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
     },
+    creditPoints: {
+      type: Number,
+      default: 100,
+    },
     favorSummary: {
       type: summarySchema,
       default: { total: 0, summary: [] },
@@ -201,6 +212,10 @@ let userSchema = new mongoose.Schema(
     },
     notificationList: {
       type: [notificationSchema],
+      default: [],
+    },
+    pokeCollection: {
+      type: [pokeSchema],
       default: [],
     },
   },

@@ -16,6 +16,7 @@ import { repayApiSlice } from 'app/features/repay/repayApiSlice';
 import { notificationApiSlice } from 'app/features/notification/notificationApiSlice';
 import { contactApiSlice } from 'app/features/contact/contactApiSlice';
 import { messengerApiSlice } from 'app/features/messenger/messengerApiSlice';
+import { pokeApiSlice } from 'app/features/pokegene/pokeApiSlice';
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
     ...theme.typography.mainContent,
@@ -83,6 +84,7 @@ const MainLayout = () => {
             dispatch(contactApiSlice.util.prefetch('getContacts', 'contacts', { force: true }));
             dispatch(notificationApiSlice.util.prefetch('getNotificationList', 'notificationList', { force: true }));
             dispatch(messengerApiSlice.util.prefetch('getConversationsInfo', 'conversationsInfo', { force: true }));
+            dispatch(pokeApiSlice.util.prefetch('getPokeCollection', 'pokeCollection', { force: true }));
         }
         return () => (effectRan.current = true);
     }, [dispatch]);

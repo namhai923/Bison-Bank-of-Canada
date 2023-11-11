@@ -9,8 +9,11 @@ const getInfo = asyncHandler(async (req, res) => {
   let userName = req.user.userName;
   let userInfo = await getUser(userName);
 
-  let { firstName, lastName, dob, phoneNumber } = userInfo.toJSON();
-  return res.status(200).json({ firstName, lastName, dob, phoneNumber });
+  let { firstName, lastName, dob, phoneNumber, creditPoints } =
+    userInfo.toJSON();
+  return res
+    .status(200)
+    .json({ firstName, lastName, dob, phoneNumber, creditPoints });
 });
 
 const searchUser = asyncHandler(async (req, res) => {

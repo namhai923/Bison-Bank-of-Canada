@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/namhai923/Bison-Bank-of-Canada#readme",
   "dependencies": {
+    "axios": "^1.6.0",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -31,6 +32,7 @@
     "express-async-handler": "^1.2.0",
     "express-rate-limit": "^6.7.0",
     "joi": "^17.9.2",
+    "joi-objectid": "^4.0.2",
     "joi-phone-number": "^5.1.1",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",

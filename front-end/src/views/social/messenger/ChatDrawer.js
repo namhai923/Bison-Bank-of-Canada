@@ -13,7 +13,7 @@ const ChatDrawer = (props) => {
     const theme = useTheme();
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
-    let { currentConversation, currentName, currentActive, contacts, chatOpened, chatToggle, window } = props;
+    let { currentConversation, currentName, currentActive, contacts, chatOpened, chatToggle } = props;
 
     const drawer = (
         <>
@@ -46,8 +46,6 @@ const ChatDrawer = (props) => {
         </>
     );
 
-    const container = window !== undefined ? () => window.document.body : undefined;
-
     return (
         <>
             {matchUpMd ? (
@@ -62,10 +60,9 @@ const ChatDrawer = (props) => {
                     </Paper>
                 </Slide>
             ) : (
-                <Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? chatWidth : 'auto' }}>
+                <Box component="nav" sx={{ flexShrink: { md: 0 }, width: 'auto' }}>
                     <Drawer
-                        container={container}
-                        variant={matchUpMd ? 'persistent' : 'temporary'}
+                        variant={'temporary'}
                         anchor="left"
                         open={chatOpened}
                         onClose={chatToggle}
@@ -95,8 +92,7 @@ ChatDrawer.propTypes = {
     currentActive: PropTypes.bool,
     contacts: PropTypes.arrayOf(PropTypes.object),
     chatOpened: PropTypes.bool,
-    chatToggle: PropTypes.func,
-    window: PropTypes.object
+    chatToggle: PropTypes.func
 };
 
 export default ChatDrawer;

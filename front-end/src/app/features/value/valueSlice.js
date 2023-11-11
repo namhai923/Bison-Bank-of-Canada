@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 let initialState = {
+    pokemonTypes: [],
+    pokemon: null,
     currentConversation: null,
     notification: 'all'
 };

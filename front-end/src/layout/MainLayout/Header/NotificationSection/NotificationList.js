@@ -30,6 +30,7 @@ let notificationType = {
     'repay:accept': { message: 'Accept your repay request', url: '/repay' },
     'favor:decline': { message: 'Decline your favor request', url: '/credit/favor' },
     'repay:decline': { message: 'Decline your repay request', url: '/repay' },
+    'pokemon:send': { message: 'Send you a pokemon', url: 'pokegene' },
     'contact:add': { message: 'Add your account to their contact', url: '' }
 };
 

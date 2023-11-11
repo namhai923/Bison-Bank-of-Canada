@@ -63,7 +63,20 @@ const ResponseCard = (props) => {
                 </Stack>
 
                 <Stack direction="row" spacing={1}>
-                    <Button fullWidth variant="outlined" color="error" startIcon={<IconCircleX />} onClick={() => handleSubmit(false, id)}>
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        color="error"
+                        startIcon={<IconCircleX />}
+                        onClick={() => handleSubmit(false, id)}
+                        sx={{
+                            '&:hover': {
+                                // border: 0,
+                                background: theme.palette.error.main,
+                                color: theme.palette.background.paper
+                            }
+                        }}
+                    >
                         Decline
                     </Button>
                     <Button
@@ -72,6 +85,13 @@ const ResponseCard = (props) => {
                         color="success"
                         startIcon={<IconCircleCheck />}
                         onClick={() => handleSubmit(true, id)}
+                        sx={{
+                            '&:hover': {
+                                // border: 0,
+                                background: theme.palette.success.main,
+                                color: theme.palette.background.paper
+                            }
+                        }}
                     >
                         Accept
                     </Button>

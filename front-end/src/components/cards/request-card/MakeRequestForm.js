@@ -47,7 +47,8 @@ let MakeRequestForm = (props) => {
             .min(1, 'Should have at least 1 email')
             .of(Yup.string().email('Must be a valid email').max(50).required('Email is required'))
             .required('Email is required'),
-        [`${name}Amount`]: Yup.number().min(1, 'Should be greater than 0').required('Amount is required')
+        [`${name}Amount`]: Yup.number().min(1, 'Should be greater than 0').required('Amount is required'),
+        [`${name}Description`]: Yup.string()
     });
 
     let content;
@@ -63,6 +64,14 @@ let MakeRequestForm = (props) => {
         initialValues[`${name}Emails`] = requestFormValue[`${name}Emails`];
         initialValues[`${name}Amount`] = requestFormValue[`${name}Amount`];
         initialValues[`${name}Description`] = requestFormValue[`${name}Description`];
+
+        let createOptions = (data) => {
+            let options = new Set(data);
+            options = [...options].map((item) => {
+                return { value: item, label: item, color: theme.palette.primary.main };
+            });
+            return options;
+        };
 
         content = (
             <>
@@ -96,11 +105,9 @@ let MakeRequestForm = (props) => {
                                             placeholder="Emails / Usernames"
                                             component={CustomSelect}
                                             selectRef={selectRef}
-                                            data={contacts}
-                                            optionValue="userName"
-                                            defaultSelected={requestFormValue[`${name}Emails`]}
+                                            options={createOptions(contacts.map((item) => item['userName']))}
+                                            defaultSelected={createOptions(values[`${name}Emails`])}
                                             handleSelectChange={handleSelectChange}
-                                            color={theme.palette.primary.main}
                                             creatable
                                         />
                                         {touched[`${name}Emails`] && errors[`${name}Emails`] && (

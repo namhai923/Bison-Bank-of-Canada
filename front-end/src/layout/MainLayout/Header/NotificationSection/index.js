@@ -35,7 +35,6 @@ const status = [
         value: 'all',
         label: 'All'
     },
-
     {
         value: 'unread',
         label: 'Unread'

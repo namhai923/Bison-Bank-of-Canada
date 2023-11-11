@@ -6,7 +6,7 @@ import { Chip, Modal, Box, Typography, Tooltip, IconButton, Stack, useMediaQuery
 import { useTheme } from '@mui/material/styles';
 import { IconFilter, IconFilterCancel } from '@tabler/icons-react';
 
-import FilterForm from 'components/filter-modal/FilterForm';
+import FilterForm from 'components/filter/FilterForm';
 import { setFilter } from 'app/features/filter/filterSlice';
 
 const style = {

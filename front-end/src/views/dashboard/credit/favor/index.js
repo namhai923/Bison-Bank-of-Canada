@@ -73,17 +73,17 @@ const Favor = () => {
                         <Typography variant="h3">Favor</Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={5}>
+                <Grid item xs={12} lg={5}>
                     <Grid container spacing={gridSpacing}>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sm={6} lg={12}>
                             <MakeRequestCard title="Make Favor Request" name="favorRequest" handleSubmit={handleSubmit} />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sm={6} lg={12}>
                             <FavorSummary data={favorSummary} />
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={7}>
+                <Grid item xs={12} lg={7}>
                     <FavorHistory data={favorHistory} />
                 </Grid>
             </Grid>

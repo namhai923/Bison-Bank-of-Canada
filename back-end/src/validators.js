@@ -1,5 +1,7 @@
 const Joi = require("joi");
 const phoneNumberJoi = Joi.extend(require("joi-phone-number"));
+const { POKEMON_TYPES } = require("./controllers/pokegene/pokeData");
+Joi.objectId = require("joi-objectid")(Joi);
 
 const validator = (schema) => (payload) =>
   schema.validate(payload, { abortEarly: false });
@@ -83,6 +85,23 @@ const sendMessageSchema = Joi.object({
   message: Joi.string(),
 });
 
+const generatePokemonSchema = Joi.object({
+  types: Joi.array()
+    .min(1)
+    .max(2)
+    .items(Joi.string().valid(...POKEMON_TYPES))
+    .required(),
+});
+
+const removePokemonSchema = Joi.object({
+  removeId: Joi.objectId().required(),
+});
+
+const sendPokemonSchema = Joi.object({
+  sendId: Joi.objectId().required(),
+  userName: Joi.string().email().max(50).required(),
+});
+
 module.exports = {
   validateUserName: validator(userNameSchema),
   validateUUID: validator(UUIDSchema),
@@ -94,4 +113,7 @@ module.exports = {
   validateUpdateInfo: validator(updateInfoSchema),
   validateRemoveContacts: validator(removeContactsSchema),
   validateSendMessage: validator(sendMessageSchema),
+  validateGeneratePokemon: validator(generatePokemonSchema),
+  validateRemovePokemon: validator(removePokemonSchema),
+  validateSendPokemon: validator(sendPokemonSchema),
 };

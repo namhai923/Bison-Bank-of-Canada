@@ -1,9 +1,6 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { useTheme } from '@mui/material/styles';
 import { Grid, Typography } from '@mui/material';
-import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
 
 import MainCard from 'components/cards/MainCard';
@@ -40,48 +37,8 @@ let createChartData = (favor, debt) => {
 
 const BarChartCard = (props) => {
     let { favorHistory, debtHistory } = props;
-    const theme = useTheme();
 
-    const { primary } = theme.palette.text;
-    const darkLight = theme.palette.dark.light;
-    const grey200 = theme.palette.grey[200];
-    const grey500 = theme.palette.grey[500];
-
-    const primaryDark = theme.palette.primary.dark;
-    const secondaryMain = theme.palette.secondary.main;
-
-    useEffect(() => {
-        const newChartData = {
-            ...barChartData(createChartData(favorHistory, debtHistory)).options,
-            colors: [primaryDark, secondaryMain],
-            xaxis: {
-                labels: {
-                    style: {
-                        colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary]
-                    }
-                }
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: [primary]
-                    }
-                }
-            },
-            grid: {
-                borderColor: grey200
-            },
-            tooltip: {
-                theme: 'light'
-            },
-            legend: {
-                labels: {
-                    colors: grey500
-                }
-            }
-        };
-        ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
-    }, [primaryDark, secondaryMain, primary, darkLight, grey200, grey500, favorHistory, debtHistory]);
+    let chartData = barChartData(createChartData(favorHistory, debtHistory));
 
     return (
         <>
@@ -93,7 +50,7 @@ const BarChartCard = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Chart {...barChartData(createChartData(favorHistory, debtHistory))} />
+                        <Chart {...chartData} />
                     </Grid>
                 </Grid>
             </MainCard>

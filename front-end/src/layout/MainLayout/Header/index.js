@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
 import { useTheme } from '@mui/material/styles';
-import { Box, ButtonBase, useMediaQuery } from '@mui/material';
-import { IconMenu2 } from '@tabler/icons-react';
+import { Box, ButtonBase, Typography, Stack, useMediaQuery, Tooltip } from '@mui/material';
+import { IconMenu2, IconStarFilled } from '@tabler/icons-react';
 
 import Loader from 'components/loader/Loader';
 import NotificationSection from './NotificationSection';
@@ -16,7 +16,7 @@ import { AvatarStyle } from 'components/styled-input';
 
 const Header = ({ handleLeftDrawerToggle }) => {
     const theme = useTheme();
-    const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
+    const matchDownLg = useMediaQuery(theme.breakpoints.down('lg'));
 
     let {
         data: userInfo,
@@ -58,10 +58,17 @@ const Header = ({ handleLeftDrawerToggle }) => {
                     </ButtonBase>
                 </Box>
 
-                {!matchDownMd && <WelcomeSection firstName={userInfo.firstName} />}
+                {!matchDownLg && <WelcomeSection firstName={userInfo.firstName} />}
                 <SearchUserSection></SearchUserSection>
                 <Box sx={{ flexGrow: 1 }} />
-
+                <Stack direction="row" justifyContent="center">
+                    <Typography variant="subtitle1"> {userInfo.creditPoints} </Typography>
+                    <Tooltip title="Credit Points">
+                        <Box sx={{ display: 'flex', color: `${theme.palette.warning.dark}` }}>
+                            <IconStarFilled stroke={1.5} size="1.3rem" />
+                        </Box>
+                    </Tooltip>
+                </Stack>
                 <NotificationSection />
                 <ProfileSection firstName={userInfo.firstName} lastName={userInfo.lastName} />
             </>
