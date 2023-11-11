@@ -9,7 +9,6 @@ export const repayApiSlice = apiSlice.injectEndpoints({
             transformResponse: (response) => response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
             providesTags: [{ type: 'Repay', id: 'repayHistory' }]
         }),
-
         getPendingRepay: builder.query({
             query: () => ({
                 url: '/repay/getPendingRepay'
@@ -17,7 +16,6 @@ export const repayApiSlice = apiSlice.injectEndpoints({
             transformResponse: (response) => response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
             providesTags: [{ type: 'Repay', id: 'pendingRepay' }]
         }),
-
         makeRepayRequest: builder.mutation({
             query: (makeRepayRequestInfo) => ({
                 url: '/repay/makeRepayRequest',
@@ -26,7 +24,6 @@ export const repayApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: [{ type: 'Repay', id: 'repayHistory' }]
         }),
-
         responseRepay: builder.mutation({
             query: (responseRepayInfo) => ({
                 url: '/repay/responseRepay',

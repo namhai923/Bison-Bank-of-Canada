@@ -86,7 +86,6 @@ export const messengerApiSlice = apiSlice.injectEndpoints({
             },
             providesTags: (result, error, arg) => [{ type: 'Messenger', id: `${arg} conversation` }]
         }),
-
         sendMessage: builder.mutation({
             query: (messageInfo) => ({
                 url: '/messenger/sendMessage',

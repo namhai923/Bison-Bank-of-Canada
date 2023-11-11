@@ -4,15 +4,16 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 
-// project imports
 import * as serviceWorker from 'serviceWorker';
 import App from 'App';
 import store from './app/store';
 
-// style + assets
 import 'assets/scss/style.scss';
 import config from 'assets/data/config';
+
+if (process.env.NODE_ENV === 'production') disableReactDevTools();
 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript

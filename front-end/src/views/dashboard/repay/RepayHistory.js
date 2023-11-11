@@ -44,7 +44,7 @@ const RepayHistory = (props) => {
             filterData={filterData}
             emptyMessage="You have no repay record!"
             emptyFilterMessage="No repay match your filter!"
-            tableMinWidth={600}
+            tableMinWidth={650}
         />
     );
 };

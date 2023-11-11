@@ -11,8 +11,7 @@ const Debt = Loadable(lazy(() => import('views/dashboard/credit/debt')));
 const Repay = Loadable(lazy(() => import('views/dashboard/repay')));
 const Contacts = Loadable(lazy(() => import('views/social/contacts')));
 const Messenger = Loadable(lazy(() => import('views/social/messenger')));
-
-// ==============================|| MAIN ROUTING ||============================== //
+const Pokegene = Loadable(lazy(() => import('views/spend/pokegene')));
 
 const MainRoutes = {
     path: '/',
@@ -54,6 +53,10 @@ const MainRoutes = {
         {
             path: 'messenger',
             element: <Messenger />
+        },
+        {
+            path: 'pokegene',
+            element: <Pokegene />
         }
     ]
 };

@@ -1,7 +1,4 @@
-// assets
 import { IconDashboard, IconStar, IconReceiptRefund } from '@tabler/icons-react';
-
-// ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
 const dashboard = {
     id: 'dashboard',

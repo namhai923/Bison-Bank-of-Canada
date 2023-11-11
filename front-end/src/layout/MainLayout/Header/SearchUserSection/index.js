@@ -22,8 +22,8 @@ const SearchUserSection = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
-    let [searchUser, { data, isLoading }] = useSearchUserMutation();
 
+    let [searchUser, { data, isLoading }] = useSearchUserMutation();
     let handleSearchUser = async (event) => {
         setSearchQuery(event.target.value);
         let searchQuery = escapeStringRegexp(event.target.value);

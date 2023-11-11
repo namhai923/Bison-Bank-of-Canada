@@ -37,6 +37,6 @@ const baseQueryWithAuth = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
     reducerPath: 'bbcApi',
     baseQuery: baseQueryWithAuth,
-    tagTypes: ['User', 'Favor', 'Debt', 'Repay', 'Contact', 'Messenger', 'Notification'],
+    tagTypes: ['User', 'Favor', 'Debt', 'Repay', 'Contact', 'Messenger', 'Notification', 'Pokegene'],
     endpoints: (builder) => ({})
 });

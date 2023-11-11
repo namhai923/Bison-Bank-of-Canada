@@ -171,6 +171,8 @@ const responseFavor = asyncHandler(async (req, res) => {
             amount: favor.amount,
           });
         }
+        sender.creditPoints = sender.creditPoints + parseInt(favor.amount);
+
         notificationType = "favor:accept";
       } else {
         notificationType = "favor:decline";

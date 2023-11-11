@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import Loader from 'components/loader/Loader';
+import MainCard from 'components/cards/MainCard';
 import RepayHistory from './RepayHistory';
 import MakeRequestCard from 'components/cards/request-card/MakeRequestCard';
 import ResponseCard from 'components/cards/ResponseCard';
@@ -104,7 +105,7 @@ let Repay = () => {
                                 <Grid container spacing={gridSpacing}>
                                     {pendingRepay.map((repay) => {
                                         return (
-                                            <Grid item xs={12} sm={6} md={4} lg={3}>
+                                            <Grid item xs={12} sm={6} xl={3}>
                                                 <ResponseCard id={repay.repayId} data={repay} handleSubmit={handleResponse} />
                                             </Grid>
                                         );
@@ -114,10 +115,10 @@ let Repay = () => {
                         </MainCard>
                     </Grid>
                 )}
-                <Grid item xs={12} sm={5}>
+                <Grid item xs={12} lg={5}>
                     <MakeRequestCard title="Make Repay Request" name="repayRequest" handleSubmit={handleMakeRequest} />
                 </Grid>
-                <Grid item xs={12} sm={7}>
+                <Grid item xs={12} lg={7}>
                     <RepayHistory data={repayHistory} />
                 </Grid>
             </Grid>

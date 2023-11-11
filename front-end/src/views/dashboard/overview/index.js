@@ -79,7 +79,7 @@ const Overview = () => {
     if (isFavorSummarySuccess && isDebtSummarySuccess && isFavorHistorySuccess && isDebtHistorySuccess)
         content = (
             <Grid container spacing={gridSpacing}>
-                <Grid item xs={12} sm={9}>
+                <Grid item xs={12} xl={9}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} sm={6}>
                             <LineChartCard
@@ -98,9 +98,9 @@ const Overview = () => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={12} xl={3}>
                     <Grid container spacing={gridSpacing}>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sm={6} xl={12}>
                             <PieChartCard
                                 color={theme.palette.primary.dark}
                                 title="Current Favors"
@@ -114,7 +114,7 @@ const Overview = () => {
                                 totalLabel="Total Favor"
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sm={6} xl={12}>
                             <PieChartCard
                                 color={theme.palette.secondary.dark}
                                 title="Current Debts"

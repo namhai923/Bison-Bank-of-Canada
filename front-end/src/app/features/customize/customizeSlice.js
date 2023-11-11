@@ -9,7 +9,8 @@ let initialState = {
     fontFamily: config.fontFamily,
     borderRadius: config.borderRadius,
     opened: true,
-    chatOpened: true
+    chatOpened: true,
+    costOpened: true
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
@@ -27,10 +28,13 @@ export let customizationSlice = createSlice({
         },
         setChat: (state, action) => {
             return { ...state, chatOpened: action.payload };
+        },
+        setCost: (state, action) => {
+            return { ...state, costOpened: action.payload };
         }
     }
 });
 
 let { reducer, actions } = customizationSlice;
-export let { openMenu, setMenu, setChat } = actions;
+export let { openMenu, setMenu, setChat, setCost } = actions;
 export default reducer;

@@ -23,7 +23,7 @@ import { IconDots } from '@tabler/icons-react';
 import moment from 'moment/moment';
 
 import MainCard from 'components/cards/MainCard';
-import FilterModal from '../filter-modal/FilterModal';
+import FilterModal from '../filter/FilterModal';
 import Label from 'components/label';
 import { fCurrency } from 'utils/formatNumber';
 

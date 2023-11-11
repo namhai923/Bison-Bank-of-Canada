@@ -36,7 +36,7 @@ let PageNotFound = () => {
                 </Typography>
 
                 <Box component="img" src={notFound} sx={{ height: 400, my: { xs: 5, sm: 5 } }} />
-                <Button to="/" size="large" variant="contained" component={RouterLink} onClick={handleClick}>
+                <Button to="/info" size="large" variant="contained" component={RouterLink} onClick={handleClick}>
                     Go to Home
                 </Button>
             </StyledContent>

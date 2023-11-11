@@ -8,7 +8,6 @@ export const contactApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: [{ type: 'Contact', id: 'contacts' }]
         }),
-
         addContact: builder.mutation({
             query: (contactInfo) => ({
                 url: '/contact/addContact',

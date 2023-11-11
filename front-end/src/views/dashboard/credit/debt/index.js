@@ -105,10 +105,10 @@ const Debt = () => {
                         </MainCard>
                     </Grid>
                 )}
-                <Grid item xs={12} sm={5}>
+                <Grid item xs={12} lg={5}>
                     <DebtSummary data={debtSummary} />
                 </Grid>
-                <Grid item xs={12} sm={7}>
+                <Grid item xs={12} lg={7}>
                     <DebtHistory data={debtHistory} />
                 </Grid>
             </Grid>

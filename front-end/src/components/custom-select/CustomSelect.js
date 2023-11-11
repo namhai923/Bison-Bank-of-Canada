@@ -51,21 +51,13 @@ const colourStyles = {
 
 const animatedComponents = makeAnimated();
 
-let getOptions = (data, color) => {
-    let options = new Set(data);
-    options = [...options].map((item) => {
-        return { value: item, label: item, color };
-    });
-    return options;
-};
-
 let CustomSelect = (props) => {
-    let { field, data, form, optionValue, defaultSelected, handleSelectChange, color, placeholder, creatable, selectRef } = props;
+    let { field, options, form, defaultSelected, handleSelectChange, placeholder, creatable, selectRef } = props;
     let { name } = field;
 
     let handleChange = (selectedOptions) => {
         let selected = selectedOptions.map((item) => item.value);
-        handleSelectChange(selected);
+        handleSelectChange && handleSelectChange(selected);
         form.setFieldValue(name, selected);
     };
 
@@ -79,12 +71,9 @@ let CustomSelect = (props) => {
                         isMulti
                         styles={colourStyles}
                         isSearchable
-                        options={getOptions(
-                            data.map((item) => item[optionValue]),
-                            color
-                        )}
+                        options={options}
                         ref={selectRef}
-                        defaultValue={getOptions(defaultSelected, color)}
+                        defaultValue={defaultSelected}
                         components={animatedComponents}
                         closeMenuOnSelect={false}
                         placeholder={placeholder}
@@ -100,12 +89,9 @@ let CustomSelect = (props) => {
                         isMulti
                         styles={colourStyles}
                         isSearchable
-                        options={getOptions(
-                            data.map((item) => item[optionValue]),
-                            color
-                        )}
+                        options={options}
                         ref={selectRef}
-                        defaultValue={getOptions(defaultSelected, color)}
+                        defaultValue={defaultSelected}
                         components={animatedComponents}
                         closeMenuOnSelect={false}
                         placeholder={placeholder}
@@ -120,12 +106,10 @@ let CustomSelect = (props) => {
 
 CustomSelect.propTypes = {
     field: PropTypes.object,
-    data: PropTypes.arrayOf(PropTypes.object),
+    options: PropTypes.arrayOf(PropTypes.object),
     form: PropTypes.object,
-    optionValue: PropTypes.string,
-    defaultSelected: PropTypes.arrayOf(PropTypes.string),
+    defaultSelected: PropTypes.arrayOf(PropTypes.object),
     handleSelectChange: PropTypes.func,
-    color: PropTypes.string,
     placeholder: PropTypes.string,
     creatable: PropTypes.bool,
     selectRef: PropTypes.object

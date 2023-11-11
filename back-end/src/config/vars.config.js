@@ -4,6 +4,7 @@ dotenv.config();
 let {
   PORT,
   FRONTEND_URL,
+  POKEAPI_URL,
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
   DB_URL,
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === "test") {
 module.exports = {
   PORT,
   FRONTEND_URL,
+  POKEAPI_URL,
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
   exportDB,

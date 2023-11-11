@@ -50,6 +50,14 @@ const FilterForm = (props) => {
         return handleSelectChange;
     };
 
+    let createOptions = (data) => {
+        let options = new Set(data);
+        options = [...options].map((item) => {
+            return { value: item, label: item, color: theme.palette.primary.main };
+        });
+        return options;
+    };
+
     return (
         <>
             <Formik initialValues={initialValues} innerRef={formikRef}>
@@ -66,12 +74,10 @@ const FilterForm = (props) => {
                                                     name={filter.name}
                                                     placeholder={`--Filter by ${filter.label.toLowerCase()}`}
                                                     component={CustomSelect}
-                                                    data={data}
+                                                    options={createOptions(data.map((item) => item['userName']))}
                                                     selectRef={selectRef}
-                                                    defaultSelected={filterInfo[filter.name]}
+                                                    defaultSelected={createOptions(filterInfo[filter.name])}
                                                     handleSelectChange={filterSelectChange(filter.name)}
-                                                    optionValue="userName"
-                                                    color={theme.palette.primary.main}
                                                 />
                                             </Grid>
                                         );
