@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 
 import { FastField, Form, Formik } from 'formik';
 import { Grid } from '@mui/material';
-import * as Yup from 'yup';
 
 import TYPES from 'assets/data/pokegene/TYPES';
 import GenerateField from './GenerateField';

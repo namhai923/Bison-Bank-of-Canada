@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Stack, Button, Grid, Typography } from '@mui/material';
-import { IconCircleCheck, IconCircleX } from '@tabler/icons-react';
+import { IconUser, IconCircleCheck, IconCircleX } from '@tabler/icons-react';
 import moment from 'moment/moment';
 
 import SubCard from 'components/cards/SubCard';
