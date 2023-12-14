@@ -84,7 +84,6 @@ const removePokemon = asyncHandler(async (req, res) => {
 
   let { removeId } = value;
   let userName = req.user.userName;
-  console.log(removeId);
 
   let user = await User.findOne({ userName });
   user.pokeCollection = user.pokeCollection.filter(

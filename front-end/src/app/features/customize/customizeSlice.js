@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// project imports
 import config from 'assets/data/config';
 
 let initialState = {
@@ -12,8 +11,6 @@ let initialState = {
     chatOpened: true,
     costOpened: true
 };
-
-// ==============================|| CUSTOMIZATION REDUCER ||============================== //
 
 export let customizationSlice = createSlice({
     name: 'customization',

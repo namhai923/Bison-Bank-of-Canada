@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { useTheme, styled } from '@mui/material/styles';
 import {
@@ -22,15 +23,16 @@ import moment from 'moment/moment';
 
 import alphabetAvatar from 'assets/images/alphabetAvatar';
 import { useDeleteNotificationMutation } from 'app/features/notification/notificationApiSlice';
+import { openMenu } from 'app/features/customize/customizeSlice';
 
 let notificationType = {
-    'favor:request': { message: 'Send you a favor request', url: '/credit/debt' },
-    'repay:request': { message: 'Send you a repay request', url: '/repay' },
-    'favor:accept': { message: 'Accept your favor request', url: '/credit/favor' },
-    'repay:accept': { message: 'Accept your repay request', url: '/repay' },
-    'favor:decline': { message: 'Decline your favor request', url: '/credit/favor' },
-    'repay:decline': { message: 'Decline your repay request', url: '/repay' },
-    'pokemon:send': { message: 'Send you a pokemon', url: 'pokegene' },
+    'favor:request': { message: 'Send you a favor request', url: '/credit/debt', menuId: 'debt' },
+    'repay:request': { message: 'Send you a repay request', url: '/repay', menuId: 'repay' },
+    'favor:accept': { message: 'Accept your favor request', url: '/credit/favor', menuId: 'favor' },
+    'repay:accept': { message: 'Accept your repay request', url: '/repay', menuId: 'repay' },
+    'favor:decline': { message: 'Decline your favor request', url: '/credit/favor', menuId: 'favor' },
+    'repay:decline': { message: 'Decline your repay request', url: '/repay', menuId: 'repay' },
+    'pokemon:send': { message: 'Send you a pokemon', url: 'pokegene', menuId: 'pokegene' },
     'contact:add': { message: 'Add your account to their contact', url: '' }
 };
 
@@ -48,6 +50,7 @@ const ListItemWrapper = styled('div')(({ theme }) => ({
 const NotificationList = (props) => {
     const theme = useTheme();
     let navigate = useNavigate();
+    let dispatch = useDispatch();
     let { notificationList, handleMarkRead } = props;
 
     const chipSX = {
@@ -113,6 +116,7 @@ const NotificationList = (props) => {
                                     onClick={() => {
                                         if (notificationType[type].url !== '') {
                                             navigate(notificationType[type].url);
+                                            dispatch(openMenu(notificationType[type].menuId));
                                         }
                                         if (!read) {
                                             handleMarkRead(notificationId);
