@@ -66,7 +66,7 @@ const sendMessage = asyncHandler(async (req, res) => {
   let receiver = await User.findOne({ userName: receiverName });
   let messageInfo;
   if (receiver === null) {
-    errorMessage = `${receiver} does not exist!`;
+    errorMessage = `${receiverName} does not exist!`;
   } else {
     let sender = await User.findOne({ userName: senderName });
     let { conversationHistory: senderHistory } = sender;
