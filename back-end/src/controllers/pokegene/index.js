@@ -117,7 +117,7 @@ const sendPokemon = asyncHandler(async (req, res) => {
   } else {
     let receiver = await User.findOne({ userName: receiverName });
     if (receiver === null) {
-      errorMessage = `${receiver} does not exist!`;
+      errorMessage = `${receiverName} does not exist!`;
     } else {
       let user = await User.findOne({ userName });
       let { pokemon } = user.pokeCollection.find((item) =>

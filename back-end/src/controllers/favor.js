@@ -52,7 +52,7 @@ const makeFavorRequest = asyncHandler(async (req, res) => {
     } else {
       let receiver = await User.findOne({ userName: account });
       if (receiver === null) {
-        errorMessage = `${receiver} does not exist!`;
+        errorMessage = `${account} does not exist!`;
         break;
       } else {
         if (
