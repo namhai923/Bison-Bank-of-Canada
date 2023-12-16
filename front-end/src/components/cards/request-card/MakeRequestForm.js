@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRef } from 'react';
 
 import { useTheme } from '@mui/material/styles';
-import { Button, FormHelperText, TextField, useMediaQuery, Grid, Typography } from '@mui/material';
+import { Button, FormHelperText, TextField, useMediaQuery, Grid, Typography, List } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik, FastField } from 'formik';
 
@@ -43,10 +43,7 @@ let MakeRequestForm = (props) => {
     });
 
     const vSchema = Yup.object().shape({
-        [`${name}Emails`]: Yup.array()
-            .min(1, 'Should have at least 1 email')
-            .of(Yup.string().email('Must be a valid email').max(50).required('Email is required'))
-            .required('Email is required'),
+        [`${name}Emails`]: Yup.array().of(Yup.string().email('is not a valid email').max(50)).min(1, 'Email is required'),
         [`${name}Amount`]: Yup.number().min(1, 'Should be greater than 0').required('Amount is required'),
         [`${name}Description`]: Yup.string()
     });
@@ -111,7 +108,21 @@ let MakeRequestForm = (props) => {
                                             creatable
                                         />
                                         {touched[`${name}Emails`] && errors[`${name}Emails`] && (
-                                            <FormHelperText error>{errors[`${name}Emails`]}</FormHelperText>
+                                            <List>
+                                                {Array.isArray(errors[`${name}Emails`]) ? (
+                                                    errors[`${name}Emails`].map((error, index) => {
+                                                        if (error !== undefined) {
+                                                            return (
+                                                                <FormHelperText error>{`\"${
+                                                                    values[`${name}Emails`][index]
+                                                                }\" ${error}`}</FormHelperText>
+                                                            );
+                                                        }
+                                                    })
+                                                ) : (
+                                                    <FormHelperText error>{errors[`${name}Emails`]}</FormHelperText>
+                                                )}
+                                            </List>
                                         )}
                                     </Grid>
                                     <Grid item xs={12}>
