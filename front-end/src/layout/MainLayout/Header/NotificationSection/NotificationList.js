@@ -24,6 +24,7 @@ import moment from 'moment/moment';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
 import { useDeleteNotificationMutation } from 'app/features/notification/notificationApiSlice';
 import { openMenu } from 'app/features/customize/customizeSlice';
+import longTextDisplay from 'utils/longTextDisplay';
 
 let notificationType = {
     'favor:request': { message: 'Send you a favor request', url: '/credit/debt', menuId: 'debt' },
@@ -130,7 +131,7 @@ const NotificationList = (props) => {
                                                 src={userName === '' ? IconUser : alphabetAvatar[`${userName.toLowerCase()[0]}`]}
                                             />
                                         </ListItemAvatar>
-                                        <ListItemText primary={userName} />
+                                        <ListItemText primary={longTextDisplay(userName, 22)} />
                                         <ListItemSecondaryAction>
                                             <Grid container justifyContent="flex-end">
                                                 <Grid item xs={12}>

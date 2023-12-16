@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
-import { Avatar, ButtonBase, IconButton, Stack, Tooltip, Typography, Box } from '@mui/material';
+import { Avatar, ButtonBase, IconButton, Stack, Tooltip, Typography, Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { IconTrash, IconUser, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
@@ -10,10 +10,13 @@ import Label from 'components/label';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
 import { useDeleteConversationMutation } from 'app/features/messenger/messengerApiSlice';
 import { setValue } from 'app/features/value/valueSlice';
+import longTextDisplay from 'utils/longTextDisplay';
 
 const ConversationHeader = (props) => {
     const theme = useTheme();
     let dispatch = useDispatch();
+    let matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
+    let matchDownMobile = useMediaQuery(theme.breakpoints.down('mobile'));
 
     let { currentConversation, currentName, currentActive, handleChatToggle, chatOpened } = props;
 
@@ -29,7 +32,7 @@ const ConversationHeader = (props) => {
 
     return (
         <Stack alignItems="center" direction="row" sx={{ width: '100%', height: '100%' }} justifyContent="space-between">
-            <Stack spacing={2} direction="row" alignItems="center">
+            <Stack spacing={1} direction="row" alignItems="center">
                 <ButtonBase sx={{ borderRadius: '12px' }}>
                     <AvatarStyle variant="rounded" color={theme.palette.secondary} onClick={handleChatToggle}>
                         {chatOpened ? <IconChevronLeft stroke={1.5} size="1.3rem" /> : <IconChevronRight stroke={1.5} size="1.3rem" />}
@@ -37,7 +40,9 @@ const ConversationHeader = (props) => {
                 </ButtonBase>
                 <Avatar alt={currentName} src={currentName ? alphabetAvatar[`${currentName.toLowerCase()[0]}`] : IconUser} />
                 <Stack spacing={0.2}>
-                    <Typography variant="h4">{currentName}</Typography>
+                    <Typography variant="h4">
+                        {matchDownMobile ? longTextDisplay(currentName, 15) : matchDownSM ? longTextDisplay(currentName, 38) : currentName}
+                    </Typography>
 
                     <Box>
                         {currentActive === undefined ? (

@@ -7,11 +7,11 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { BrowserView, MobileView } from 'react-device-detect';
 
 import Chats from './Chats';
-import { chatWidth, drawerWidth } from 'assets/data/constant';
+import { chatWidth } from 'assets/data/constant';
 
 const ChatDrawer = (props) => {
     const theme = useTheme();
-    const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
+    const matchUpLg = useMediaQuery(theme.breakpoints.up('lg'));
 
     let { currentConversation, currentName, currentActive, contacts, chatOpened, chatToggle } = props;
 
@@ -48,7 +48,7 @@ const ChatDrawer = (props) => {
 
     return (
         <>
-            {matchUpMd ? (
+            {matchUpLg ? (
                 <Slide direction="right" in={chatOpened} mountOnEnter unmountOnExit>
                     <Paper sx={{ p: 2, width: chatWidth, height: '75vh', marginRight: 2 }}>
                         <Chats
@@ -68,7 +68,7 @@ const ChatDrawer = (props) => {
                         onClose={chatToggle}
                         sx={{
                             '& .MuiDrawer-paper': {
-                                width: drawerWidth,
+                                width: chatWidth,
                                 background: theme.palette.background.default,
                                 color: theme.palette.text.primary,
                                 borderRight: 'none',
