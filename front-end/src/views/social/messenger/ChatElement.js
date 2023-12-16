@@ -106,6 +106,7 @@ const ChatElement = (props) => {
                                 <Typography sx={{ fontWeight: 600 }} variant="caption">
                                     {moment(latestMessage.updatedAt).calendar({
                                         sameDay: 'LT',
+                                        lastDay: 'ddd',
                                         lastWeek: 'ddd',
                                         sameElse: function (now) {
                                             if (this.isSame(now, 'year')) {
