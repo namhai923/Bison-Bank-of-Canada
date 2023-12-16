@@ -25,6 +25,7 @@ import MainCard from 'components/cards/MainCard';
 import Transitions from 'components/extended/Transitions';
 import alphabetAvatar from 'assets/images/alphabetAvatar';
 import { useLogoutMutation } from 'app/features/auth/authApiSlice';
+import longTextDisplay from 'utils/longTextDisplay';
 
 const ProfileSection = (props) => {
     let { firstName, lastName } = props;
@@ -151,7 +152,7 @@ const ProfileSection = (props) => {
                                                     : 'Good Night,'}
                                             </Typography>
                                             <Typography component="span" variant="h4">
-                                                {firstName} {lastName}!
+                                                {`${longTextDisplay(`${firstName} ${lastName}`, 20)}!`}
                                             </Typography>
                                         </Stack>
                                         <Divider />

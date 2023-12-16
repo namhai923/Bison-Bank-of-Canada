@@ -13,6 +13,7 @@ import { useGetContactsQuery } from 'app/features/contact/contactApiSlice';
 import config from 'assets/data/config';
 import NumericFormatCustom from 'utils/NumericFormatCustom';
 import { setRequestValue } from 'app/features/request/requestSlice';
+import longTextDisplay from 'utils/longTextDisplay';
 
 const DESCRIPTION_MAX = 100;
 
@@ -22,7 +23,7 @@ let MakeRequestForm = (props) => {
 
     const theme = useTheme();
     let selectRef = useRef(null);
-    const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
     let dispatch = useDispatch();
 
     let handleSelectChange = (selectedValues) => {
@@ -113,11 +114,10 @@ let MakeRequestForm = (props) => {
                                                     errors[`${name}Emails`].map((error, index) => {
                                                         if (error !== undefined) {
                                                             return (
-                                                                <FormHelperText error>{`\"${
-                                                                    values[`${name}Emails`][index].length >= 35
-                                                                        ? `${values[`${name}Emails`][index].slice(0, 33)}...`
-                                                                        : values[`${name}Emails`][index]
-                                                                }\" ${error}`}</FormHelperText>
+                                                                <FormHelperText error>{`\"${longTextDisplay(
+                                                                    values[`${name}Emails`][index],
+                                                                    34
+                                                                )}\" ${error}`}</FormHelperText>
                                                             );
                                                         }
                                                     })

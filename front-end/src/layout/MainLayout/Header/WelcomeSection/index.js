@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 
+import longTextDisplay from 'utils/longTextDisplay';
+
 const WelcomeMessage = (props) => {
     let { firstName } = props;
 
-    return <h1 style={{ paddingLeft: '25px' }}> Welcome, {firstName}!</h1>;
+    return <h1 style={{ paddingLeft: '25px' }}>{`Welcome, ${longTextDisplay(firstName, 13)}!`}</h1>;
 };
 
 WelcomeMessage.propTypes = {

@@ -37,6 +37,7 @@ import UtilityBar from 'components/utility-bar/UtilityBar';
 import { useAddContactMutation, useGetContactsQuery, useRemoveContactMutation } from 'app/features/contact/contactApiSlice';
 import config from 'assets/data/config';
 import { gridSpacing } from 'assets/data/constant';
+import longTextDisplay from 'utils/longTextDisplay';
 
 const TABLE_HEAD = [
     { id: 'name', label: 'Name', alignRight: false },
@@ -327,11 +328,7 @@ const Contacts = () => {
 
                                                                     <Typography variant="body2">
                                                                         No results found for &nbsp;
-                                                                        <strong>
-                                                                            {filterName.length >= 35
-                                                                                ? `${filterName.slice(0, 33)}...`
-                                                                                : filterName}
-                                                                        </strong>
+                                                                        <strong>{longTextDisplay(filterName, 34)}</strong>
                                                                         <br /> Try checking for typos or using complete words.
                                                                     </Typography>
                                                                 </Paper>

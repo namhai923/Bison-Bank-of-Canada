@@ -19,6 +19,7 @@ const Messeger = () => {
     const theme = useTheme();
     let dispatch = useDispatch();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
+    const matchDownLg = useMediaQuery(theme.breakpoints.down('lg'));
 
     let currentConversation = useSelector((state) => state.value.currentConversation);
     let chatOpened = useSelector((state) => state.customization.chatOpened);
@@ -72,7 +73,7 @@ const Messeger = () => {
                             currentConversation={currentConversation}
                             currentName={currentName}
                             currentActive={currentActive}
-                            chatOpened={!matchDownMd ? chatOpened : !chatOpened}
+                            chatOpened={!matchDownLg ? chatOpened : !chatOpened}
                             chatToggle={handleChatToggle}
                         />
 

@@ -10,6 +10,7 @@ import ChatElement from './ChatElement';
 import StyledInput from 'components/styled-input';
 import { useGetConversationsInfoQuery } from 'app/features/messenger/messengerApiSlice';
 import config from 'assets/data/config';
+import longTextDisplay from 'utils/longTextDisplay';
 
 function applyFilter(array, query) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -107,7 +108,7 @@ const Chats = (props) => {
 
                         <Typography variant="body2">
                             No results found for &nbsp;
-                            <strong>{filterName.length >= 35 ? `${filterName.slice(0, 33)}...` : filterName}</strong>
+                            <strong>{longTextDisplay(filterName, 34)}</strong>
                             <br /> Try checking for typos or using complete words.
                         </Typography>
                     </Paper>
