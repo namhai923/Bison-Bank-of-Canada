@@ -114,7 +114,9 @@ let MakeRequestForm = (props) => {
                                                         if (error !== undefined) {
                                                             return (
                                                                 <FormHelperText error>{`\"${
-                                                                    values[`${name}Emails`][index]
+                                                                    values[`${name}Emails`][index].length >= 35
+                                                                        ? `${values[`${name}Emails`][index].slice(0, 33)}...`
+                                                                        : values[`${name}Emails`][index]
                                                                 }\" ${error}`}</FormHelperText>
                                                             );
                                                         }

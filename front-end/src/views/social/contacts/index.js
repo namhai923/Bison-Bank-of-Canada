@@ -327,7 +327,11 @@ const Contacts = () => {
 
                                                                     <Typography variant="body2">
                                                                         No results found for &nbsp;
-                                                                        <strong>&quot;{filterName}&quot;</strong>.
+                                                                        <strong>
+                                                                            {filterName.length >= 35
+                                                                                ? `${filterName.slice(0, 33)}...`
+                                                                                : filterName}
+                                                                        </strong>
                                                                         <br /> Try checking for typos or using complete words.
                                                                     </Typography>
                                                                 </Paper>
