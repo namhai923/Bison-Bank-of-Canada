@@ -18,10 +18,10 @@ function ProductValues() {
                     <Grid item xs={12} md={4}>
                         <Box sx={item}>
                             <IconArrowsLeftRight></IconArrowsLeftRight>
-                            <Typography variant="h6" sx={{ my: 5 }}>
+                            <Typography variant="h4" align="center" sx={{ my: 5 }}>
                                 Effortless Reciprocity
                             </Typography>
-                            <Typography variant="h5">
+                            <Typography variant="h5" align="center">
                                 Simplifies the process of giving and receiving favors, making it easy for users to engage in acts of
                                 kindness without the burden of complicated logistics
                             </Typography>
@@ -30,10 +30,10 @@ function ProductValues() {
                     <Grid item xs={12} md={4}>
                         <Box sx={item}>
                             <IconBusinessplan></IconBusinessplan>
-                            <Typography variant="h6" sx={{ my: 5 }}>
+                            <Typography variant="h4" align="center" sx={{ my: 5 }}>
                                 Debt Management
                             </Typography>
-                            <Typography variant="h5">
+                            <Typography variant="h5" align="center">
                                 Provides a user-friendly platform for tracking and managing debts, transforming what could be awkward
                                 transactions into seamless interactions. Users can easily navigate and settle debts, fostering a sense of
                                 trust and transparency in their relationships
@@ -43,10 +43,10 @@ function ProductValues() {
                     <Grid item xs={12} md={4}>
                         <Box sx={item}>
                             <IconTopologyStar3></IconTopologyStar3>
-                            <Typography variant="h6" sx={{ my: 5 }}>
+                            <Typography variant="h4" align="center" sx={{ my: 5 }}>
                                 Community Building through Gratitude
                             </Typography>
-                            <Typography variant="h5">
+                            <Typography variant="h5" align="center">
                                 Cultivates a community where gratitude is the driving force. Users experience the joy of repaying favors and
                                 building stronger connections, turning each interaction into a positive and memorable experience
                             </Typography>
