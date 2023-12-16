@@ -42,7 +42,7 @@ function ProductHowItWorks() {
                                     <IconSend></IconSend>
                                 </Stack>
                                 <Typography variant="h4" align="center" sx={{ my: 5 }}>
-                                    Send a Favor Request:
+                                    Send Favor Request:
                                 </Typography>
                                 <Typography variant="h5" align="center">
                                     Begin by sending a favor request to a friend or community member. Specify the task or assistance you
@@ -72,7 +72,7 @@ function ProductHowItWorks() {
                                     <IconPokeball></IconPokeball>
                                 </Stack>
                                 <Typography variant="h4" align="center" sx={{ my: 5 }}>
-                                    Catch Pokémon with Credit Points:
+                                    Catch Pokémon:
                                 </Typography>
                                 <Typography variant="h5" align="center">
                                     Utilize your accumulated credit points in an exciting way—by catching Pokémon within the app! Each
@@ -88,7 +88,7 @@ function ProductHowItWorks() {
                                     <IconArrowsLeftRight></IconArrowsLeftRight>
                                 </Stack>
                                 <Typography variant="h4" align="center" sx={{ my: 5 }}>
-                                    Trade Pokémon with Friends:
+                                    Trade Pokémon:
                                 </Typography>
                                 <Typography variant="h5" align="center">
                                     Strengthen your social bonds by trading Pokémon with friends. This feature not only adds a collaborative
